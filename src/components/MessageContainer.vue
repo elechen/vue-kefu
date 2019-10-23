@@ -4,7 +4,10 @@
     class="jimi-chat--container"
     style="height: 523px; padding-bottom: 0px;"
   >
-    <div class="jimi-chat--wrapper">
+    <div
+      class="jimi-chat--wrapper"
+      v-chat-scroll="{always: false, smooth: true}"
+    >
       <!-- <div class="jimi-chat--log-btn">点击加载更多</div>
       <div class="jimi-chat--separation">
         <span>上次聊到这里</span>

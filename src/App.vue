@@ -6,8 +6,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Index from '@/views/Index.vue';
+// @ts-ignore
+import VueChatScroll from 'vue-chat-scroll';
 import store from '@/store';
+import Index from '@/views/Index.vue';
+
+Vue.use(VueChatScroll);
 
 export default Vue.extend({
   name: 'App',

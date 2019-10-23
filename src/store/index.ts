@@ -64,9 +64,7 @@ export default new Vuex.Store({
     SEND_MESSAGE({ sessions, currentSessionId, admin }, content) {
       const ss = sessions;
       if (!(sessions as any)[currentSessionId]) {
-        (ss as any)[currentSessionId] = {
-          messages: [],
-        };
+        Vue.set(ss, currentSessionId, { messages: [] });
       }
       const data = (sessions as any)[currentSessionId];
       data.messages.push(
