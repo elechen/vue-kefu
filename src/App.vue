@@ -1,45 +1,70 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/> -->
-    <Container/>
+    <Index />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import Container from '@/views/Container.vue';
+import Index from '@/views/Index.vue';
+import store from '@/store';
 
 export default Vue.extend({
   name: 'App',
+  store,
   components: {
-    Container,
+    Index,
   },
 });
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body,
+p {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
 }
 
-#nav {
-  padding: 30px;
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: ' ';
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.clearfix:after {
+  clear: both;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.clearfix {
+  *zoom: 1;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  background-size: 100%;
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+}
+
+.img-bg {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 </style>
