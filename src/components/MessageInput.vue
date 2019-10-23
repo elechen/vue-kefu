@@ -24,7 +24,6 @@ export default Vue.extend({
   },
   methods: {
     onSubmit() {
-      console.log('回复内容', this.textarea);
       if (this.textarea !== '') {
         this.$store.dispatch('sendMessage', this.textarea);
         this.textarea = '';
