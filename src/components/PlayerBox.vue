@@ -4,14 +4,16 @@
     :class="{ active: player.uid === currentSessionId }"
     v-on:click="onSelectSession(player.uid)"
   >
-    <div class="dialog-avator">
-      <div
-        class="img-bg avatar"
-        uselazyload="true"
-        alt
-        v-bind:style="{backgroundImage: 'url(' + require(`@/assets/avatar.png`) + ')'}"
-      ></div>
-    </div>
+    <el-badge :value="0" :max="9" :hidden="true">
+      <div class="dialog-avator">
+        <div
+          class="img-bg avatar"
+          uselazyload="true"
+          alt
+          v-bind:style="{backgroundImage: 'url(' + require(`@/assets/avatar.png`) + ')'}"
+        ></div>
+      </div>
+    </el-badge>
     <span class="dialog-name ellipsis">{{player.name}}</span>
     <div class="label dialog-label">VIP_1</div>
   </div>

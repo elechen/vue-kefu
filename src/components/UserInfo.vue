@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="user-info-right">
-      <div class="user-info-right-name ellipsis">CHENXIAOFENG</div>
+      <div class="user-info-right-name ellipsis">{{$store.state.user.name}}</div>
       <el-select
         class="user-info-right-game"
         size="mini"
@@ -35,7 +35,7 @@ export default Vue.extend({
   name: 'UserInfo',
   data() {
     return {
-      game: '',
+      game: 'szl',
       options: [
         {
           value: 'szl',

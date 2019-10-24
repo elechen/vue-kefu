@@ -20,7 +20,19 @@ export default Vue.extend({
   },
   computed: {
     players(): define.Player[] {
-      return this.$store.state.users;
+      const lst: define.Player[] = Object.values(this.$store.state.users);
+      return lst.sort((a: define.Player, b: define.Player) => {
+        if (a.recentchattime !== b.recentchattime) {
+          return a.recentchattime > b.recentchattime ? -1 : 1;
+        }
+        if (a.online !== b.online) {
+          return a.online ? -1 : 1;
+        }
+        if (a.rmb !== b.rmb) {
+          return a.rmb > b.rmb ? -1 : 1;
+        }
+        return 0;
+      });
     },
   },
 });

@@ -1,11 +1,13 @@
 export interface Player {
     uid: number;
     name: string;
+    recentchattime: number;
+    online: number;
     rmb: number;
 }
 
 export interface Message {
-    date: number;
+    timestamp: number;
     content: string;
     sender: number;
 }

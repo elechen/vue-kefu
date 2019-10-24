@@ -2,7 +2,7 @@
   <div class="message">
     <div
       class="message clearfix"
-      :class="[isAdmin ? 'waiter-message' : 'customer-message']"
+      :class="[isSelf ? 'waiter-message' : 'customer-message']"
     >
       <div class="message--date">
         <span>{{ message.timestamp | time }}</span>
@@ -10,7 +10,7 @@
       <p class="message--pin">{{message.sender.name}}</p>
       <div
         class="message--container clearfix"
-        :class="[isAdmin ? 'waiter-message' : 'customer-message']"
+        :class="[isSelf ? 'waiter-message' : 'customer-message']"
       >
         <div class="message--head">
           <div
@@ -24,7 +24,7 @@
           <div class="message--wrapper">
             <div
               class="text-message clearfix"
-              :class="[isAdmin ? 'waiter-message' : 'customer-message']"
+              :class="[isSelf ? 'waiter-message' : 'customer-message']"
               index="6"
               msgid="249D6615-733A-4FDB-958D-DABAA4DF9B4F"
             >
@@ -53,8 +53,8 @@ export default Vue.extend({
     time: (date: number) => moment(date).format('YYYY-MM-DD HH:mm:ss'),
   },
   computed: {
-    isAdmin(): boolean {
-      return this.message.sender.uid !== this.$store.state.admin.uid;
+    isSelf(): boolean {
+      return this.message.sender.uid !== this.$store.state.user.uid;
     },
   },
   props: {
