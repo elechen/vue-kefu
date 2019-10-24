@@ -28,7 +28,6 @@ export default Vue.extend({
     querySearchAsync: debounce((queryString: string, cb: Function) => {
       const key = queryString.trim();
       if (key !== '') {
-        console.log('开始搜索', key);
         // 模拟回调
         cb([
           {
