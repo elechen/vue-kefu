@@ -20,7 +20,7 @@ export default Vue.extend({
   },
   computed: {
     players(): define.Player[] {
-      const lst: define.Player[] = Object.values(this.$store.state.users);
+      const lst: define.Player[] = Object.values(this.$store.state.user.users);
       return lst.sort((a: define.Player, b: define.Player) => {
         if (a.recentchattime !== b.recentchattime) {
           return a.recentchattime > b.recentchattime ? -1 : 1;

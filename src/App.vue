@@ -19,6 +19,18 @@ export default Vue.extend({
   components: {
     Index,
   },
+  computed: {
+    message(): string {
+      return this.$store.state.socket.message;
+    },
+  },
+  watch: {
+    message(): void {
+      const uid = this.$store.state.session.currentSessionId;
+      const content = `${this.message}!`;
+      this.$store.dispatch('session/receiveMessage', { uid, content });
+    },
+  },
 });
 </script>
 

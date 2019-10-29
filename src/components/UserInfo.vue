@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="user-info-right">
-      <div class="user-info-right-name ellipsis">{{$store.state.user.name}}</div>
+      <div class="user-info-right-name ellipsis">{{$store.state.profile.user.name}}</div>
       <el-select
         class="user-info-right-game"
         size="mini"

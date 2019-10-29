@@ -21,8 +21,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapState } from 'vuex';
 import * as define from '@/define';
 import MessageList from '@/components/MessageList.vue';
+import { SessionState } from '../store/modules/session/types';
 
 export default Vue.extend({
   name: 'MessageContainer',
@@ -30,19 +32,19 @@ export default Vue.extend({
     MessageList,
   },
   computed: {
+    ...mapState('session', {
+      sessions: (state: SessionState) => state.sessions,
+    }),
     currentSessionId(): number {
-      if (this.$store.state.currentSessionId) {
-        return this.$store.state.currentSessionId;
+      if (this.$store.state.session.currentSessionId) {
+        return this.$store.state.session.currentSessionId;
       }
       return 0;
     },
     messages(): define.Message[] {
       let lst: define.Message[] = [];
       if (this.currentSessionId) {
-        const session: define.Session = this.$store.state.sessions[this.currentSessionId];
-        if (session) {
-          lst = session.messages;
-        }
+        lst = (this as any).sessions[this.currentSessionId];
       }
       return lst;
     },

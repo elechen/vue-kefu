@@ -1,6 +1,6 @@
 <template>
   <div class="search-bar">
-    <el-autocomplete
+    <el-autocomplete style="width: 100%"
       size="small"
       placeholder="搜索最近联系人"
       prefix-icon="el-icon-search"
@@ -42,11 +42,11 @@ export default Vue.extend({
       }
     }, 1500),
     handleSelect(player: any) {
-      if (this.$store.state.users[player.uid]) {
-        this.$store.dispatch('selectSession', player.uid);
+      if (this.$store.state.user.users[player.uid]) {
+        this.$store.dispatch('session/selectSession', player.uid);
       } else {
-        this.$store.dispatch('addUser', player);
-        this.$store.dispatch('selectSession', player.uid);
+        this.$store.dispatch('user/addUser', player);
+        this.$store.dispatch('session/selectSession', player.uid);
       }
     },
   },

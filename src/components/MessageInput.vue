@@ -25,7 +25,7 @@ export default Vue.extend({
   methods: {
     onSubmit() {
       if (this.textarea !== '') {
-        this.$store.dispatch('sendMessage', this.textarea);
+        this.$store.dispatch('session/sendMessage', this.textarea);
         this.textarea = '';
       }
     },

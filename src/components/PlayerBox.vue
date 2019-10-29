@@ -29,12 +29,12 @@ export default Vue.extend({
   },
   methods: {
     onSelectSession(uid: number) {
-      this.$store.dispatch('selectSession', uid);
+      this.$store.dispatch('session/selectSession', uid);
     },
   },
   computed: {
     currentSessionId(): number {
-      return this.$store.state.currentSessionId;
+      return this.$store.state.session.currentSessionId;
     },
   },
 });

@@ -32,8 +32,9 @@ export default Vue.extend({
   name: 'PlayerInfo',
   computed: {
     playerName(): string {
-      if (this.$store.state.currentSessionId) {
-        return this.$store.state.users[this.$store.state.currentSessionId].name;
+      const sid = this.$store.state.session.currentSessionId;
+      if (sid) {
+        return this.$store.state.user.users[sid].name;
       }
       return '先选择一位玩家';
     },

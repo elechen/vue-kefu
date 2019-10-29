@@ -54,7 +54,7 @@ export default Vue.extend({
   },
   computed: {
     isSelf(): boolean {
-      return this.message.sender.uid !== this.$store.state.user.uid;
+      return this.message.sender.uid !== this.$store.state.profile.user.uid;
     },
   },
   props: {
