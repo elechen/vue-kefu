@@ -1,0 +1,35 @@
+package friend;
+
+//----------------GS2C---------------
+//1.未读消息数
+message GS2CNewMsgCnt {
+	required sint32 iSender = 1;
+	required sint32 iCnt = 2;
+}
+
+//2.发送消息内容
+message GS2CSendFrdMsg {
+	required sint32 id 			= 1;	//消息id
+	required sint32 iSender		= 2;	//发送人
+	required string sMsg 		= 3;	//消息内容
+	required sint32 iMsgType 	= 4;	//0:正常 1:语音翻译
+	required sint32 iTime		= 5;	//发送时间
+}
+
+//----------------C2GS---------------
+
+//1.发送新消息
+message C2GSNewFrdMsg {
+	required sint32 iTarget		= 1;	//目标id
+	required string	sMsg		= 2;	//消息内容
+}
+
+//2.读取某人所有消息
+message C2GSReadFrdMsg {
+	required sint32 iSender	= 1;	//发送人id
+}
+
+//3.确认接收消息
+message C2GSReplyFrdMsg {
+	required sint32 id		= 1;	//消息id
+}

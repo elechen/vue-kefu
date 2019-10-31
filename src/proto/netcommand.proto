@@ -1,0 +1,12 @@
+package netcommand;
+
+enum PROTOFILE {
+	login	= 1;
+	friend	= 2;
+}
+
+message NetCommand {
+	required PROTOFILE eProtofile=1;
+	required sint32 iCmd=2;
+	optional bytes sEncodepkg=3;
+}

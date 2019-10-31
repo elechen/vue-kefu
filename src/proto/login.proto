@@ -1,0 +1,20 @@
+package login;
+
+//----------------GS2C---------------
+//1.登录状态码
+message GS2CLoginCode {
+	enum Code {
+		SUCCEED 					= 0;	//登录成功
+		NOACCOUNT 					= 1;	//无此账号
+		NETERR						= 2;	//后台无法连接
+		TOKENERR					= 3;	//后台token验证失败
+	}
+	required Code eLogincode	= 1;
+}
+
+//----------------C2GS---------------
+//1.登录验证
+message C2GSVertify {
+	required string Name 		= 1;	//用户名
+	required string sToken 		= 2;
+}

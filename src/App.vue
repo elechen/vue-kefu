@@ -10,6 +10,8 @@ import Vue from 'vue';
 import VueChatScroll from 'vue-chat-scroll';
 import store from '@/store';
 import Index from '@/views/Index.vue';
+import { netcommand } from './proto';
+import * as net from '@/net/net';
 
 Vue.use(VueChatScroll);
 
@@ -18,6 +20,21 @@ export default Vue.extend({
   store,
   components: {
     Index,
+  },
+  mounted: () => {
+    net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
+    // const pb = login.C2GSVertify;
+    // const message = pb.create({ Name: 'chenxiaofeng', sToken: 'test_token' });
+    // const buff = pb.encode(message).finish();
+    // const anotherMessage = netcommand.NetCommand.create({
+    //   eProtofile: 1,
+    //   iCmd: 1,
+    //   sEncodepkg: buff,
+    // });
+    // const anotherBuff = netcommand.NetCommand.encode(anotherMessage).finish();
+    // const anotherDecodeMessage = netcommand.NetCommand.decode(anotherBuff);
+    // console.log(anotherDecodeMessage, '-------test1');
+    // console.log(pb.decode(anotherDecodeMessage.sEncodepkg), '-------test2');
   },
   computed: {
     message(): string {
