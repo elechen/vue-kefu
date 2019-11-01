@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import * as net from './net';
 import { netcommand, login } from '@/proto';
 
@@ -12,6 +13,45 @@ function Send(iCmd: number, t: Object) {
 
 function GS2CLoginCode(message: login.IGS2CLoginCode) {
   console.log(message);
+  const CODE = login.GS2CLoginCode.Code;
+  switch (message.eLogincode) {
+    case CODE.SUCCEED: {
+      Vue.prototype.$message({
+        message: '登录成功',
+        type: 'success',
+      });
+      break;
+    }
+    case CODE.NETERR: {
+      Vue.prototype.$confirm('网络异常，请稍后重试', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        console.log('去重新登录');
+      }).catch(() => {
+        console.log('算了');
+      });
+      break;
+    }
+    case CODE.NOACCOUNT: {
+      Vue.prototype.$confirm('账号不存在', '提示', {
+        confirmButtonText: '确定',
+        type: 'warning',
+      });
+      break;
+    }
+    case CODE.TOKENERR: {
+      Vue.prototype.$confirm('TOKEN验证失败', '提示', {
+        confirmButtonText: '确定',
+        type: 'warning',
+      });
+      break;
+    }
+    default: {
+      // donothing
+    }
+  }
 }
 
 const S2CCommand: { [key: number]: [string, Function] } = {

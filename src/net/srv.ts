@@ -1,23 +1,15 @@
-import Vue from 'vue';
+// 模拟服务器发包
 import * as proto from '@/proto/index';
-import { eProtofile2Module } from './netdefine';
+import * as net from './net';
 
-export function DecodeAndDispatch(mainPkg: any) {
-  const mainMessage = proto.netcommand.NetCommand.decode(mainPkg);
-  const module = eProtofile2Module[mainMessage.eProtofile] as { DecodeAndDispatch: Function };
-  // console.log('DecodeAndDispatch->', mainMessage);
-  module.DecodeAndDispatch(mainMessage.iCmd, mainMessage.sEncodepkg);
-  // console.log('DecodeAndDispatch->done');
-}
-
-function Send(sEncodepkg: any) {
-  Vue.prototype.$socket.send(sEncodepkg);
+export function Send(sEncodepkg: any) {
+  net.DecodeAndDispatch(sEncodepkg);
 }
 
 export function EncodeAndSend(eProtofile: proto.netcommand.PROTOFILE,
   iCmd: number, sSubname: string, t: Object) {
   const sProtofile = proto.netcommand.PROTOFILE[eProtofile];
-  // console.log(eProtofile, iCmd, sSubname, t);
+  console.log(eProtofile, iCmd, sSubname, t);
   const subCommand = (proto as any)[sProtofile][sSubname];
   const subMessage = subCommand.create(t);
   const subPkg = subCommand.encode(subMessage).finish();

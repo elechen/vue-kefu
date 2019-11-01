@@ -8,10 +8,12 @@
 import Vue from 'vue';
 // @ts-ignore
 import VueChatScroll from 'vue-chat-scroll';
+
 import store from '@/store';
 import Index from '@/views/Index.vue';
 import { netcommand } from './proto';
 import * as net from '@/net/net';
+import * as srv from '@/net/srv';
 
 Vue.use(VueChatScroll);
 
@@ -22,7 +24,10 @@ export default Vue.extend({
     Index,
   },
   mounted: () => {
-    net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
+    Vue.prototype.$store = store;
+    console.log(store);
+    console.log('初始化成功');
+    // net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
     // const pb = login.C2GSVertify;
     // const message = pb.create({ Name: 'chenxiaofeng', sToken: 'test_token' });
     // const buff = pb.encode(message).finish();
@@ -44,8 +49,17 @@ export default Vue.extend({
   watch: {
     message(): void {
       const uid = this.$store.state.session.currentSessionId;
-      const content = `${this.message}!`;
-      this.$store.dispatch('session/receiveMessage', { uid, content });
+      console.log(this.message);
+      if (this.message === '测试登录') {
+        net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
+      } else if (this.message === '登录成功') {
+        srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 0 });
+      } else if (this.message === '登录失败') {
+        srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 3 });
+      } else {
+        const content = `${this.message}!`;
+        this.$store.dispatch('session/receiveMessage', { uid, content });
+      }
     },
   },
 });
