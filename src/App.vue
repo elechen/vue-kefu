@@ -25,8 +25,8 @@ export default Vue.extend({
   },
   mounted: () => {
     Vue.prototype.$store = store;
-    console.log(store);
-    console.log('初始化成功');
+    // console.log(store);
+    // console.log('初始化成功');
     // net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
     // const pb = login.C2GSVertify;
     // const message = pb.create({ Name: 'chenxiaofeng', sToken: 'test_token' });
@@ -42,23 +42,47 @@ export default Vue.extend({
     // console.log(pb.decode(anotherDecodeMessage.sEncodepkg), '-------test2');
   },
   computed: {
-    message(): string {
+    message(): any {
       return this.$store.state.socket.message;
+    },
+    isConnected(): boolean {
+      return this.$store.state.socket.isConnected;
     },
   },
   watch: {
     message(): void {
       const uid = this.$store.state.session.currentSessionId;
-      console.log(this.message);
-      if (this.message === '测试登录') {
-        net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
-      } else if (this.message === '登录成功') {
-        srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 0 });
-      } else if (this.message === '登录失败') {
-        srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 3 });
-      } else {
-        const content = `${this.message}!`;
-        this.$store.dispatch('session/receiveMessage', { uid, content });
+      // console.log('watch message->', this.message);
+      // if (this.message === '测试登录') {
+      //   net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
+      // } else if (this.message === '登录成功') {
+      //   srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 0 });
+      // } else if (this.message === '登录失败') {
+      //   srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 3 });
+      // } else {
+      //   const content = `${this.message}!`;
+      //   this.$store.dispatch('session/receiveMessage', { uid, content });
+      // }
+    },
+    isConnected(): void {
+      if (this.isConnected) {
+        const { token } = this.$route.query;
+        if (!token) {
+          this.$confirm('缺少token参数', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+            .then(() => {
+              window.opener = null;
+              window.open('about:blank', '_top')!.close();
+            })
+            .catch(() => {
+              // console.log('算了');
+            });
+          return;
+        }
+        net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'kefu', sToken: token });
       }
     },
   },

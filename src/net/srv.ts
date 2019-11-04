@@ -9,7 +9,7 @@ export function Send(sEncodepkg: any) {
 export function EncodeAndSend(eProtofile: proto.netcommand.PROTOFILE,
   iCmd: number, sSubname: string, t: Object) {
   const sProtofile = proto.netcommand.PROTOFILE[eProtofile];
-  console.log(eProtofile, iCmd, sSubname, t);
+  // console.log(eProtofile, iCmd, sSubname, t);
   const subCommand = (proto as any)[sProtofile][sSubname];
   const subMessage = subCommand.create(t);
   const subPkg = subCommand.encode(subMessage).finish();

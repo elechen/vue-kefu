@@ -12,7 +12,7 @@ function Send(iCmd: number, t: Object) {
 }
 
 function GS2CLoginCode(message: login.IGS2CLoginCode) {
-  console.log(message);
+  // console.log(message);
   const CODE = login.GS2CLoginCode.Code;
   switch (message.eLogincode) {
     case CODE.SUCCEED: {
@@ -28,9 +28,9 @@ function GS2CLoginCode(message: login.IGS2CLoginCode) {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        console.log('去重新登录');
+        // console.log('去重新登录');
       }).catch(() => {
-        console.log('算了');
+        // console.log('算了');
       });
       break;
     }

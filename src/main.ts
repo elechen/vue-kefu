@@ -8,15 +8,22 @@ import router from './router';
 import store from './store';
 import App from './App.vue';
 import * as net from '@/net/net';
+import * as define from './define';
 
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
 
-Vue.use(VueNativeSock, 'wss://echo.websocket.org', {
+Vue.use(VueNativeSock, `ws://${define.HOST}`, {
   store,
   passToStoreHandler: (eventName: string, event: any, next: Function) => {
-    net.DecodeAndDispatch(event.data);
+    if (event.data) {
+      event.data.arrayBuffer().then((data: any) => {
+        const pkg = new Uint8Array(data);
+        console.log(pkg);
+        net.DecodeAndDispatch(pkg);
+      });
+    }
     next(eventName, event);
   },
   reconnection: true, // (Boolean) whether to reconnect automatically (false)

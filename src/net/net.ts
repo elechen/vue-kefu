@@ -4,6 +4,9 @@ import { eProtofile2Module } from './netdefine';
 
 export function DecodeAndDispatch(mainPkg: any) {
   const mainMessage = proto.netcommand.NetCommand.decode(mainPkg);
+  if (!mainMessage) {
+    return;
+  }
   const module = eProtofile2Module[mainMessage.eProtofile] as { DecodeAndDispatch: Function };
   // console.log('DecodeAndDispatch->', mainMessage);
   module.DecodeAndDispatch(mainMessage.iCmd, mainMessage.sEncodepkg);
@@ -11,6 +14,7 @@ export function DecodeAndDispatch(mainPkg: any) {
 }
 
 function Send(sEncodepkg: any) {
+  // console.log('Send->', sEncodepkg);
   Vue.prototype.$socket.send(sEncodepkg);
 }
 
