@@ -1298,6 +1298,9 @@ export namespace login {
     /** Properties of a GS2CLoginSucc. */
     interface IGS2CLoginSucc {
 
+        /** GS2CLoginSucc pid */
+        pid: number;
+
         /** GS2CLoginSucc sName */
         sName: string;
 
@@ -1313,6 +1316,9 @@ export namespace login {
          * @param [properties] Properties to set
          */
         constructor(properties?: login.IGS2CLoginSucc);
+
+        /** GS2CLoginSucc pid. */
+        public pid: number;
 
         /** GS2CLoginSucc sName. */
         public sName: string;

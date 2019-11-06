@@ -14,8 +14,9 @@ message GS2CLoginCode {
 
 //2.登录成功
 message GS2CLoginSucc {
-	required string sName = 1;
-	required string sGameFlag = 2;
+	required sint32 pid = 1;	
+	required string sName = 2;
+	required string sGameFlag = 3;
 }
 
 //----------------C2GS---------------

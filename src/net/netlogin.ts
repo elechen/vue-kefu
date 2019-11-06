@@ -11,8 +11,13 @@ function Send(iCmd: number, t: Object) {
   net.EncodeAndSend(netcommand.PROTOFILE.login, iCmd, subName, t);
 }
 
+function GS2CLoginSucc(message: login.IGS2CLoginSucc) {
+  console.log(message);
+  Vue.prototype.$store.dispatch('profile/loginSucc', message);
+}
+
 function GS2CLoginCode(message: login.IGS2CLoginCode) {
-  // console.log(message);
+  console.log(message);
   const CODE = login.GS2CLoginCode.Code;
   switch (message.eLogincode) {
     case CODE.SUCCEED: {
@@ -56,6 +61,7 @@ function GS2CLoginCode(message: login.IGS2CLoginCode) {
 
 const S2CCommand: { [key: number]: [string, Function] } = {
   1: ['GS2CLoginCode', GS2CLoginCode],
+  2: ['GS2CLoginSucc', GS2CLoginSucc],
 };
 
 export function DecodeAndDispatch(iCmd: number, sEncodePkg: any) {

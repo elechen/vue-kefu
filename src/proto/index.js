@@ -2930,6 +2930,7 @@ export const login = $root.login = (() => {
          * Properties of a GS2CLoginSucc.
          * @memberof login
          * @interface IGS2CLoginSucc
+         * @property {number} pid GS2CLoginSucc pid
          * @property {string} sName GS2CLoginSucc sName
          * @property {string} sGameFlag GS2CLoginSucc sGameFlag
          */
@@ -2948,6 +2949,14 @@ export const login = $root.login = (() => {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
+
+        /**
+         * GS2CLoginSucc pid.
+         * @member {number} pid
+         * @memberof login.GS2CLoginSucc
+         * @instance
+         */
+        GS2CLoginSucc.prototype.pid = 0;
 
         /**
          * GS2CLoginSucc sName.
@@ -2989,8 +2998,9 @@ export const login = $root.login = (() => {
         GS2CLoginSucc.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.sName);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.sGameFlag);
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.sName);
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.sGameFlag);
             return writer;
         };
 
@@ -3026,9 +3036,12 @@ export const login = $root.login = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.sName = reader.string();
+                    message.pid = reader.sint32();
                     break;
                 case 2:
+                    message.sName = reader.string();
+                    break;
+                case 3:
                     message.sGameFlag = reader.string();
                     break;
                 default:
@@ -3036,6 +3049,8 @@ export const login = $root.login = (() => {
                     break;
                 }
             }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
             if (!message.hasOwnProperty("sName"))
                 throw $util.ProtocolError("missing required 'sName'", { instance: message });
             if (!message.hasOwnProperty("sGameFlag"))
@@ -3070,6 +3085,8 @@ export const login = $root.login = (() => {
         GS2CLoginSucc.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
             if (!$util.isString(message.sName))
                 return "sName: string expected";
             if (!$util.isString(message.sGameFlag))
@@ -3089,6 +3106,8 @@ export const login = $root.login = (() => {
             if (object instanceof $root.login.GS2CLoginSucc)
                 return object;
             let message = new $root.login.GS2CLoginSucc();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
             if (object.sName != null)
                 message.sName = String(object.sName);
             if (object.sGameFlag != null)
@@ -3110,9 +3129,12 @@ export const login = $root.login = (() => {
                 options = {};
             let object = {};
             if (options.defaults) {
+                object.pid = 0;
                 object.sName = "";
                 object.sGameFlag = "";
             }
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
             if (message.sName != null && message.hasOwnProperty("sName"))
                 object.sName = message.sName;
             if (message.sGameFlag != null && message.hasOwnProperty("sGameFlag"))

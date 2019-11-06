@@ -19,7 +19,7 @@ const mutations: MutationTree<SessionState> = {
     list.push(
       {
         id: Date.now(),
-        iSender: sender!.uid,
+        iSender: sender!.pid,
         sName: sender!.sName,
         sMsg: dMsg.sMsg,
         iTime: Date.now(),
