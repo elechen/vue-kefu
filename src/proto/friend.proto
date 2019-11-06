@@ -9,11 +9,36 @@ message GS2CNewMsgCnt {
 
 //2.发送消息内容
 message GS2CSendFrdMsg {
-	required sint32 id 			= 1;	//消息id
-	required sint32 iSender		= 2;	//发送人
-	required string sMsg 		= 3;	//消息内容
-	required sint32 iMsgType 	= 4;	//0:正常 1:语音翻译
-	required sint32 iTime		= 5;	//发送时间
+	message FrdMsg {
+		required sint32 id 			= 1;	//消息id
+		required sint32 iSender		= 2;	//发送人
+		required string sName		= 3;	//发送角色名
+		required string sMsg 		= 4;	//消息内容
+		required sint32 iTime		= 5;	//发送时间
+	}
+	required sint32 pid			= 1;
+	repeated FrdMsg tFrdMsg 	= 2;
+}
+
+//3.发送玩家信息
+message GS2CSendFrdInfo {
+	required sint32 pid			= 1;	//id
+	required sint32 iOnline		= 2;	//是否在线
+	required string sName		= 3;	//名字
+	required sint32 iGrade		= 4;	//等级
+	required sint32 iServer		= 5;	//服务器
+	required string sPlatform	= 6;	//渠道
+	required sint32 iMoneyMax	= 7;	//总充值额
+	required sint32 iChatTime	= 8;	//最近聊天时间
+}
+
+//4.发送搜索结果
+message GS2CSearchResult {
+	message SearchResult {
+		required sint32 id 		= 1;
+		required string	sName 	= 2;
+	}
+	repeated SearchResult tRet 	= 1;
 }
 
 //----------------C2GS---------------
@@ -31,5 +56,22 @@ message C2GSReadFrdMsg {
 
 //3.确认接收消息
 message C2GSReplyFrdMsg {
-	required sint32 id		= 1;	//消息id
+	required sint32 iSender = 1;	//发送人id
+	required sint32 id		= 2;	//消息id
+}
+
+//4.请求玩家信息
+message C2GSGetFrdInfo {
+	required sint32 pid		= 1;	//玩家id
+}
+
+//5.搜索好友
+message C2GSSearchFriend {
+	required string sKey	= 1;	//搜索内容,可能是id或名字
+}
+
+//6.获取历史消息
+message C2GSGetHistoryMsg {
+	required sint32 pid 	= 1;
+	required sint32 curidx  = 2;	//客户端当前最小id
 }

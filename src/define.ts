@@ -1,6 +1,6 @@
 export const DEV = true;
-export const HOST = '192.168.1.6:8044';
-// export const HOST = 'localhost:3336';
+// export const HOST = '192.168.1.6:8044';
+export const HOST = 'localhost:3336';
 
 export interface Player {
   uid: number;

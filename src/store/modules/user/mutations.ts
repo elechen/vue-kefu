@@ -1,17 +1,20 @@
-// profile/mutations.ts
 import Vue from 'vue';
 import { MutationTree } from 'vuex';
-import { UserState } from './types';
+import { UserState, User } from './types';
 
 const mutations: MutationTree<UserState> = {
   // 增加用户
-  ADD_USER({ users }, user) {
-    if (!(users as any)[user.uid]) {
-      Vue.set(users, user.uid, user);
+  ADD_USER(state, payload) {
+    const user: User = payload;
+    if (!state.users[user.pid]) {
+      Vue.set(state.users, user.pid, user);
     } else {
-      const tmp = users;
-      (tmp as any)[user.uid] = user;
+      state.users[user.pid] = user;
     }
+  },
+  // 搜索结果
+  UPDATE_SEARCH_RESULT(state, payload) {
+    state.searchResult = payload;
   },
 };
 

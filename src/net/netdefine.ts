@@ -6,3 +6,5 @@ export const eProtofile2Module = {
   [proto.netcommand.PROTOFILE.login]: netlogin,
   [proto.netcommand.PROTOFILE.friend]: netfriend,
 };
+
+export default { eProtofile2Module };

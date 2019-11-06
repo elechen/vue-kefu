@@ -8,9 +8,9 @@ export function DecodeAndDispatch(mainPkg: any) {
     return;
   }
   const module = eProtofile2Module[mainMessage.eProtofile] as { DecodeAndDispatch: Function };
-  // console.log('DecodeAndDispatch->', mainMessage);
+  console.log('DecodeAndDispatch->', mainMessage);
   module.DecodeAndDispatch(mainMessage.iCmd, mainMessage.sEncodepkg);
-  // console.log('DecodeAndDispatch->done');
+  console.log('DecodeAndDispatch->done');
 }
 
 function Send(sEncodepkg: any) {
@@ -21,7 +21,7 @@ function Send(sEncodepkg: any) {
 export function EncodeAndSend(eProtofile: proto.netcommand.PROTOFILE,
   iCmd: number, sSubname: string, t: Object) {
   const sProtofile = proto.netcommand.PROTOFILE[eProtofile];
-  // console.log(eProtofile, iCmd, sSubname, t);
+  console.log(eProtofile, iCmd, sSubname, t);
   const subCommand = (proto as any)[sProtofile][sSubname];
   const subMessage = subCommand.create(t);
   const subPkg = subCommand.encode(subMessage).finish();

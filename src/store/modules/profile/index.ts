@@ -1,12 +1,10 @@
 import { Module } from 'vuex';
-// import { getters } from './getters';
 import actions from './actions';
-// import { mutations } from './mutations';
 import { ProfileState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: ProfileState = {
-  user: { uid: 10001, name: 'Test10001' },
+  user: { uid: 1001, sName: 'GM1001', sGameFlag: 'fzxx' },
   login: false,
 };
 

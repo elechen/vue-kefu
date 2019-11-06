@@ -12,9 +12,14 @@ message GS2CLoginCode {
 	required Code eLogincode	= 1;
 }
 
+//2.登录成功
+message GS2CLoginSucc {
+	required string sName = 1;
+	required string sGameFlag = 2;
+}
+
 //----------------C2GS---------------
 //1.登录验证
 message C2GSVertify {
-	required string Name 		= 1;	//用户名
-	required string sToken 		= 2;
+	required string sToken 		= 1;	//用户名
 }

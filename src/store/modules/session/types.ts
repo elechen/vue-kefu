@@ -1,7 +1,7 @@
-export interface Message {
-  sender: any,
-  timestamp: number,
-  content: string,
+import { friend } from '@/proto'
+
+export interface Message extends friend.GS2CSendFrdMsg.IFrdMsg {
+
 }
 
 export interface SessionState {

@@ -1,5 +1,11 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+    v-loading="!isConnected"
+    element-loading-text="正在连接服务器"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <Index />
   </div>
 </template>
@@ -12,8 +18,7 @@ import VueChatScroll from 'vue-chat-scroll';
 import store from '@/store';
 import Index from '@/views/Index.vue';
 import { netcommand } from './proto';
-import * as net from '@/net/net';
-import * as srv from '@/net/srv';
+import * as netlogin from '@/net/netlogin';
 
 Vue.use(VueChatScroll);
 
@@ -25,21 +30,6 @@ export default Vue.extend({
   },
   mounted: () => {
     Vue.prototype.$store = store;
-    // console.log(store);
-    // console.log('初始化成功');
-    // net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
-    // const pb = login.C2GSVertify;
-    // const message = pb.create({ Name: 'chenxiaofeng', sToken: 'test_token' });
-    // const buff = pb.encode(message).finish();
-    // const anotherMessage = netcommand.NetCommand.create({
-    //   eProtofile: 1,
-    //   iCmd: 1,
-    //   sEncodepkg: buff,
-    // });
-    // const anotherBuff = netcommand.NetCommand.encode(anotherMessage).finish();
-    // const anotherDecodeMessage = netcommand.NetCommand.decode(anotherBuff);
-    // console.log(anotherDecodeMessage, '-------test1');
-    // console.log(pb.decode(anotherDecodeMessage.sEncodepkg), '-------test2');
   },
   computed: {
     message(): any {
@@ -51,38 +41,25 @@ export default Vue.extend({
   },
   watch: {
     message(): void {
-      const uid = this.$store.state.session.currentSessionId;
-      // console.log('watch message->', this.message);
-      // if (this.message === '测试登录') {
-      //   net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
-      // } else if (this.message === '登录成功') {
-      //   srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 0 });
-      // } else if (this.message === '登录失败') {
-      //   srv.EncodeAndSend(1, 1, 'GS2CLoginCode', { eLogincode: 3 });
-      // } else {
-      //   const content = `${this.message}!`;
-      //   this.$store.dispatch('session/receiveMessage', { uid, content });
-      // }
+      console.log('watch message->', this.message);
     },
     isConnected(): void {
       if (this.isConnected) {
         const { token } = this.$route.query;
         if (!token) {
-          this.$confirm('缺少token参数', '提示', {
+          this.$alert('缺少token参数', '提示', {
             confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          })
-            .then(() => {
-              window.opener = null;
-              window.open('about:blank', '_top')!.close();
-            })
-            .catch(() => {
-              // console.log('算了');
-            });
+            callback: (action) => {
+              this.$message({
+                type: 'info',
+                message: `action: ${action}`,
+              });
+            },
+          });
           return;
         }
-        net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'kefu', sToken: token });
+        const sToken = token as string;
+        netlogin.C2GSVertify({ sToken });
       }
     },
   },

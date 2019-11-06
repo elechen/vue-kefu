@@ -2,7 +2,7 @@
   <div class="dialog-list">
     <player-box
       v-for="player in players"
-      v-bind:key="player.uid"
+      v-bind:key="player.pid"
       v-bind:player="player"
     ></player-box>
   </div>
@@ -11,6 +11,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import * as define from '@/define';
+import { UserState, User } from '@/store/modules/user/types';
 import PlayerBox from '@/components/PlayerBox.vue';
 
 export default Vue.extend({
@@ -19,17 +20,18 @@ export default Vue.extend({
     PlayerBox,
   },
   computed: {
-    players(): define.Player[] {
-      const lst: define.Player[] = Object.values(this.$store.state.user.users);
-      return lst.sort((a: define.Player, b: define.Player) => {
-        if (a.recentchattime !== b.recentchattime) {
-          return a.recentchattime > b.recentchattime ? -1 : 1;
+    players() {
+      const state: UserState = this.$store.state.user;
+      const lst = Object.values(state.users);
+      return lst.sort((a: User, b: User) => {
+        if (a.iChatTime !== b.iChatTime) {
+          return a.iChatTime > b.iChatTime ? -1 : 1;
         }
-        if (a.online !== b.online) {
-          return a.online ? -1 : 1;
+        if (a.iOnline !== b.iOnline) {
+          return a.iOnline ? -1 : 1;
         }
-        if (a.rmb !== b.rmb) {
-          return a.rmb > b.rmb ? -1 : 1;
+        if (a.iMoneyMax !== b.iMoneyMax) {
+          return a.iMoneyMax > b.iMoneyMax ? -1 : 1;
         }
         return 0;
       });

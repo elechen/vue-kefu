@@ -1,47 +1,45 @@
-// session/mutations.ts
 import Vue from 'vue';
 import { MutationTree } from 'vuex';
 import { SessionState } from './types';
+import { RootState } from '../../types';
+import { friend } from '@/proto';
 
 const mutations: MutationTree<SessionState> = {
   SEND_MESSAGE({
     sessions,
-  }, { rootState, content }) {
+  }, { rootState, dMsg }) {
     const ss = sessions;
-    const target = rootState.user.users[rootState.session.currentSessionId];
-    const sender = rootState.profile.user;
-    if (!(sessions as any)[target.uid]) {
-      Vue.set(ss, target.uid, []);
+    const rState: RootState = rootState;
+    const target = rState.user!.users[dMsg.iTarget];
+    const sender = rState.profile!.user;
+    if (!sessions[dMsg.iTarget]) {
+      Vue.set(ss, dMsg.iTarget, []);
     }
-    const list = (sessions as any)[target.uid];
+    const list = sessions[dMsg.iTarget];
     list.push(
       {
-        sender,
-        timestamp: Date.now(),
-        content,
+        id: Date.now(),
+        iSender: sender!.uid,
+        sName: sender!.sName,
+        sMsg: dMsg.sMsg,
+        iTime: Date.now(),
       },
     );
-    target.recentchattime = Date.now();
+    target.iChatTime = Date.now();
   },
   RECEIVE_MESSAGE({
     sessions,
-  }, { rootState, uid, content }) {
+  }, { rootState, payload }) {
     const ss = sessions;
-    const target = rootState.user.users[uid];
-    if (!(sessions as any)[target.uid]) {
-      Vue.set(ss, target.uid, []);
+    const frdMsg: friend.GS2CSendFrdMsg = payload;
+    const rState: RootState = rootState;
+    const target = rState.user!.users[frdMsg.pid];
+    if (!sessions[target.pid]) {
+      Vue.set(ss, target.pid, []);
     }
-    const list = (sessions as any)[target.uid];
-    list.push(
-      {
-        sender: target,
-        timestamp: Date.now(),
-        content,
-      },
-    );
-    target.recentchattime = Date.now();
+    const list = sessions[target.pid];
+    list.push(...frdMsg.tFrdMsg);
   },
-  // 选择会话
   SELECT_SESSION(state, id) {
     state.currentSessionId = id;
   },

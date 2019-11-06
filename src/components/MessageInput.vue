@@ -25,7 +25,8 @@ export default Vue.extend({
   methods: {
     onSubmit() {
       if (this.textarea !== '') {
-        this.$store.dispatch('session/sendMessage', this.textarea);
+        const sid = this.$store.state.session.currentSessionId;
+        this.$store.dispatch('session/sendMessage', { target: sid, msg: this.textarea });
         this.textarea = '';
       }
     },

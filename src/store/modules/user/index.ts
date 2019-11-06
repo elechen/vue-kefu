@@ -7,6 +7,7 @@ import { RootState } from '@/store/types';
 
 export const state: UserState = {
   users: {},
+  searchResult: [],
 };
 
 const namespaced: boolean = true;

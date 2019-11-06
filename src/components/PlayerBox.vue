@@ -1,10 +1,14 @@
 <template>
   <div
     class="dialog"
-    :class="{ active: player.uid === currentSessionId }"
-    v-on:click="onSelectSession(player.uid)"
+    :class="{ active: player.pid === currentSessionId }"
+    v-on:click="onSelectSession(player.pid)"
   >
-    <el-badge :value="0" :max="9" :hidden="true">
+    <el-badge
+      :value="player.iUnread ? player.iUnread : 0"
+      :max="9"
+      :hidden="true"
+    >
       <div class="dialog-avator">
         <div
           class="img-bg avatar"
@@ -14,13 +18,14 @@
         ></div>
       </div>
     </el-badge>
-    <span class="dialog-name ellipsis">{{player.name}}</span>
-    <div class="label dialog-label">VIP_1</div>
+    <span class="dialog-name ellipsis">{{player.sName}}</span>
+    <div class="label dialog-label">{{player.iMoneyMax | VIP}}</div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import * as utils from '@/utils';
 
 export default Vue.extend({
   name: 'Playerbox',
@@ -28,13 +33,18 @@ export default Vue.extend({
     player: Object,
   },
   methods: {
-    onSelectSession(uid: number) {
-      this.$store.dispatch('session/selectSession', uid);
+    onSelectSession(pid: number) {
+      this.$store.dispatch('session/selectSession', pid);
     },
   },
   computed: {
     currentSessionId(): number {
       return this.$store.state.session.currentSessionId;
+    },
+  },
+  filters: {
+    VIP(iMoneyMax: number) {
+      return `VIP${utils.GetVIP(iMoneyMax)}`;
     },
   },
 });

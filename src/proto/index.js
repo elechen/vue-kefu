@@ -232,11 +232,8 @@ export const friend = $root.friend = (() => {
          * Properties of a GS2CSendFrdMsg.
          * @memberof friend
          * @interface IGS2CSendFrdMsg
-         * @property {number} id GS2CSendFrdMsg id
-         * @property {number} iSender GS2CSendFrdMsg iSender
-         * @property {string} sMsg GS2CSendFrdMsg sMsg
-         * @property {number} iMsgType GS2CSendFrdMsg iMsgType
-         * @property {number} iTime GS2CSendFrdMsg iTime
+         * @property {number} pid GS2CSendFrdMsg pid
+         * @property {Array.<friend.GS2CSendFrdMsg.IFrdMsg>|null} [tFrdMsg] GS2CSendFrdMsg tFrdMsg
          */
 
         /**
@@ -248,6 +245,7 @@ export const friend = $root.friend = (() => {
          * @param {friend.IGS2CSendFrdMsg=} [properties] Properties to set
          */
         function GS2CSendFrdMsg(properties) {
+            this.tFrdMsg = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -255,44 +253,20 @@ export const friend = $root.friend = (() => {
         }
 
         /**
-         * GS2CSendFrdMsg id.
-         * @member {number} id
+         * GS2CSendFrdMsg pid.
+         * @member {number} pid
          * @memberof friend.GS2CSendFrdMsg
          * @instance
          */
-        GS2CSendFrdMsg.prototype.id = 0;
+        GS2CSendFrdMsg.prototype.pid = 0;
 
         /**
-         * GS2CSendFrdMsg iSender.
-         * @member {number} iSender
+         * GS2CSendFrdMsg tFrdMsg.
+         * @member {Array.<friend.GS2CSendFrdMsg.IFrdMsg>} tFrdMsg
          * @memberof friend.GS2CSendFrdMsg
          * @instance
          */
-        GS2CSendFrdMsg.prototype.iSender = 0;
-
-        /**
-         * GS2CSendFrdMsg sMsg.
-         * @member {string} sMsg
-         * @memberof friend.GS2CSendFrdMsg
-         * @instance
-         */
-        GS2CSendFrdMsg.prototype.sMsg = "";
-
-        /**
-         * GS2CSendFrdMsg iMsgType.
-         * @member {number} iMsgType
-         * @memberof friend.GS2CSendFrdMsg
-         * @instance
-         */
-        GS2CSendFrdMsg.prototype.iMsgType = 0;
-
-        /**
-         * GS2CSendFrdMsg iTime.
-         * @member {number} iTime
-         * @memberof friend.GS2CSendFrdMsg
-         * @instance
-         */
-        GS2CSendFrdMsg.prototype.iTime = 0;
+        GS2CSendFrdMsg.prototype.tFrdMsg = $util.emptyArray;
 
         /**
          * Creates a new GS2CSendFrdMsg instance using the specified properties.
@@ -318,11 +292,10 @@ export const friend = $root.friend = (() => {
         GS2CSendFrdMsg.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.id);
-            writer.uint32(/* id 2, wireType 0 =*/16).sint32(message.iSender);
-            writer.uint32(/* id 3, wireType 2 =*/26).string(message.sMsg);
-            writer.uint32(/* id 4, wireType 0 =*/32).sint32(message.iMsgType);
-            writer.uint32(/* id 5, wireType 0 =*/40).sint32(message.iTime);
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            if (message.tFrdMsg != null && message.tFrdMsg.length)
+                for (let i = 0; i < message.tFrdMsg.length; ++i)
+                    $root.friend.GS2CSendFrdMsg.FrdMsg.encode(message.tFrdMsg[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             return writer;
         };
 
@@ -358,35 +331,20 @@ export const friend = $root.friend = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.id = reader.sint32();
+                    message.pid = reader.sint32();
                     break;
                 case 2:
-                    message.iSender = reader.sint32();
-                    break;
-                case 3:
-                    message.sMsg = reader.string();
-                    break;
-                case 4:
-                    message.iMsgType = reader.sint32();
-                    break;
-                case 5:
-                    message.iTime = reader.sint32();
+                    if (!(message.tFrdMsg && message.tFrdMsg.length))
+                        message.tFrdMsg = [];
+                    message.tFrdMsg.push($root.friend.GS2CSendFrdMsg.FrdMsg.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
                     break;
                 }
             }
-            if (!message.hasOwnProperty("id"))
-                throw $util.ProtocolError("missing required 'id'", { instance: message });
-            if (!message.hasOwnProperty("iSender"))
-                throw $util.ProtocolError("missing required 'iSender'", { instance: message });
-            if (!message.hasOwnProperty("sMsg"))
-                throw $util.ProtocolError("missing required 'sMsg'", { instance: message });
-            if (!message.hasOwnProperty("iMsgType"))
-                throw $util.ProtocolError("missing required 'iMsgType'", { instance: message });
-            if (!message.hasOwnProperty("iTime"))
-                throw $util.ProtocolError("missing required 'iTime'", { instance: message });
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
             return message;
         };
 
@@ -417,16 +375,17 @@ export const friend = $root.friend = (() => {
         GS2CSendFrdMsg.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isInteger(message.id))
-                return "id: integer expected";
-            if (!$util.isInteger(message.iSender))
-                return "iSender: integer expected";
-            if (!$util.isString(message.sMsg))
-                return "sMsg: string expected";
-            if (!$util.isInteger(message.iMsgType))
-                return "iMsgType: integer expected";
-            if (!$util.isInteger(message.iTime))
-                return "iTime: integer expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            if (message.tFrdMsg != null && message.hasOwnProperty("tFrdMsg")) {
+                if (!Array.isArray(message.tFrdMsg))
+                    return "tFrdMsg: array expected";
+                for (let i = 0; i < message.tFrdMsg.length; ++i) {
+                    let error = $root.friend.GS2CSendFrdMsg.FrdMsg.verify(message.tFrdMsg[i]);
+                    if (error)
+                        return "tFrdMsg." + error;
+                }
+            }
             return null;
         };
 
@@ -442,16 +401,18 @@ export const friend = $root.friend = (() => {
             if (object instanceof $root.friend.GS2CSendFrdMsg)
                 return object;
             let message = new $root.friend.GS2CSendFrdMsg();
-            if (object.id != null)
-                message.id = object.id | 0;
-            if (object.iSender != null)
-                message.iSender = object.iSender | 0;
-            if (object.sMsg != null)
-                message.sMsg = String(object.sMsg);
-            if (object.iMsgType != null)
-                message.iMsgType = object.iMsgType | 0;
-            if (object.iTime != null)
-                message.iTime = object.iTime | 0;
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            if (object.tFrdMsg) {
+                if (!Array.isArray(object.tFrdMsg))
+                    throw TypeError(".friend.GS2CSendFrdMsg.tFrdMsg: array expected");
+                message.tFrdMsg = [];
+                for (let i = 0; i < object.tFrdMsg.length; ++i) {
+                    if (typeof object.tFrdMsg[i] !== "object")
+                        throw TypeError(".friend.GS2CSendFrdMsg.tFrdMsg: object expected");
+                    message.tFrdMsg[i] = $root.friend.GS2CSendFrdMsg.FrdMsg.fromObject(object.tFrdMsg[i]);
+                }
+            }
             return message;
         };
 
@@ -468,23 +429,17 @@ export const friend = $root.friend = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults) {
-                object.id = 0;
-                object.iSender = 0;
-                object.sMsg = "";
-                object.iMsgType = 0;
-                object.iTime = 0;
+            if (options.arrays || options.defaults)
+                object.tFrdMsg = [];
+            if (options.defaults)
+                object.pid = 0;
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            if (message.tFrdMsg && message.tFrdMsg.length) {
+                object.tFrdMsg = [];
+                for (let j = 0; j < message.tFrdMsg.length; ++j)
+                    object.tFrdMsg[j] = $root.friend.GS2CSendFrdMsg.FrdMsg.toObject(message.tFrdMsg[j], options);
             }
-            if (message.id != null && message.hasOwnProperty("id"))
-                object.id = message.id;
-            if (message.iSender != null && message.hasOwnProperty("iSender"))
-                object.iSender = message.iSender;
-            if (message.sMsg != null && message.hasOwnProperty("sMsg"))
-                object.sMsg = message.sMsg;
-            if (message.iMsgType != null && message.hasOwnProperty("iMsgType"))
-                object.iMsgType = message.iMsgType;
-            if (message.iTime != null && message.hasOwnProperty("iTime"))
-                object.iTime = message.iTime;
             return object;
         };
 
@@ -499,7 +454,1043 @@ export const friend = $root.friend = (() => {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
+        GS2CSendFrdMsg.FrdMsg = (function() {
+
+            /**
+             * Properties of a FrdMsg.
+             * @memberof friend.GS2CSendFrdMsg
+             * @interface IFrdMsg
+             * @property {number} id FrdMsg id
+             * @property {number} iSender FrdMsg iSender
+             * @property {string} sName FrdMsg sName
+             * @property {string} sMsg FrdMsg sMsg
+             * @property {number} iTime FrdMsg iTime
+             */
+
+            /**
+             * Constructs a new FrdMsg.
+             * @memberof friend.GS2CSendFrdMsg
+             * @classdesc Represents a FrdMsg.
+             * @implements IFrdMsg
+             * @constructor
+             * @param {friend.GS2CSendFrdMsg.IFrdMsg=} [properties] Properties to set
+             */
+            function FrdMsg(properties) {
+                if (properties)
+                    for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * FrdMsg id.
+             * @member {number} id
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @instance
+             */
+            FrdMsg.prototype.id = 0;
+
+            /**
+             * FrdMsg iSender.
+             * @member {number} iSender
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @instance
+             */
+            FrdMsg.prototype.iSender = 0;
+
+            /**
+             * FrdMsg sName.
+             * @member {string} sName
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @instance
+             */
+            FrdMsg.prototype.sName = "";
+
+            /**
+             * FrdMsg sMsg.
+             * @member {string} sMsg
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @instance
+             */
+            FrdMsg.prototype.sMsg = "";
+
+            /**
+             * FrdMsg iTime.
+             * @member {number} iTime
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @instance
+             */
+            FrdMsg.prototype.iTime = 0;
+
+            /**
+             * Creates a new FrdMsg instance using the specified properties.
+             * @function create
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {friend.GS2CSendFrdMsg.IFrdMsg=} [properties] Properties to set
+             * @returns {friend.GS2CSendFrdMsg.FrdMsg} FrdMsg instance
+             */
+            FrdMsg.create = function create(properties) {
+                return new FrdMsg(properties);
+            };
+
+            /**
+             * Encodes the specified FrdMsg message. Does not implicitly {@link friend.GS2CSendFrdMsg.FrdMsg.verify|verify} messages.
+             * @function encode
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {friend.GS2CSendFrdMsg.IFrdMsg} message FrdMsg message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            FrdMsg.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.id);
+                writer.uint32(/* id 2, wireType 0 =*/16).sint32(message.iSender);
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.sName);
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.sMsg);
+                writer.uint32(/* id 5, wireType 0 =*/40).sint32(message.iTime);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified FrdMsg message, length delimited. Does not implicitly {@link friend.GS2CSendFrdMsg.FrdMsg.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {friend.GS2CSendFrdMsg.IFrdMsg} message FrdMsg message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            FrdMsg.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a FrdMsg message from the specified reader or buffer.
+             * @function decode
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {friend.GS2CSendFrdMsg.FrdMsg} FrdMsg
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            FrdMsg.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.GS2CSendFrdMsg.FrdMsg();
+                while (reader.pos < end) {
+                    let tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.id = reader.sint32();
+                        break;
+                    case 2:
+                        message.iSender = reader.sint32();
+                        break;
+                    case 3:
+                        message.sName = reader.string();
+                        break;
+                    case 4:
+                        message.sMsg = reader.string();
+                        break;
+                    case 5:
+                        message.iTime = reader.sint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                if (!message.hasOwnProperty("id"))
+                    throw $util.ProtocolError("missing required 'id'", { instance: message });
+                if (!message.hasOwnProperty("iSender"))
+                    throw $util.ProtocolError("missing required 'iSender'", { instance: message });
+                if (!message.hasOwnProperty("sName"))
+                    throw $util.ProtocolError("missing required 'sName'", { instance: message });
+                if (!message.hasOwnProperty("sMsg"))
+                    throw $util.ProtocolError("missing required 'sMsg'", { instance: message });
+                if (!message.hasOwnProperty("iTime"))
+                    throw $util.ProtocolError("missing required 'iTime'", { instance: message });
+                return message;
+            };
+
+            /**
+             * Decodes a FrdMsg message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {friend.GS2CSendFrdMsg.FrdMsg} FrdMsg
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            FrdMsg.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a FrdMsg message.
+             * @function verify
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            FrdMsg.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (!$util.isInteger(message.id))
+                    return "id: integer expected";
+                if (!$util.isInteger(message.iSender))
+                    return "iSender: integer expected";
+                if (!$util.isString(message.sName))
+                    return "sName: string expected";
+                if (!$util.isString(message.sMsg))
+                    return "sMsg: string expected";
+                if (!$util.isInteger(message.iTime))
+                    return "iTime: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a FrdMsg message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {friend.GS2CSendFrdMsg.FrdMsg} FrdMsg
+             */
+            FrdMsg.fromObject = function fromObject(object) {
+                if (object instanceof $root.friend.GS2CSendFrdMsg.FrdMsg)
+                    return object;
+                let message = new $root.friend.GS2CSendFrdMsg.FrdMsg();
+                if (object.id != null)
+                    message.id = object.id | 0;
+                if (object.iSender != null)
+                    message.iSender = object.iSender | 0;
+                if (object.sName != null)
+                    message.sName = String(object.sName);
+                if (object.sMsg != null)
+                    message.sMsg = String(object.sMsg);
+                if (object.iTime != null)
+                    message.iTime = object.iTime | 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a FrdMsg message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @static
+             * @param {friend.GS2CSendFrdMsg.FrdMsg} message FrdMsg
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            FrdMsg.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                let object = {};
+                if (options.defaults) {
+                    object.id = 0;
+                    object.iSender = 0;
+                    object.sName = "";
+                    object.sMsg = "";
+                    object.iTime = 0;
+                }
+                if (message.id != null && message.hasOwnProperty("id"))
+                    object.id = message.id;
+                if (message.iSender != null && message.hasOwnProperty("iSender"))
+                    object.iSender = message.iSender;
+                if (message.sName != null && message.hasOwnProperty("sName"))
+                    object.sName = message.sName;
+                if (message.sMsg != null && message.hasOwnProperty("sMsg"))
+                    object.sMsg = message.sMsg;
+                if (message.iTime != null && message.hasOwnProperty("iTime"))
+                    object.iTime = message.iTime;
+                return object;
+            };
+
+            /**
+             * Converts this FrdMsg to JSON.
+             * @function toJSON
+             * @memberof friend.GS2CSendFrdMsg.FrdMsg
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            FrdMsg.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return FrdMsg;
+        })();
+
         return GS2CSendFrdMsg;
+    })();
+
+    friend.GS2CSendFrdInfo = (function() {
+
+        /**
+         * Properties of a GS2CSendFrdInfo.
+         * @memberof friend
+         * @interface IGS2CSendFrdInfo
+         * @property {number} pid GS2CSendFrdInfo pid
+         * @property {number} iOnline GS2CSendFrdInfo iOnline
+         * @property {string} sName GS2CSendFrdInfo sName
+         * @property {number} iGrade GS2CSendFrdInfo iGrade
+         * @property {number} iServer GS2CSendFrdInfo iServer
+         * @property {string} sPlatform GS2CSendFrdInfo sPlatform
+         * @property {number} iMoneyMax GS2CSendFrdInfo iMoneyMax
+         * @property {number} iChatTime GS2CSendFrdInfo iChatTime
+         */
+
+        /**
+         * Constructs a new GS2CSendFrdInfo.
+         * @memberof friend
+         * @classdesc Represents a GS2CSendFrdInfo.
+         * @implements IGS2CSendFrdInfo
+         * @constructor
+         * @param {friend.IGS2CSendFrdInfo=} [properties] Properties to set
+         */
+        function GS2CSendFrdInfo(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GS2CSendFrdInfo pid.
+         * @member {number} pid
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.pid = 0;
+
+        /**
+         * GS2CSendFrdInfo iOnline.
+         * @member {number} iOnline
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.iOnline = 0;
+
+        /**
+         * GS2CSendFrdInfo sName.
+         * @member {string} sName
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.sName = "";
+
+        /**
+         * GS2CSendFrdInfo iGrade.
+         * @member {number} iGrade
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.iGrade = 0;
+
+        /**
+         * GS2CSendFrdInfo iServer.
+         * @member {number} iServer
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.iServer = 0;
+
+        /**
+         * GS2CSendFrdInfo sPlatform.
+         * @member {string} sPlatform
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.sPlatform = "";
+
+        /**
+         * GS2CSendFrdInfo iMoneyMax.
+         * @member {number} iMoneyMax
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.iMoneyMax = 0;
+
+        /**
+         * GS2CSendFrdInfo iChatTime.
+         * @member {number} iChatTime
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.iChatTime = 0;
+
+        /**
+         * Creates a new GS2CSendFrdInfo instance using the specified properties.
+         * @function create
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {friend.IGS2CSendFrdInfo=} [properties] Properties to set
+         * @returns {friend.GS2CSendFrdInfo} GS2CSendFrdInfo instance
+         */
+        GS2CSendFrdInfo.create = function create(properties) {
+            return new GS2CSendFrdInfo(properties);
+        };
+
+        /**
+         * Encodes the specified GS2CSendFrdInfo message. Does not implicitly {@link friend.GS2CSendFrdInfo.verify|verify} messages.
+         * @function encode
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {friend.IGS2CSendFrdInfo} message GS2CSendFrdInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CSendFrdInfo.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            writer.uint32(/* id 2, wireType 0 =*/16).sint32(message.iOnline);
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.sName);
+            writer.uint32(/* id 4, wireType 0 =*/32).sint32(message.iGrade);
+            writer.uint32(/* id 5, wireType 0 =*/40).sint32(message.iServer);
+            writer.uint32(/* id 6, wireType 2 =*/50).string(message.sPlatform);
+            writer.uint32(/* id 7, wireType 0 =*/56).sint32(message.iMoneyMax);
+            writer.uint32(/* id 8, wireType 0 =*/64).sint32(message.iChatTime);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GS2CSendFrdInfo message, length delimited. Does not implicitly {@link friend.GS2CSendFrdInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {friend.IGS2CSendFrdInfo} message GS2CSendFrdInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CSendFrdInfo.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GS2CSendFrdInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.GS2CSendFrdInfo} GS2CSendFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CSendFrdInfo.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.GS2CSendFrdInfo();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.pid = reader.sint32();
+                    break;
+                case 2:
+                    message.iOnline = reader.sint32();
+                    break;
+                case 3:
+                    message.sName = reader.string();
+                    break;
+                case 4:
+                    message.iGrade = reader.sint32();
+                    break;
+                case 5:
+                    message.iServer = reader.sint32();
+                    break;
+                case 6:
+                    message.sPlatform = reader.string();
+                    break;
+                case 7:
+                    message.iMoneyMax = reader.sint32();
+                    break;
+                case 8:
+                    message.iChatTime = reader.sint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
+            if (!message.hasOwnProperty("iOnline"))
+                throw $util.ProtocolError("missing required 'iOnline'", { instance: message });
+            if (!message.hasOwnProperty("sName"))
+                throw $util.ProtocolError("missing required 'sName'", { instance: message });
+            if (!message.hasOwnProperty("iGrade"))
+                throw $util.ProtocolError("missing required 'iGrade'", { instance: message });
+            if (!message.hasOwnProperty("iServer"))
+                throw $util.ProtocolError("missing required 'iServer'", { instance: message });
+            if (!message.hasOwnProperty("sPlatform"))
+                throw $util.ProtocolError("missing required 'sPlatform'", { instance: message });
+            if (!message.hasOwnProperty("iMoneyMax"))
+                throw $util.ProtocolError("missing required 'iMoneyMax'", { instance: message });
+            if (!message.hasOwnProperty("iChatTime"))
+                throw $util.ProtocolError("missing required 'iChatTime'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a GS2CSendFrdInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.GS2CSendFrdInfo} GS2CSendFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CSendFrdInfo.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GS2CSendFrdInfo message.
+         * @function verify
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GS2CSendFrdInfo.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            if (!$util.isInteger(message.iOnline))
+                return "iOnline: integer expected";
+            if (!$util.isString(message.sName))
+                return "sName: string expected";
+            if (!$util.isInteger(message.iGrade))
+                return "iGrade: integer expected";
+            if (!$util.isInteger(message.iServer))
+                return "iServer: integer expected";
+            if (!$util.isString(message.sPlatform))
+                return "sPlatform: string expected";
+            if (!$util.isInteger(message.iMoneyMax))
+                return "iMoneyMax: integer expected";
+            if (!$util.isInteger(message.iChatTime))
+                return "iChatTime: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a GS2CSendFrdInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.GS2CSendFrdInfo} GS2CSendFrdInfo
+         */
+        GS2CSendFrdInfo.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.GS2CSendFrdInfo)
+                return object;
+            let message = new $root.friend.GS2CSendFrdInfo();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            if (object.iOnline != null)
+                message.iOnline = object.iOnline | 0;
+            if (object.sName != null)
+                message.sName = String(object.sName);
+            if (object.iGrade != null)
+                message.iGrade = object.iGrade | 0;
+            if (object.iServer != null)
+                message.iServer = object.iServer | 0;
+            if (object.sPlatform != null)
+                message.sPlatform = String(object.sPlatform);
+            if (object.iMoneyMax != null)
+                message.iMoneyMax = object.iMoneyMax | 0;
+            if (object.iChatTime != null)
+                message.iChatTime = object.iChatTime | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GS2CSendFrdInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.GS2CSendFrdInfo
+         * @static
+         * @param {friend.GS2CSendFrdInfo} message GS2CSendFrdInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GS2CSendFrdInfo.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.pid = 0;
+                object.iOnline = 0;
+                object.sName = "";
+                object.iGrade = 0;
+                object.iServer = 0;
+                object.sPlatform = "";
+                object.iMoneyMax = 0;
+                object.iChatTime = 0;
+            }
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            if (message.iOnline != null && message.hasOwnProperty("iOnline"))
+                object.iOnline = message.iOnline;
+            if (message.sName != null && message.hasOwnProperty("sName"))
+                object.sName = message.sName;
+            if (message.iGrade != null && message.hasOwnProperty("iGrade"))
+                object.iGrade = message.iGrade;
+            if (message.iServer != null && message.hasOwnProperty("iServer"))
+                object.iServer = message.iServer;
+            if (message.sPlatform != null && message.hasOwnProperty("sPlatform"))
+                object.sPlatform = message.sPlatform;
+            if (message.iMoneyMax != null && message.hasOwnProperty("iMoneyMax"))
+                object.iMoneyMax = message.iMoneyMax;
+            if (message.iChatTime != null && message.hasOwnProperty("iChatTime"))
+                object.iChatTime = message.iChatTime;
+            return object;
+        };
+
+        /**
+         * Converts this GS2CSendFrdInfo to JSON.
+         * @function toJSON
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GS2CSendFrdInfo.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return GS2CSendFrdInfo;
+    })();
+
+    friend.GS2CSearchResult = (function() {
+
+        /**
+         * Properties of a GS2CSearchResult.
+         * @memberof friend
+         * @interface IGS2CSearchResult
+         * @property {Array.<friend.GS2CSearchResult.ISearchResult>|null} [tRet] GS2CSearchResult tRet
+         */
+
+        /**
+         * Constructs a new GS2CSearchResult.
+         * @memberof friend
+         * @classdesc Represents a GS2CSearchResult.
+         * @implements IGS2CSearchResult
+         * @constructor
+         * @param {friend.IGS2CSearchResult=} [properties] Properties to set
+         */
+        function GS2CSearchResult(properties) {
+            this.tRet = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GS2CSearchResult tRet.
+         * @member {Array.<friend.GS2CSearchResult.ISearchResult>} tRet
+         * @memberof friend.GS2CSearchResult
+         * @instance
+         */
+        GS2CSearchResult.prototype.tRet = $util.emptyArray;
+
+        /**
+         * Creates a new GS2CSearchResult instance using the specified properties.
+         * @function create
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {friend.IGS2CSearchResult=} [properties] Properties to set
+         * @returns {friend.GS2CSearchResult} GS2CSearchResult instance
+         */
+        GS2CSearchResult.create = function create(properties) {
+            return new GS2CSearchResult(properties);
+        };
+
+        /**
+         * Encodes the specified GS2CSearchResult message. Does not implicitly {@link friend.GS2CSearchResult.verify|verify} messages.
+         * @function encode
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {friend.IGS2CSearchResult} message GS2CSearchResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CSearchResult.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.tRet != null && message.tRet.length)
+                for (let i = 0; i < message.tRet.length; ++i)
+                    $root.friend.GS2CSearchResult.SearchResult.encode(message.tRet[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GS2CSearchResult message, length delimited. Does not implicitly {@link friend.GS2CSearchResult.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {friend.IGS2CSearchResult} message GS2CSearchResult message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CSearchResult.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GS2CSearchResult message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.GS2CSearchResult} GS2CSearchResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CSearchResult.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.GS2CSearchResult();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.tRet && message.tRet.length))
+                        message.tRet = [];
+                    message.tRet.push($root.friend.GS2CSearchResult.SearchResult.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GS2CSearchResult message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.GS2CSearchResult} GS2CSearchResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CSearchResult.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GS2CSearchResult message.
+         * @function verify
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GS2CSearchResult.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.tRet != null && message.hasOwnProperty("tRet")) {
+                if (!Array.isArray(message.tRet))
+                    return "tRet: array expected";
+                for (let i = 0; i < message.tRet.length; ++i) {
+                    let error = $root.friend.GS2CSearchResult.SearchResult.verify(message.tRet[i]);
+                    if (error)
+                        return "tRet." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates a GS2CSearchResult message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.GS2CSearchResult} GS2CSearchResult
+         */
+        GS2CSearchResult.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.GS2CSearchResult)
+                return object;
+            let message = new $root.friend.GS2CSearchResult();
+            if (object.tRet) {
+                if (!Array.isArray(object.tRet))
+                    throw TypeError(".friend.GS2CSearchResult.tRet: array expected");
+                message.tRet = [];
+                for (let i = 0; i < object.tRet.length; ++i) {
+                    if (typeof object.tRet[i] !== "object")
+                        throw TypeError(".friend.GS2CSearchResult.tRet: object expected");
+                    message.tRet[i] = $root.friend.GS2CSearchResult.SearchResult.fromObject(object.tRet[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GS2CSearchResult message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.GS2CSearchResult
+         * @static
+         * @param {friend.GS2CSearchResult} message GS2CSearchResult
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GS2CSearchResult.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.tRet = [];
+            if (message.tRet && message.tRet.length) {
+                object.tRet = [];
+                for (let j = 0; j < message.tRet.length; ++j)
+                    object.tRet[j] = $root.friend.GS2CSearchResult.SearchResult.toObject(message.tRet[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this GS2CSearchResult to JSON.
+         * @function toJSON
+         * @memberof friend.GS2CSearchResult
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GS2CSearchResult.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        GS2CSearchResult.SearchResult = (function() {
+
+            /**
+             * Properties of a SearchResult.
+             * @memberof friend.GS2CSearchResult
+             * @interface ISearchResult
+             * @property {number} id SearchResult id
+             * @property {string} sName SearchResult sName
+             */
+
+            /**
+             * Constructs a new SearchResult.
+             * @memberof friend.GS2CSearchResult
+             * @classdesc Represents a SearchResult.
+             * @implements ISearchResult
+             * @constructor
+             * @param {friend.GS2CSearchResult.ISearchResult=} [properties] Properties to set
+             */
+            function SearchResult(properties) {
+                if (properties)
+                    for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * SearchResult id.
+             * @member {number} id
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @instance
+             */
+            SearchResult.prototype.id = 0;
+
+            /**
+             * SearchResult sName.
+             * @member {string} sName
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @instance
+             */
+            SearchResult.prototype.sName = "";
+
+            /**
+             * Creates a new SearchResult instance using the specified properties.
+             * @function create
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {friend.GS2CSearchResult.ISearchResult=} [properties] Properties to set
+             * @returns {friend.GS2CSearchResult.SearchResult} SearchResult instance
+             */
+            SearchResult.create = function create(properties) {
+                return new SearchResult(properties);
+            };
+
+            /**
+             * Encodes the specified SearchResult message. Does not implicitly {@link friend.GS2CSearchResult.SearchResult.verify|verify} messages.
+             * @function encode
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {friend.GS2CSearchResult.ISearchResult} message SearchResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            SearchResult.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.id);
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.sName);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified SearchResult message, length delimited. Does not implicitly {@link friend.GS2CSearchResult.SearchResult.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {friend.GS2CSearchResult.ISearchResult} message SearchResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            SearchResult.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a SearchResult message from the specified reader or buffer.
+             * @function decode
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {friend.GS2CSearchResult.SearchResult} SearchResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            SearchResult.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.GS2CSearchResult.SearchResult();
+                while (reader.pos < end) {
+                    let tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.id = reader.sint32();
+                        break;
+                    case 2:
+                        message.sName = reader.string();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                if (!message.hasOwnProperty("id"))
+                    throw $util.ProtocolError("missing required 'id'", { instance: message });
+                if (!message.hasOwnProperty("sName"))
+                    throw $util.ProtocolError("missing required 'sName'", { instance: message });
+                return message;
+            };
+
+            /**
+             * Decodes a SearchResult message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {friend.GS2CSearchResult.SearchResult} SearchResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            SearchResult.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a SearchResult message.
+             * @function verify
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            SearchResult.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (!$util.isInteger(message.id))
+                    return "id: integer expected";
+                if (!$util.isString(message.sName))
+                    return "sName: string expected";
+                return null;
+            };
+
+            /**
+             * Creates a SearchResult message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {friend.GS2CSearchResult.SearchResult} SearchResult
+             */
+            SearchResult.fromObject = function fromObject(object) {
+                if (object instanceof $root.friend.GS2CSearchResult.SearchResult)
+                    return object;
+                let message = new $root.friend.GS2CSearchResult.SearchResult();
+                if (object.id != null)
+                    message.id = object.id | 0;
+                if (object.sName != null)
+                    message.sName = String(object.sName);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a SearchResult message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @static
+             * @param {friend.GS2CSearchResult.SearchResult} message SearchResult
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            SearchResult.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                let object = {};
+                if (options.defaults) {
+                    object.id = 0;
+                    object.sName = "";
+                }
+                if (message.id != null && message.hasOwnProperty("id"))
+                    object.id = message.id;
+                if (message.sName != null && message.hasOwnProperty("sName"))
+                    object.sName = message.sName;
+                return object;
+            };
+
+            /**
+             * Converts this SearchResult to JSON.
+             * @function toJSON
+             * @memberof friend.GS2CSearchResult.SearchResult
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            SearchResult.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return SearchResult;
+        })();
+
+        return GS2CSearchResult;
     })();
 
     friend.C2GSNewFrdMsg = (function() {
@@ -905,6 +1896,7 @@ export const friend = $root.friend = (() => {
          * Properties of a C2GSReplyFrdMsg.
          * @memberof friend
          * @interface IC2GSReplyFrdMsg
+         * @property {number} iSender C2GSReplyFrdMsg iSender
          * @property {number} id C2GSReplyFrdMsg id
          */
 
@@ -922,6 +1914,14 @@ export const friend = $root.friend = (() => {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
+
+        /**
+         * C2GSReplyFrdMsg iSender.
+         * @member {number} iSender
+         * @memberof friend.C2GSReplyFrdMsg
+         * @instance
+         */
+        C2GSReplyFrdMsg.prototype.iSender = 0;
 
         /**
          * C2GSReplyFrdMsg id.
@@ -955,7 +1955,8 @@ export const friend = $root.friend = (() => {
         C2GSReplyFrdMsg.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.id);
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.iSender);
+            writer.uint32(/* id 2, wireType 0 =*/16).sint32(message.id);
             return writer;
         };
 
@@ -991,6 +1992,9 @@ export const friend = $root.friend = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
+                    message.iSender = reader.sint32();
+                    break;
+                case 2:
                     message.id = reader.sint32();
                     break;
                 default:
@@ -998,6 +2002,8 @@ export const friend = $root.friend = (() => {
                     break;
                 }
             }
+            if (!message.hasOwnProperty("iSender"))
+                throw $util.ProtocolError("missing required 'iSender'", { instance: message });
             if (!message.hasOwnProperty("id"))
                 throw $util.ProtocolError("missing required 'id'", { instance: message });
             return message;
@@ -1030,6 +2036,8 @@ export const friend = $root.friend = (() => {
         C2GSReplyFrdMsg.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (!$util.isInteger(message.iSender))
+                return "iSender: integer expected";
             if (!$util.isInteger(message.id))
                 return "id: integer expected";
             return null;
@@ -1047,6 +2055,8 @@ export const friend = $root.friend = (() => {
             if (object instanceof $root.friend.C2GSReplyFrdMsg)
                 return object;
             let message = new $root.friend.C2GSReplyFrdMsg();
+            if (object.iSender != null)
+                message.iSender = object.iSender | 0;
             if (object.id != null)
                 message.id = object.id | 0;
             return message;
@@ -1065,8 +2075,12 @@ export const friend = $root.friend = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults)
+            if (options.defaults) {
+                object.iSender = 0;
                 object.id = 0;
+            }
+            if (message.iSender != null && message.hasOwnProperty("iSender"))
+                object.iSender = message.iSender;
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
             return object;
@@ -1084,6 +2098,590 @@ export const friend = $root.friend = (() => {
         };
 
         return C2GSReplyFrdMsg;
+    })();
+
+    friend.C2GSGetFrdInfo = (function() {
+
+        /**
+         * Properties of a C2GSGetFrdInfo.
+         * @memberof friend
+         * @interface IC2GSGetFrdInfo
+         * @property {number} pid C2GSGetFrdInfo pid
+         */
+
+        /**
+         * Constructs a new C2GSGetFrdInfo.
+         * @memberof friend
+         * @classdesc Represents a C2GSGetFrdInfo.
+         * @implements IC2GSGetFrdInfo
+         * @constructor
+         * @param {friend.IC2GSGetFrdInfo=} [properties] Properties to set
+         */
+        function C2GSGetFrdInfo(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2GSGetFrdInfo pid.
+         * @member {number} pid
+         * @memberof friend.C2GSGetFrdInfo
+         * @instance
+         */
+        C2GSGetFrdInfo.prototype.pid = 0;
+
+        /**
+         * Creates a new C2GSGetFrdInfo instance using the specified properties.
+         * @function create
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {friend.IC2GSGetFrdInfo=} [properties] Properties to set
+         * @returns {friend.C2GSGetFrdInfo} C2GSGetFrdInfo instance
+         */
+        C2GSGetFrdInfo.create = function create(properties) {
+            return new C2GSGetFrdInfo(properties);
+        };
+
+        /**
+         * Encodes the specified C2GSGetFrdInfo message. Does not implicitly {@link friend.C2GSGetFrdInfo.verify|verify} messages.
+         * @function encode
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {friend.IC2GSGetFrdInfo} message C2GSGetFrdInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSGetFrdInfo.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2GSGetFrdInfo message, length delimited. Does not implicitly {@link friend.C2GSGetFrdInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {friend.IC2GSGetFrdInfo} message C2GSGetFrdInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSGetFrdInfo.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2GSGetFrdInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.C2GSGetFrdInfo} C2GSGetFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSGetFrdInfo.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.C2GSGetFrdInfo();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.pid = reader.sint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2GSGetFrdInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.C2GSGetFrdInfo} C2GSGetFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSGetFrdInfo.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2GSGetFrdInfo message.
+         * @function verify
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2GSGetFrdInfo.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2GSGetFrdInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.C2GSGetFrdInfo} C2GSGetFrdInfo
+         */
+        C2GSGetFrdInfo.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.C2GSGetFrdInfo)
+                return object;
+            let message = new $root.friend.C2GSGetFrdInfo();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2GSGetFrdInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.C2GSGetFrdInfo
+         * @static
+         * @param {friend.C2GSGetFrdInfo} message C2GSGetFrdInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2GSGetFrdInfo.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.pid = 0;
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            return object;
+        };
+
+        /**
+         * Converts this C2GSGetFrdInfo to JSON.
+         * @function toJSON
+         * @memberof friend.C2GSGetFrdInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2GSGetFrdInfo.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2GSGetFrdInfo;
+    })();
+
+    friend.C2GSSearchFriend = (function() {
+
+        /**
+         * Properties of a C2GSSearchFriend.
+         * @memberof friend
+         * @interface IC2GSSearchFriend
+         * @property {string} sKey C2GSSearchFriend sKey
+         */
+
+        /**
+         * Constructs a new C2GSSearchFriend.
+         * @memberof friend
+         * @classdesc Represents a C2GSSearchFriend.
+         * @implements IC2GSSearchFriend
+         * @constructor
+         * @param {friend.IC2GSSearchFriend=} [properties] Properties to set
+         */
+        function C2GSSearchFriend(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2GSSearchFriend sKey.
+         * @member {string} sKey
+         * @memberof friend.C2GSSearchFriend
+         * @instance
+         */
+        C2GSSearchFriend.prototype.sKey = "";
+
+        /**
+         * Creates a new C2GSSearchFriend instance using the specified properties.
+         * @function create
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {friend.IC2GSSearchFriend=} [properties] Properties to set
+         * @returns {friend.C2GSSearchFriend} C2GSSearchFriend instance
+         */
+        C2GSSearchFriend.create = function create(properties) {
+            return new C2GSSearchFriend(properties);
+        };
+
+        /**
+         * Encodes the specified C2GSSearchFriend message. Does not implicitly {@link friend.C2GSSearchFriend.verify|verify} messages.
+         * @function encode
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {friend.IC2GSSearchFriend} message C2GSSearchFriend message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSSearchFriend.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.sKey);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2GSSearchFriend message, length delimited. Does not implicitly {@link friend.C2GSSearchFriend.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {friend.IC2GSSearchFriend} message C2GSSearchFriend message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSSearchFriend.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2GSSearchFriend message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.C2GSSearchFriend} C2GSSearchFriend
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSSearchFriend.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.C2GSSearchFriend();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.sKey = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("sKey"))
+                throw $util.ProtocolError("missing required 'sKey'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2GSSearchFriend message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.C2GSSearchFriend} C2GSSearchFriend
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSSearchFriend.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2GSSearchFriend message.
+         * @function verify
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2GSSearchFriend.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.sKey))
+                return "sKey: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2GSSearchFriend message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.C2GSSearchFriend} C2GSSearchFriend
+         */
+        C2GSSearchFriend.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.C2GSSearchFriend)
+                return object;
+            let message = new $root.friend.C2GSSearchFriend();
+            if (object.sKey != null)
+                message.sKey = String(object.sKey);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2GSSearchFriend message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.C2GSSearchFriend
+         * @static
+         * @param {friend.C2GSSearchFriend} message C2GSSearchFriend
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2GSSearchFriend.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.sKey = "";
+            if (message.sKey != null && message.hasOwnProperty("sKey"))
+                object.sKey = message.sKey;
+            return object;
+        };
+
+        /**
+         * Converts this C2GSSearchFriend to JSON.
+         * @function toJSON
+         * @memberof friend.C2GSSearchFriend
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2GSSearchFriend.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2GSSearchFriend;
+    })();
+
+    friend.C2GSGetHistoryMsg = (function() {
+
+        /**
+         * Properties of a C2GSGetHistoryMsg.
+         * @memberof friend
+         * @interface IC2GSGetHistoryMsg
+         * @property {number} pid C2GSGetHistoryMsg pid
+         * @property {number} curidx C2GSGetHistoryMsg curidx
+         */
+
+        /**
+         * Constructs a new C2GSGetHistoryMsg.
+         * @memberof friend
+         * @classdesc Represents a C2GSGetHistoryMsg.
+         * @implements IC2GSGetHistoryMsg
+         * @constructor
+         * @param {friend.IC2GSGetHistoryMsg=} [properties] Properties to set
+         */
+        function C2GSGetHistoryMsg(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2GSGetHistoryMsg pid.
+         * @member {number} pid
+         * @memberof friend.C2GSGetHistoryMsg
+         * @instance
+         */
+        C2GSGetHistoryMsg.prototype.pid = 0;
+
+        /**
+         * C2GSGetHistoryMsg curidx.
+         * @member {number} curidx
+         * @memberof friend.C2GSGetHistoryMsg
+         * @instance
+         */
+        C2GSGetHistoryMsg.prototype.curidx = 0;
+
+        /**
+         * Creates a new C2GSGetHistoryMsg instance using the specified properties.
+         * @function create
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {friend.IC2GSGetHistoryMsg=} [properties] Properties to set
+         * @returns {friend.C2GSGetHistoryMsg} C2GSGetHistoryMsg instance
+         */
+        C2GSGetHistoryMsg.create = function create(properties) {
+            return new C2GSGetHistoryMsg(properties);
+        };
+
+        /**
+         * Encodes the specified C2GSGetHistoryMsg message. Does not implicitly {@link friend.C2GSGetHistoryMsg.verify|verify} messages.
+         * @function encode
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {friend.IC2GSGetHistoryMsg} message C2GSGetHistoryMsg message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSGetHistoryMsg.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            writer.uint32(/* id 2, wireType 0 =*/16).sint32(message.curidx);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2GSGetHistoryMsg message, length delimited. Does not implicitly {@link friend.C2GSGetHistoryMsg.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {friend.IC2GSGetHistoryMsg} message C2GSGetHistoryMsg message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSGetHistoryMsg.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2GSGetHistoryMsg message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.C2GSGetHistoryMsg} C2GSGetHistoryMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSGetHistoryMsg.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.C2GSGetHistoryMsg();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.pid = reader.sint32();
+                    break;
+                case 2:
+                    message.curidx = reader.sint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
+            if (!message.hasOwnProperty("curidx"))
+                throw $util.ProtocolError("missing required 'curidx'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2GSGetHistoryMsg message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.C2GSGetHistoryMsg} C2GSGetHistoryMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSGetHistoryMsg.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2GSGetHistoryMsg message.
+         * @function verify
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2GSGetHistoryMsg.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            if (!$util.isInteger(message.curidx))
+                return "curidx: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2GSGetHistoryMsg message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.C2GSGetHistoryMsg} C2GSGetHistoryMsg
+         */
+        C2GSGetHistoryMsg.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.C2GSGetHistoryMsg)
+                return object;
+            let message = new $root.friend.C2GSGetHistoryMsg();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            if (object.curidx != null)
+                message.curidx = object.curidx | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2GSGetHistoryMsg message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.C2GSGetHistoryMsg
+         * @static
+         * @param {friend.C2GSGetHistoryMsg} message C2GSGetHistoryMsg
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2GSGetHistoryMsg.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.pid = 0;
+                object.curidx = 0;
+            }
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            if (message.curidx != null && message.hasOwnProperty("curidx"))
+                object.curidx = message.curidx;
+            return object;
+        };
+
+        /**
+         * Converts this C2GSGetHistoryMsg to JSON.
+         * @function toJSON
+         * @memberof friend.C2GSGetHistoryMsg
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2GSGetHistoryMsg.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2GSGetHistoryMsg;
     })();
 
     return friend;
@@ -1326,13 +2924,222 @@ export const login = $root.login = (() => {
         return GS2CLoginCode;
     })();
 
+    login.GS2CLoginSucc = (function() {
+
+        /**
+         * Properties of a GS2CLoginSucc.
+         * @memberof login
+         * @interface IGS2CLoginSucc
+         * @property {string} sName GS2CLoginSucc sName
+         * @property {string} sGameFlag GS2CLoginSucc sGameFlag
+         */
+
+        /**
+         * Constructs a new GS2CLoginSucc.
+         * @memberof login
+         * @classdesc Represents a GS2CLoginSucc.
+         * @implements IGS2CLoginSucc
+         * @constructor
+         * @param {login.IGS2CLoginSucc=} [properties] Properties to set
+         */
+        function GS2CLoginSucc(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GS2CLoginSucc sName.
+         * @member {string} sName
+         * @memberof login.GS2CLoginSucc
+         * @instance
+         */
+        GS2CLoginSucc.prototype.sName = "";
+
+        /**
+         * GS2CLoginSucc sGameFlag.
+         * @member {string} sGameFlag
+         * @memberof login.GS2CLoginSucc
+         * @instance
+         */
+        GS2CLoginSucc.prototype.sGameFlag = "";
+
+        /**
+         * Creates a new GS2CLoginSucc instance using the specified properties.
+         * @function create
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {login.IGS2CLoginSucc=} [properties] Properties to set
+         * @returns {login.GS2CLoginSucc} GS2CLoginSucc instance
+         */
+        GS2CLoginSucc.create = function create(properties) {
+            return new GS2CLoginSucc(properties);
+        };
+
+        /**
+         * Encodes the specified GS2CLoginSucc message. Does not implicitly {@link login.GS2CLoginSucc.verify|verify} messages.
+         * @function encode
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {login.IGS2CLoginSucc} message GS2CLoginSucc message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CLoginSucc.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.sName);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.sGameFlag);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GS2CLoginSucc message, length delimited. Does not implicitly {@link login.GS2CLoginSucc.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {login.IGS2CLoginSucc} message GS2CLoginSucc message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CLoginSucc.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GS2CLoginSucc message from the specified reader or buffer.
+         * @function decode
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {login.GS2CLoginSucc} GS2CLoginSucc
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CLoginSucc.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.login.GS2CLoginSucc();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.sName = reader.string();
+                    break;
+                case 2:
+                    message.sGameFlag = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("sName"))
+                throw $util.ProtocolError("missing required 'sName'", { instance: message });
+            if (!message.hasOwnProperty("sGameFlag"))
+                throw $util.ProtocolError("missing required 'sGameFlag'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a GS2CLoginSucc message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {login.GS2CLoginSucc} GS2CLoginSucc
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CLoginSucc.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GS2CLoginSucc message.
+         * @function verify
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GS2CLoginSucc.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.sName))
+                return "sName: string expected";
+            if (!$util.isString(message.sGameFlag))
+                return "sGameFlag: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a GS2CLoginSucc message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {login.GS2CLoginSucc} GS2CLoginSucc
+         */
+        GS2CLoginSucc.fromObject = function fromObject(object) {
+            if (object instanceof $root.login.GS2CLoginSucc)
+                return object;
+            let message = new $root.login.GS2CLoginSucc();
+            if (object.sName != null)
+                message.sName = String(object.sName);
+            if (object.sGameFlag != null)
+                message.sGameFlag = String(object.sGameFlag);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GS2CLoginSucc message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof login.GS2CLoginSucc
+         * @static
+         * @param {login.GS2CLoginSucc} message GS2CLoginSucc
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GS2CLoginSucc.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.sName = "";
+                object.sGameFlag = "";
+            }
+            if (message.sName != null && message.hasOwnProperty("sName"))
+                object.sName = message.sName;
+            if (message.sGameFlag != null && message.hasOwnProperty("sGameFlag"))
+                object.sGameFlag = message.sGameFlag;
+            return object;
+        };
+
+        /**
+         * Converts this GS2CLoginSucc to JSON.
+         * @function toJSON
+         * @memberof login.GS2CLoginSucc
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GS2CLoginSucc.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return GS2CLoginSucc;
+    })();
+
     login.C2GSVertify = (function() {
 
         /**
          * Properties of a C2GSVertify.
          * @memberof login
          * @interface IC2GSVertify
-         * @property {string} Name C2GSVertify Name
          * @property {string} sToken C2GSVertify sToken
          */
 
@@ -1350,14 +3157,6 @@ export const login = $root.login = (() => {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
-
-        /**
-         * C2GSVertify Name.
-         * @member {string} Name
-         * @memberof login.C2GSVertify
-         * @instance
-         */
-        C2GSVertify.prototype.Name = "";
 
         /**
          * C2GSVertify sToken.
@@ -1391,8 +3190,7 @@ export const login = $root.login = (() => {
         C2GSVertify.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.Name);
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.sToken);
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.sToken);
             return writer;
         };
 
@@ -1428,9 +3226,6 @@ export const login = $root.login = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.Name = reader.string();
-                    break;
-                case 2:
                     message.sToken = reader.string();
                     break;
                 default:
@@ -1438,8 +3233,6 @@ export const login = $root.login = (() => {
                     break;
                 }
             }
-            if (!message.hasOwnProperty("Name"))
-                throw $util.ProtocolError("missing required 'Name'", { instance: message });
             if (!message.hasOwnProperty("sToken"))
                 throw $util.ProtocolError("missing required 'sToken'", { instance: message });
             return message;
@@ -1472,8 +3265,6 @@ export const login = $root.login = (() => {
         C2GSVertify.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (!$util.isString(message.Name))
-                return "Name: string expected";
             if (!$util.isString(message.sToken))
                 return "sToken: string expected";
             return null;
@@ -1491,8 +3282,6 @@ export const login = $root.login = (() => {
             if (object instanceof $root.login.C2GSVertify)
                 return object;
             let message = new $root.login.C2GSVertify();
-            if (object.Name != null)
-                message.Name = String(object.Name);
             if (object.sToken != null)
                 message.sToken = String(object.sToken);
             return message;
@@ -1511,12 +3300,8 @@ export const login = $root.login = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults) {
-                object.Name = "";
+            if (options.defaults)
                 object.sToken = "";
-            }
-            if (message.Name != null && message.hasOwnProperty("Name"))
-                object.Name = message.Name;
             if (message.sToken != null && message.hasOwnProperty("sToken"))
                 object.sToken = message.sToken;
             return object;

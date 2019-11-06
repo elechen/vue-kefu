@@ -2,7 +2,7 @@
   <div class="messagelist">
     <MessageBox
       v-for="message in messages"
-      v-bind:key="message.index"
+      v-bind:key="message.id"
       v-bind:message="message"
     ></MessageBox>
   </div>

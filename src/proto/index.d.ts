@@ -101,20 +101,11 @@ export namespace friend {
     /** Properties of a GS2CSendFrdMsg. */
     interface IGS2CSendFrdMsg {
 
-        /** GS2CSendFrdMsg id */
-        id: number;
+        /** GS2CSendFrdMsg pid */
+        pid: number;
 
-        /** GS2CSendFrdMsg iSender */
-        iSender: number;
-
-        /** GS2CSendFrdMsg sMsg */
-        sMsg: string;
-
-        /** GS2CSendFrdMsg iMsgType */
-        iMsgType: number;
-
-        /** GS2CSendFrdMsg iTime */
-        iTime: number;
+        /** GS2CSendFrdMsg tFrdMsg */
+        tFrdMsg?: (friend.GS2CSendFrdMsg.IFrdMsg[]|null);
     }
 
     /** Represents a GS2CSendFrdMsg. */
@@ -126,20 +117,11 @@ export namespace friend {
          */
         constructor(properties?: friend.IGS2CSendFrdMsg);
 
-        /** GS2CSendFrdMsg id. */
-        public id: number;
+        /** GS2CSendFrdMsg pid. */
+        public pid: number;
 
-        /** GS2CSendFrdMsg iSender. */
-        public iSender: number;
-
-        /** GS2CSendFrdMsg sMsg. */
-        public sMsg: string;
-
-        /** GS2CSendFrdMsg iMsgType. */
-        public iMsgType: number;
-
-        /** GS2CSendFrdMsg iTime. */
-        public iTime: number;
+        /** GS2CSendFrdMsg tFrdMsg. */
+        public tFrdMsg: friend.GS2CSendFrdMsg.IFrdMsg[];
 
         /**
          * Creates a new GS2CSendFrdMsg instance using the specified properties.
@@ -210,6 +192,444 @@ export namespace friend {
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
+    }
+
+    namespace GS2CSendFrdMsg {
+
+        /** Properties of a FrdMsg. */
+        interface IFrdMsg {
+
+            /** FrdMsg id */
+            id: number;
+
+            /** FrdMsg iSender */
+            iSender: number;
+
+            /** FrdMsg sName */
+            sName: string;
+
+            /** FrdMsg sMsg */
+            sMsg: string;
+
+            /** FrdMsg iTime */
+            iTime: number;
+        }
+
+        /** Represents a FrdMsg. */
+        class FrdMsg implements IFrdMsg {
+
+            /**
+             * Constructs a new FrdMsg.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: friend.GS2CSendFrdMsg.IFrdMsg);
+
+            /** FrdMsg id. */
+            public id: number;
+
+            /** FrdMsg iSender. */
+            public iSender: number;
+
+            /** FrdMsg sName. */
+            public sName: string;
+
+            /** FrdMsg sMsg. */
+            public sMsg: string;
+
+            /** FrdMsg iTime. */
+            public iTime: number;
+
+            /**
+             * Creates a new FrdMsg instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns FrdMsg instance
+             */
+            public static create(properties?: friend.GS2CSendFrdMsg.IFrdMsg): friend.GS2CSendFrdMsg.FrdMsg;
+
+            /**
+             * Encodes the specified FrdMsg message. Does not implicitly {@link friend.GS2CSendFrdMsg.FrdMsg.verify|verify} messages.
+             * @param message FrdMsg message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: friend.GS2CSendFrdMsg.IFrdMsg, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified FrdMsg message, length delimited. Does not implicitly {@link friend.GS2CSendFrdMsg.FrdMsg.verify|verify} messages.
+             * @param message FrdMsg message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: friend.GS2CSendFrdMsg.IFrdMsg, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a FrdMsg message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns FrdMsg
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.GS2CSendFrdMsg.FrdMsg;
+
+            /**
+             * Decodes a FrdMsg message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns FrdMsg
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.GS2CSendFrdMsg.FrdMsg;
+
+            /**
+             * Verifies a FrdMsg message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a FrdMsg message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns FrdMsg
+             */
+            public static fromObject(object: { [k: string]: any }): friend.GS2CSendFrdMsg.FrdMsg;
+
+            /**
+             * Creates a plain object from a FrdMsg message. Also converts values to other types if specified.
+             * @param message FrdMsg
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: friend.GS2CSendFrdMsg.FrdMsg, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this FrdMsg to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
+    }
+
+    /** Properties of a GS2CSendFrdInfo. */
+    interface IGS2CSendFrdInfo {
+
+        /** GS2CSendFrdInfo pid */
+        pid: number;
+
+        /** GS2CSendFrdInfo iOnline */
+        iOnline: number;
+
+        /** GS2CSendFrdInfo sName */
+        sName: string;
+
+        /** GS2CSendFrdInfo iGrade */
+        iGrade: number;
+
+        /** GS2CSendFrdInfo iServer */
+        iServer: number;
+
+        /** GS2CSendFrdInfo sPlatform */
+        sPlatform: string;
+
+        /** GS2CSendFrdInfo iMoneyMax */
+        iMoneyMax: number;
+
+        /** GS2CSendFrdInfo iChatTime */
+        iChatTime: number;
+    }
+
+    /** Represents a GS2CSendFrdInfo. */
+    class GS2CSendFrdInfo implements IGS2CSendFrdInfo {
+
+        /**
+         * Constructs a new GS2CSendFrdInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IGS2CSendFrdInfo);
+
+        /** GS2CSendFrdInfo pid. */
+        public pid: number;
+
+        /** GS2CSendFrdInfo iOnline. */
+        public iOnline: number;
+
+        /** GS2CSendFrdInfo sName. */
+        public sName: string;
+
+        /** GS2CSendFrdInfo iGrade. */
+        public iGrade: number;
+
+        /** GS2CSendFrdInfo iServer. */
+        public iServer: number;
+
+        /** GS2CSendFrdInfo sPlatform. */
+        public sPlatform: string;
+
+        /** GS2CSendFrdInfo iMoneyMax. */
+        public iMoneyMax: number;
+
+        /** GS2CSendFrdInfo iChatTime. */
+        public iChatTime: number;
+
+        /**
+         * Creates a new GS2CSendFrdInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GS2CSendFrdInfo instance
+         */
+        public static create(properties?: friend.IGS2CSendFrdInfo): friend.GS2CSendFrdInfo;
+
+        /**
+         * Encodes the specified GS2CSendFrdInfo message. Does not implicitly {@link friend.GS2CSendFrdInfo.verify|verify} messages.
+         * @param message GS2CSendFrdInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IGS2CSendFrdInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GS2CSendFrdInfo message, length delimited. Does not implicitly {@link friend.GS2CSendFrdInfo.verify|verify} messages.
+         * @param message GS2CSendFrdInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IGS2CSendFrdInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GS2CSendFrdInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GS2CSendFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.GS2CSendFrdInfo;
+
+        /**
+         * Decodes a GS2CSendFrdInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GS2CSendFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.GS2CSendFrdInfo;
+
+        /**
+         * Verifies a GS2CSendFrdInfo message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GS2CSendFrdInfo message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GS2CSendFrdInfo
+         */
+        public static fromObject(object: { [k: string]: any }): friend.GS2CSendFrdInfo;
+
+        /**
+         * Creates a plain object from a GS2CSendFrdInfo message. Also converts values to other types if specified.
+         * @param message GS2CSendFrdInfo
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.GS2CSendFrdInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GS2CSendFrdInfo to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a GS2CSearchResult. */
+    interface IGS2CSearchResult {
+
+        /** GS2CSearchResult tRet */
+        tRet?: (friend.GS2CSearchResult.ISearchResult[]|null);
+    }
+
+    /** Represents a GS2CSearchResult. */
+    class GS2CSearchResult implements IGS2CSearchResult {
+
+        /**
+         * Constructs a new GS2CSearchResult.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IGS2CSearchResult);
+
+        /** GS2CSearchResult tRet. */
+        public tRet: friend.GS2CSearchResult.ISearchResult[];
+
+        /**
+         * Creates a new GS2CSearchResult instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GS2CSearchResult instance
+         */
+        public static create(properties?: friend.IGS2CSearchResult): friend.GS2CSearchResult;
+
+        /**
+         * Encodes the specified GS2CSearchResult message. Does not implicitly {@link friend.GS2CSearchResult.verify|verify} messages.
+         * @param message GS2CSearchResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IGS2CSearchResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GS2CSearchResult message, length delimited. Does not implicitly {@link friend.GS2CSearchResult.verify|verify} messages.
+         * @param message GS2CSearchResult message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IGS2CSearchResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GS2CSearchResult message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GS2CSearchResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.GS2CSearchResult;
+
+        /**
+         * Decodes a GS2CSearchResult message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GS2CSearchResult
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.GS2CSearchResult;
+
+        /**
+         * Verifies a GS2CSearchResult message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GS2CSearchResult message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GS2CSearchResult
+         */
+        public static fromObject(object: { [k: string]: any }): friend.GS2CSearchResult;
+
+        /**
+         * Creates a plain object from a GS2CSearchResult message. Also converts values to other types if specified.
+         * @param message GS2CSearchResult
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.GS2CSearchResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GS2CSearchResult to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    namespace GS2CSearchResult {
+
+        /** Properties of a SearchResult. */
+        interface ISearchResult {
+
+            /** SearchResult id */
+            id: number;
+
+            /** SearchResult sName */
+            sName: string;
+        }
+
+        /** Represents a SearchResult. */
+        class SearchResult implements ISearchResult {
+
+            /**
+             * Constructs a new SearchResult.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: friend.GS2CSearchResult.ISearchResult);
+
+            /** SearchResult id. */
+            public id: number;
+
+            /** SearchResult sName. */
+            public sName: string;
+
+            /**
+             * Creates a new SearchResult instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns SearchResult instance
+             */
+            public static create(properties?: friend.GS2CSearchResult.ISearchResult): friend.GS2CSearchResult.SearchResult;
+
+            /**
+             * Encodes the specified SearchResult message. Does not implicitly {@link friend.GS2CSearchResult.SearchResult.verify|verify} messages.
+             * @param message SearchResult message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: friend.GS2CSearchResult.ISearchResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified SearchResult message, length delimited. Does not implicitly {@link friend.GS2CSearchResult.SearchResult.verify|verify} messages.
+             * @param message SearchResult message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: friend.GS2CSearchResult.ISearchResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a SearchResult message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns SearchResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.GS2CSearchResult.SearchResult;
+
+            /**
+             * Decodes a SearchResult message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns SearchResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.GS2CSearchResult.SearchResult;
+
+            /**
+             * Verifies a SearchResult message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a SearchResult message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns SearchResult
+             */
+            public static fromObject(object: { [k: string]: any }): friend.GS2CSearchResult.SearchResult;
+
+            /**
+             * Creates a plain object from a SearchResult message. Also converts values to other types if specified.
+             * @param message SearchResult
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: friend.GS2CSearchResult.SearchResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this SearchResult to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+        }
     }
 
     /** Properties of a C2GSNewFrdMsg. */
@@ -401,6 +821,9 @@ export namespace friend {
     /** Properties of a C2GSReplyFrdMsg. */
     interface IC2GSReplyFrdMsg {
 
+        /** C2GSReplyFrdMsg iSender */
+        iSender: number;
+
         /** C2GSReplyFrdMsg id */
         id: number;
     }
@@ -413,6 +836,9 @@ export namespace friend {
          * @param [properties] Properties to set
          */
         constructor(properties?: friend.IC2GSReplyFrdMsg);
+
+        /** C2GSReplyFrdMsg iSender. */
+        public iSender: number;
 
         /** C2GSReplyFrdMsg id. */
         public id: number;
@@ -483,6 +909,282 @@ export namespace friend {
 
         /**
          * Converts this C2GSReplyFrdMsg to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a C2GSGetFrdInfo. */
+    interface IC2GSGetFrdInfo {
+
+        /** C2GSGetFrdInfo pid */
+        pid: number;
+    }
+
+    /** Represents a C2GSGetFrdInfo. */
+    class C2GSGetFrdInfo implements IC2GSGetFrdInfo {
+
+        /**
+         * Constructs a new C2GSGetFrdInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IC2GSGetFrdInfo);
+
+        /** C2GSGetFrdInfo pid. */
+        public pid: number;
+
+        /**
+         * Creates a new C2GSGetFrdInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2GSGetFrdInfo instance
+         */
+        public static create(properties?: friend.IC2GSGetFrdInfo): friend.C2GSGetFrdInfo;
+
+        /**
+         * Encodes the specified C2GSGetFrdInfo message. Does not implicitly {@link friend.C2GSGetFrdInfo.verify|verify} messages.
+         * @param message C2GSGetFrdInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IC2GSGetFrdInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2GSGetFrdInfo message, length delimited. Does not implicitly {@link friend.C2GSGetFrdInfo.verify|verify} messages.
+         * @param message C2GSGetFrdInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IC2GSGetFrdInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2GSGetFrdInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2GSGetFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.C2GSGetFrdInfo;
+
+        /**
+         * Decodes a C2GSGetFrdInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2GSGetFrdInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.C2GSGetFrdInfo;
+
+        /**
+         * Verifies a C2GSGetFrdInfo message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2GSGetFrdInfo message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2GSGetFrdInfo
+         */
+        public static fromObject(object: { [k: string]: any }): friend.C2GSGetFrdInfo;
+
+        /**
+         * Creates a plain object from a C2GSGetFrdInfo message. Also converts values to other types if specified.
+         * @param message C2GSGetFrdInfo
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.C2GSGetFrdInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2GSGetFrdInfo to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a C2GSSearchFriend. */
+    interface IC2GSSearchFriend {
+
+        /** C2GSSearchFriend sKey */
+        sKey: string;
+    }
+
+    /** Represents a C2GSSearchFriend. */
+    class C2GSSearchFriend implements IC2GSSearchFriend {
+
+        /**
+         * Constructs a new C2GSSearchFriend.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IC2GSSearchFriend);
+
+        /** C2GSSearchFriend sKey. */
+        public sKey: string;
+
+        /**
+         * Creates a new C2GSSearchFriend instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2GSSearchFriend instance
+         */
+        public static create(properties?: friend.IC2GSSearchFriend): friend.C2GSSearchFriend;
+
+        /**
+         * Encodes the specified C2GSSearchFriend message. Does not implicitly {@link friend.C2GSSearchFriend.verify|verify} messages.
+         * @param message C2GSSearchFriend message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IC2GSSearchFriend, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2GSSearchFriend message, length delimited. Does not implicitly {@link friend.C2GSSearchFriend.verify|verify} messages.
+         * @param message C2GSSearchFriend message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IC2GSSearchFriend, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2GSSearchFriend message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2GSSearchFriend
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.C2GSSearchFriend;
+
+        /**
+         * Decodes a C2GSSearchFriend message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2GSSearchFriend
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.C2GSSearchFriend;
+
+        /**
+         * Verifies a C2GSSearchFriend message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2GSSearchFriend message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2GSSearchFriend
+         */
+        public static fromObject(object: { [k: string]: any }): friend.C2GSSearchFriend;
+
+        /**
+         * Creates a plain object from a C2GSSearchFriend message. Also converts values to other types if specified.
+         * @param message C2GSSearchFriend
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.C2GSSearchFriend, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2GSSearchFriend to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a C2GSGetHistoryMsg. */
+    interface IC2GSGetHistoryMsg {
+
+        /** C2GSGetHistoryMsg pid */
+        pid: number;
+
+        /** C2GSGetHistoryMsg curidx */
+        curidx: number;
+    }
+
+    /** Represents a C2GSGetHistoryMsg. */
+    class C2GSGetHistoryMsg implements IC2GSGetHistoryMsg {
+
+        /**
+         * Constructs a new C2GSGetHistoryMsg.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IC2GSGetHistoryMsg);
+
+        /** C2GSGetHistoryMsg pid. */
+        public pid: number;
+
+        /** C2GSGetHistoryMsg curidx. */
+        public curidx: number;
+
+        /**
+         * Creates a new C2GSGetHistoryMsg instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2GSGetHistoryMsg instance
+         */
+        public static create(properties?: friend.IC2GSGetHistoryMsg): friend.C2GSGetHistoryMsg;
+
+        /**
+         * Encodes the specified C2GSGetHistoryMsg message. Does not implicitly {@link friend.C2GSGetHistoryMsg.verify|verify} messages.
+         * @param message C2GSGetHistoryMsg message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IC2GSGetHistoryMsg, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2GSGetHistoryMsg message, length delimited. Does not implicitly {@link friend.C2GSGetHistoryMsg.verify|verify} messages.
+         * @param message C2GSGetHistoryMsg message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IC2GSGetHistoryMsg, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2GSGetHistoryMsg message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2GSGetHistoryMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.C2GSGetHistoryMsg;
+
+        /**
+         * Decodes a C2GSGetHistoryMsg message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2GSGetHistoryMsg
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.C2GSGetHistoryMsg;
+
+        /**
+         * Verifies a C2GSGetHistoryMsg message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2GSGetHistoryMsg message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2GSGetHistoryMsg
+         */
+        public static fromObject(object: { [k: string]: any }): friend.C2GSGetHistoryMsg;
+
+        /**
+         * Creates a plain object from a C2GSGetHistoryMsg message. Also converts values to other types if specified.
+         * @param message C2GSGetHistoryMsg
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.C2GSGetHistoryMsg, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2GSGetHistoryMsg to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -593,11 +1295,104 @@ export namespace login {
         }
     }
 
+    /** Properties of a GS2CLoginSucc. */
+    interface IGS2CLoginSucc {
+
+        /** GS2CLoginSucc sName */
+        sName: string;
+
+        /** GS2CLoginSucc sGameFlag */
+        sGameFlag: string;
+    }
+
+    /** Represents a GS2CLoginSucc. */
+    class GS2CLoginSucc implements IGS2CLoginSucc {
+
+        /**
+         * Constructs a new GS2CLoginSucc.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: login.IGS2CLoginSucc);
+
+        /** GS2CLoginSucc sName. */
+        public sName: string;
+
+        /** GS2CLoginSucc sGameFlag. */
+        public sGameFlag: string;
+
+        /**
+         * Creates a new GS2CLoginSucc instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GS2CLoginSucc instance
+         */
+        public static create(properties?: login.IGS2CLoginSucc): login.GS2CLoginSucc;
+
+        /**
+         * Encodes the specified GS2CLoginSucc message. Does not implicitly {@link login.GS2CLoginSucc.verify|verify} messages.
+         * @param message GS2CLoginSucc message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: login.IGS2CLoginSucc, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GS2CLoginSucc message, length delimited. Does not implicitly {@link login.GS2CLoginSucc.verify|verify} messages.
+         * @param message GS2CLoginSucc message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: login.IGS2CLoginSucc, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GS2CLoginSucc message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GS2CLoginSucc
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): login.GS2CLoginSucc;
+
+        /**
+         * Decodes a GS2CLoginSucc message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GS2CLoginSucc
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): login.GS2CLoginSucc;
+
+        /**
+         * Verifies a GS2CLoginSucc message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GS2CLoginSucc message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GS2CLoginSucc
+         */
+        public static fromObject(object: { [k: string]: any }): login.GS2CLoginSucc;
+
+        /**
+         * Creates a plain object from a GS2CLoginSucc message. Also converts values to other types if specified.
+         * @param message GS2CLoginSucc
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: login.GS2CLoginSucc, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GS2CLoginSucc to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a C2GSVertify. */
     interface IC2GSVertify {
-
-        /** C2GSVertify Name */
-        Name: string;
 
         /** C2GSVertify sToken */
         sToken: string;
@@ -611,9 +1406,6 @@ export namespace login {
          * @param [properties] Properties to set
          */
         constructor(properties?: login.IC2GSVertify);
-
-        /** C2GSVertify Name. */
-        public Name: string;
 
         /** C2GSVertify sToken. */
         public sToken: string;

@@ -1,20 +1,15 @@
-// profile/actions.ts
-import Vue from 'vue';
 import { ActionTree } from 'vuex';
-// import axios from 'axios';
 import { SessionState } from './types';
 import { RootState } from '@/store/types';
-import * as net from '@/net/net';
+import * as netfriend from '@/net/netfriend';
 
 const actions: ActionTree<SessionState, RootState> = {
-  sendMessage: ({ commit, rootState }, content) => {
-    if (content === '测试登录') {
-      return net.EncodeAndSend(1, 1, 'C2GSVertify', { Name: 'chenxiaofeng', sToken: 'test_token' });
-    }
-    Vue.prototype.$socket.send(content);
-    return commit('SEND_MESSAGE', { rootState, content });
+  sendMessage: ({ commit, rootState }, { target, msg }) => {
+    const dMsg = { iTarget: target, sMsg: msg };
+    netfriend.C2GSNewFrdMsg(dMsg);
+    return commit('SEND_MESSAGE', { rootState, dMsg });
   },
-  receiveMessage: ({ commit, rootState }, { uid, content }) => commit('RECEIVE_MESSAGE', { rootState, uid, content }),
+  receiveMessage: ({ commit, rootState }, payload) => commit('RECEIVE_MESSAGE', { rootState, payload }),
   selectSession: ({ commit }, uid) => commit('SELECT_SESSION', uid),
 };
 

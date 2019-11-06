@@ -5,9 +5,9 @@
       :class="[isSelf ? 'waiter-message' : 'customer-message']"
     >
       <div class="message--date">
-        <span>{{ message.timestamp | time }}</span>
+        <span>{{ message.iTime | time }}</span>
       </div>
-      <p class="message--pin">{{message.sender.name}}</p>
+      <p class="message--pin">{{message.sName}}</p>
       <div
         class="message--container clearfix"
         :class="[isSelf ? 'waiter-message' : 'customer-message']"
@@ -26,10 +26,10 @@
               class="text-message clearfix"
               :class="[isSelf ? 'waiter-message' : 'customer-message']"
               index="6"
-              msgid="249D6615-733A-4FDB-958D-DABAA4DF9B4F"
+              :msgid="message.id"
             >
               <div class="text-message--container">
-                <p>{{message.content}}</p>
+                <p>{{message.sMsg}}</p>
               </div>
             </div>
           </div>
@@ -45,6 +45,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import moment from 'moment';
+import { friend } from '@/proto';
 
 export default Vue.extend({
   name: 'MessageBox',
@@ -54,7 +55,7 @@ export default Vue.extend({
   },
   computed: {
     isSelf(): boolean {
-      return this.message.sender.uid !== this.$store.state.profile.user.uid;
+      return this.message.iSender !== this.$store.state.profile.user.uid;
     },
   },
   props: {

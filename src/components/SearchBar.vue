@@ -1,19 +1,41 @@
 <template>
   <div class="search-bar">
-    <el-autocomplete style="width: 100%"
+    <!-- <el-autocomplete
+      style="width: 100%"
       size="small"
       placeholder="搜索最近联系人"
       prefix-icon="el-icon-search"
       v-model="inputSearch"
       :fetch-suggestions="querySearchAsync"
       @select="handleSelect"
-    ></el-autocomplete>
+    ></el-autocomplete>-->
+    <el-select
+      style="width: 100%"
+      size="small"
+      prefix-icon="el-icon-search"
+      v-model="inputSearch"
+      filterable
+      remote
+      placeholder="输入ID或名字搜索玩家"
+      :remote-method="searchPlayer"
+      :loading="loading"
+      @change="handleSelect"
+    >
+      <el-option
+        v-for="item in searchResult"
+        :key="item.id"
+        :label="item.sName"
+        :value="item.id"
+      ></el-option>
+    </el-select>
     <!-- <input placeholder="搜索最近联系人" class="search-bar-input" /> -->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import * as netfriend from '@/net/netfriend';
+import { UserState } from '@/store/modules/user/types';
 
 const debounce = require('lodash.debounce');
 
@@ -22,31 +44,39 @@ export default Vue.extend({
   data() {
     return {
       inputSearch: '',
+      loading: false,
     };
   },
+  computed: {
+    searchResult() {
+      const userState: UserState = this.$store.state.user;
+      return userState.searchResult;
+    },
+  },
+  watch: {
+    searchResult() {
+      this.loading = false;
+    },
+  },
   methods: {
-    querySearchAsync: debounce((queryString: string, cb: Function) => {
+    searchPlayer(queryString: string) {
+      this.loading = true;
+      this.lazySearch(queryString);
+    },
+    lazySearch: debounce((queryString: string) => {
       const key = queryString.trim();
       if (key !== '') {
-        // 模拟回调
-        cb([
-          {
-            uid: 10003,
-            value: 'TEST-10003',
-            name: 'TEST-10003',
-            avatar: 'dist/images/1.jpg',
-            recentchattime: 0,
-            rmb: 0,
-          },
-        ]);
+        netfriend.C2GSSearchFriend({ sKey: key });
       }
-    }, 1500),
-    handleSelect(player: any) {
-      if (this.$store.state.user.users[player.uid]) {
-        this.$store.dispatch('session/selectSession', player.uid);
+    }, 1000),
+    handleSelect(pid: number) {
+      console.log('handleSelect', pid);
+      const userState: UserState = this.$store.state.user;
+      if (userState.users[pid]) {
+        this.$store.dispatch('session/selectSession', pid);
       } else {
-        this.$store.dispatch('user/addUser', player);
-        this.$store.dispatch('session/selectSession', player.uid);
+        netfriend.C2GSGetFrdInfo({ pid });
+        this.$store.dispatch('session/selectSession', pid);
       }
     },
   },
