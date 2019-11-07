@@ -45,5 +45,6 @@ export default Vue.extend({
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  min-height: 546px;
 }
 </style>
