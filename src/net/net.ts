@@ -8,9 +8,9 @@ export function DecodeAndDispatch(mainPkg: any) {
     return;
   }
   const module = eProtofile2Module[mainMessage.eProtofile] as { DecodeAndDispatch: Function };
-  console.log('DecodeAndDispatch->', mainMessage);
+  // console.log('DecodeAndDispatch->', mainMessage);
   module.DecodeAndDispatch(mainMessage.iCmd, mainMessage.sEncodepkg);
-  console.log('DecodeAndDispatch->done');
+  // console.log('DecodeAndDispatch->done');
 }
 
 function Send(sEncodepkg: any) {

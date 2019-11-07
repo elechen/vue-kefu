@@ -41,7 +41,7 @@ export default Vue.extend({
   },
   watch: {
     message(): void {
-      console.log('watch message->', this.message);
+      // console.log('watch message->', this.message);
     },
     isConnected(): void {
       if (this.isConnected) {
