@@ -22,6 +22,7 @@ function GS2CNewMsgCnt(message: friend.IGS2CNewMsgCnt) {
 function GS2CSendFrdMsg(message: friend.IGS2CSendFrdMsg) {
   console.log(message);
   Vue.prototype.$store.dispatch('session/receiveMessage', message);
+  Vue.prototype.$store.dispatch('user/updateNewMsgCnt', { iSender: message.pid, iCnt: 0 });
   message.tFrdMsg!.forEach((frdMsg) => {
     C2GSReplyFrdMsg({ iSender: message.pid, id: frdMsg.id });
   });

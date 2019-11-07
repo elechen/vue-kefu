@@ -34,6 +34,10 @@ const mutations: MutationTree<SessionState> = {
     const frdMsg: friend.GS2CSendFrdMsg = payload;
     const rState: RootState = rootState;
     const target = rState.user!.users[frdMsg.pid];
+    if (!target) {
+      console.log('流程异常，列表不存在该玩家', frdMsg.pid);
+      return;
+    }
     if (!sessions[target.pid]) {
       Vue.set(ss, target.pid, []);
     }
