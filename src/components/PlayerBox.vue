@@ -26,6 +26,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import * as utils from '@/utils';
+import * as netfriend from '@/net/netfriend';
 
 export default Vue.extend({
   name: 'Playerbox',
@@ -35,7 +36,8 @@ export default Vue.extend({
   methods: {
     onSelectSession(pid: number) {
       this.$store.dispatch('session/selectSession', pid);
-      this.$store.dispatch('friend/updateNewMsgCnt', { iSender: pid, iCnt: 0 });
+      this.$store.dispatch('user/updateNewMsgCnt', { iSender: pid, iCnt: 0 });
+      netfriend.C2GSReadFrdMsg({ iSender: pid });
     },
   },
   computed: {

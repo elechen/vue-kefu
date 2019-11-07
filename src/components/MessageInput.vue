@@ -8,6 +8,13 @@
       v-model="textarea"
       @keyup.enter.ctrl.native="onSubmit"
     ></el-input>
+    <el-button
+      plain
+      class="input-field--send-btn"
+      :disabled="disabled"
+      size="mini"
+      @click="onSubmit"
+    >发送</el-button>
   </div>
 </template>
 
@@ -21,6 +28,11 @@ export default Vue.extend({
     return {
       textarea: '',
     };
+  },
+  computed: {
+    disabled(): boolean {
+      return this.textarea === '';
+    },
   },
   methods: {
     onSubmit() {
@@ -44,5 +56,12 @@ export default Vue.extend({
   // padding-bottom: 10px;
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
+}
+.input-field--send-btn {
+  position: relative;
+  width: 60px;
+  float: right;
+  bottom: 32px;
+  right: 4px;
 }
 </style>

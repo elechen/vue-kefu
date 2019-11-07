@@ -45,7 +45,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import moment from 'moment';
-import { friend } from '@/proto';
 
 export default Vue.extend({
   name: 'MessageBox',

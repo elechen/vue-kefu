@@ -7,6 +7,7 @@ const mutations: MutationTree<UserState> = {
   // 增加用户
   ADD_USER(state, payload) {
     const user: User = payload;
+    user.iUnreadCnt = state.unreadCnt[user.pid];
     if (!state.users[user.pid]) {
       Vue.set(state.users, user.pid, user);
     } else {
@@ -19,8 +20,10 @@ const mutations: MutationTree<UserState> = {
   },
   UPDATE_NEWMSGCNT(state, payload) {
     const newMsgCnt: friend.IGS2CNewMsgCnt = payload;
-    if (state.users[newMsgCnt.iSender]) {
-      state.users[newMsgCnt.iSender].iUnreadCnt = newMsgCnt.iCnt;
+    const { iSender } = newMsgCnt;
+    state.unreadCnt[iSender] = newMsgCnt.iCnt;
+    if (state.users[iSender]) {
+      state.users[iSender].iUnreadCnt = newMsgCnt.iCnt;
     }
   },
 };

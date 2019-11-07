@@ -66,8 +66,12 @@ const S2CCommand: { [key: number]: [string, Function] } = {
 
 export function DecodeAndDispatch(iCmd: number, sEncodePkg: any) {
   const info = S2CCommand[iCmd];
-  const message = (login as any)[info[0]].decode(sEncodePkg);
-  info[1](message);
+  if (info) {
+    const message = (login as any)[info[0]].decode(sEncodePkg);
+    info[1](message);
+  } else {
+    console.log('cmd not found', iCmd);
+  }
 }
 
 export function C2GSVertify(pbmsg: login.IC2GSVertify) {

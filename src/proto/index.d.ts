@@ -106,6 +106,9 @@ export namespace friend {
 
         /** GS2CSendFrdMsg tFrdMsg */
         tFrdMsg?: (friend.GS2CSendFrdMsg.IFrdMsg[]|null);
+
+        /** GS2CSendFrdMsg iFlag */
+        iFlag?: (number|null);
     }
 
     /** Represents a GS2CSendFrdMsg. */
@@ -122,6 +125,9 @@ export namespace friend {
 
         /** GS2CSendFrdMsg tFrdMsg. */
         public tFrdMsg: friend.GS2CSendFrdMsg.IFrdMsg[];
+
+        /** GS2CSendFrdMsg iFlag. */
+        public iFlag: number;
 
         /**
          * Creates a new GS2CSendFrdMsg instance using the specified properties.

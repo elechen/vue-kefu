@@ -6,14 +6,20 @@
   >
     <div
       class="jimi-chat--wrapper"
+      @scroll="handleScroll"
+      ref="scrollview"
       v-chat-scroll="{always: false, smooth: true}"
     >
-      <!-- <div class="jimi-chat--log-btn">点击加载更多</div>
-      <div class="jimi-chat--separation">
+      <div
+        :style="{opacity:AlphaLoadMoreBtn}"
+        @click="loadMoreMessage"
+        class="jimi-chat--log-btn"
+      >点击加载更多</div>
+      <!-- <div class="jimi-chat--separation">
         <span>上次聊到这里</span>
       </div>-->
       <div>
-        <MessageList v-bind:messages="messages"></MessageList>
+        <MessageList :messages="messages"></MessageList>
       </div>
     </div>
   </div>
@@ -24,12 +30,40 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 import * as define from '@/define';
 import MessageList from '@/components/MessageList.vue';
-import { SessionState } from '../store/modules/session/types';
+import { SessionState } from '@/store/modules/session/types';
+import * as netfriend from '@/net/netfriend';
+import { friend } from '@/proto';
+
+const debounce = require('lodash.debounce');
 
 export default Vue.extend({
   name: 'MessageContainer',
   components: {
     MessageList,
+  },
+  data() {
+    return {
+      AlphaLoadMoreBtn: 0,
+    };
+  },
+  methods: {
+    handleScroll() {
+      const scrollview = this.$refs.scrollview as Element;
+      const btnHeight = 20;
+      if (scrollview.scrollTop > btnHeight) {
+        this.AlphaLoadMoreBtn = 0;
+      } else {
+        this.AlphaLoadMoreBtn = (btnHeight - scrollview.scrollTop) / btnHeight;
+      }
+    },
+    loadMoreMessage() {
+      const pid = this.currentSessionId;
+      let curidx = 0;
+      if (this.messages.length > 0) {
+        curidx = this.messages[0].id;
+      }
+      netfriend.C2GSGetHistoryMsg({ pid, curidx });
+    },
   },
   computed: {
     ...mapState('session', {
@@ -41,8 +75,8 @@ export default Vue.extend({
       }
       return 0;
     },
-    messages(): define.Message[] {
-      let lst: define.Message[] = [];
+    messages(): friend.GS2CSendFrdMsg.IFrdMsg[] {
+      let lst: friend.GS2CSendFrdMsg.IFrdMsg[] = [];
       if (this.currentSessionId) {
         lst = (this as any).sessions[this.currentSessionId];
       }

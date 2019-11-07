@@ -1,10 +1,22 @@
 import Vue from 'vue';
 import * as net from './net';
 import { netcommand, friend } from '@/proto';
+import { UserState } from '@/store/modules/user/types';
+import { SessionState } from '@/store/modules/session/types';
 
 function GS2CNewMsgCnt(message: friend.IGS2CNewMsgCnt) {
   console.log(message);
-  Vue.prototype.$store.dispatch('friend/updateNewMsgCnt', message);
+  const { iSender } = message;
+  const store = Vue.prototype.$store;
+  store.dispatch('user/updateNewMsgCnt', message);
+  const userState: UserState = store.user;
+  if (!userState.users[iSender]) {
+    C2GSGetFrdInfo({ pid: iSender });
+  }
+  const sessionState: SessionState = store.session;
+  if (sessionState.currentSessionId === iSender) {
+    C2GSReadFrdMsg({ iSender });
+  }
 }
 
 function GS2CSendFrdMsg(message: friend.IGS2CSendFrdMsg) {
@@ -38,7 +50,7 @@ export function DecodeAndDispatch(iCmd: number, sEncodePkg: any) {
     const message = (friend as any)[info[0]].decode(sEncodePkg);
     info[1](message);
   } else {
-    console.log('cmd not config', iCmd);
+    console.log('cmd not found', iCmd);
   }
 }
 
@@ -48,7 +60,7 @@ const C2SCommand: { [key: number]: string } = {
   3: 'C2GSReplyFrdMsg',
   4: 'C2GSGetFrdInfo',
   5: 'C2GSSearchFriend',
-  6: 'C2GSSearchFriend',
+  6: 'C2GSGetHistoryMsg',
 };
 
 function Send(iCmd: number, t: Object) {

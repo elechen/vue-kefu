@@ -38,7 +38,11 @@ const mutations: MutationTree<SessionState> = {
       Vue.set(ss, target.pid, []);
     }
     const list = sessions[target.pid];
-    list.push(...frdMsg.tFrdMsg);
+    if (frdMsg.iFlag === 1) {
+      list.unshift(...frdMsg.tFrdMsg);
+    } else {
+      list.push(...frdMsg.tFrdMsg);
+    }
   },
   SELECT_SESSION(state, id) {
     state.currentSessionId = id;

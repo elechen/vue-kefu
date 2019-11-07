@@ -18,6 +18,7 @@ message GS2CSendFrdMsg {
 	}
 	required sint32 pid			= 1;
 	repeated FrdMsg tFrdMsg 	= 2;
+	optional sint32 iFlag 		= 3;		//0-队尾,1-放在队头（发送历史消息时）
 }
 
 //3.发送玩家信息

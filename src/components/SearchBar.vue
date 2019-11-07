@@ -1,14 +1,5 @@
 <template>
   <div class="search-bar">
-    <!-- <el-autocomplete
-      style="width: 100%"
-      size="small"
-      placeholder="搜索最近联系人"
-      prefix-icon="el-icon-search"
-      v-model="inputSearch"
-      :fetch-suggestions="querySearchAsync"
-      @select="handleSelect"
-    ></el-autocomplete>-->
     <el-select
       style="width: 100%"
       size="small"
@@ -16,6 +7,7 @@
       v-model="inputSearch"
       filterable
       remote
+      clearable
       placeholder="输入ID或名字搜索玩家"
       :remote-method="searchPlayer"
       :loading="loading"
@@ -70,6 +62,9 @@ export default Vue.extend({
       }
     }, 1000),
     handleSelect(pid: number) {
+      if (!pid) {
+        return;
+      }
       console.log('handleSelect', pid);
       const userState: UserState = this.$store.state.user;
       if (userState.users[pid]) {

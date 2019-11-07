@@ -234,6 +234,7 @@ export const friend = $root.friend = (() => {
          * @interface IGS2CSendFrdMsg
          * @property {number} pid GS2CSendFrdMsg pid
          * @property {Array.<friend.GS2CSendFrdMsg.IFrdMsg>|null} [tFrdMsg] GS2CSendFrdMsg tFrdMsg
+         * @property {number|null} [iFlag] GS2CSendFrdMsg iFlag
          */
 
         /**
@@ -269,6 +270,14 @@ export const friend = $root.friend = (() => {
         GS2CSendFrdMsg.prototype.tFrdMsg = $util.emptyArray;
 
         /**
+         * GS2CSendFrdMsg iFlag.
+         * @member {number} iFlag
+         * @memberof friend.GS2CSendFrdMsg
+         * @instance
+         */
+        GS2CSendFrdMsg.prototype.iFlag = 0;
+
+        /**
          * Creates a new GS2CSendFrdMsg instance using the specified properties.
          * @function create
          * @memberof friend.GS2CSendFrdMsg
@@ -296,6 +305,8 @@ export const friend = $root.friend = (() => {
             if (message.tFrdMsg != null && message.tFrdMsg.length)
                 for (let i = 0; i < message.tFrdMsg.length; ++i)
                     $root.friend.GS2CSendFrdMsg.FrdMsg.encode(message.tFrdMsg[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.iFlag != null && message.hasOwnProperty("iFlag"))
+                writer.uint32(/* id 3, wireType 0 =*/24).sint32(message.iFlag);
             return writer;
         };
 
@@ -337,6 +348,9 @@ export const friend = $root.friend = (() => {
                     if (!(message.tFrdMsg && message.tFrdMsg.length))
                         message.tFrdMsg = [];
                     message.tFrdMsg.push($root.friend.GS2CSendFrdMsg.FrdMsg.decode(reader, reader.uint32()));
+                    break;
+                case 3:
+                    message.iFlag = reader.sint32();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -386,6 +400,9 @@ export const friend = $root.friend = (() => {
                         return "tFrdMsg." + error;
                 }
             }
+            if (message.iFlag != null && message.hasOwnProperty("iFlag"))
+                if (!$util.isInteger(message.iFlag))
+                    return "iFlag: integer expected";
             return null;
         };
 
@@ -413,6 +430,8 @@ export const friend = $root.friend = (() => {
                     message.tFrdMsg[i] = $root.friend.GS2CSendFrdMsg.FrdMsg.fromObject(object.tFrdMsg[i]);
                 }
             }
+            if (object.iFlag != null)
+                message.iFlag = object.iFlag | 0;
             return message;
         };
 
@@ -431,8 +450,10 @@ export const friend = $root.friend = (() => {
             let object = {};
             if (options.arrays || options.defaults)
                 object.tFrdMsg = [];
-            if (options.defaults)
+            if (options.defaults) {
                 object.pid = 0;
+                object.iFlag = 0;
+            }
             if (message.pid != null && message.hasOwnProperty("pid"))
                 object.pid = message.pid;
             if (message.tFrdMsg && message.tFrdMsg.length) {
@@ -440,6 +461,8 @@ export const friend = $root.friend = (() => {
                 for (let j = 0; j < message.tFrdMsg.length; ++j)
                     object.tFrdMsg[j] = $root.friend.GS2CSendFrdMsg.FrdMsg.toObject(message.tFrdMsg[j], options);
             }
+            if (message.iFlag != null && message.hasOwnProperty("iFlag"))
+                object.iFlag = message.iFlag;
             return object;
         };
 

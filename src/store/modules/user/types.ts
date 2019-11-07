@@ -8,5 +8,6 @@ export interface User extends friend.IGS2CSendFrdInfo {
 
 export interface UserState {
   users: { [key: number]: User };
+  unreadCnt: { [key: number]: number };
   searchResult: friend.GS2CSearchResult.ISearchResult[],
 }
