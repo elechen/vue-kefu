@@ -9,11 +9,11 @@ function GS2CNewMsgCnt(message: friend.IGS2CNewMsgCnt) {
   const { iSender } = message;
   const store = Vue.prototype.$store;
   store.dispatch('user/updateNewMsgCnt', message);
-  const userState: UserState = store.user;
+  const userState: UserState = store.state.user;
   if (!userState.users[iSender]) {
     C2GSGetFrdInfo({ pid: iSender });
   }
-  const sessionState: SessionState = store.session;
+  const sessionState: SessionState = store.state.session;
   if (sessionState.currentSessionId === iSender) {
     C2GSReadFrdMsg({ iSender });
   }
