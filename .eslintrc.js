@@ -13,6 +13,7 @@ module.exports = {
       "no-console": "off",
       'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
       'import/no-cycle': 'off',
+      "no-use-before-define": [2, {"functions": false, "classes": false}]
     },
     parserOptions: {
       parser: '@typescript-eslint/parser',

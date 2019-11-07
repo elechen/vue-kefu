@@ -5,7 +5,7 @@
     v-on:click="onSelectSession(player.pid)"
   >
     <el-badge
-      :value="player.iUnread ? player.iUnread : 0"
+      :value="player.iUnreadCnt ? player.iUnreadCnt : 0"
       :max="9"
       :hidden="true"
     >
@@ -35,6 +35,7 @@ export default Vue.extend({
   methods: {
     onSelectSession(pid: number) {
       this.$store.dispatch('session/selectSession', pid);
+      this.$store.dispatch('friend/updateNewMsgCnt', { iSender: pid, iCnt: 0 });
     },
   },
   computed: {

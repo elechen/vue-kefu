@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { MutationTree } from 'vuex';
 import { UserState, User } from './types';
+import { friend } from '@/proto';
 
 const mutations: MutationTree<UserState> = {
   // 增加用户
@@ -15,6 +16,12 @@ const mutations: MutationTree<UserState> = {
   // 搜索结果
   UPDATE_SEARCH_RESULT(state, payload) {
     state.searchResult = payload;
+  },
+  UPDATE_NEWMSGCNT(state, payload) {
+    const newMsgCnt: friend.IGS2CNewMsgCnt = payload;
+    if (state.users[newMsgCnt.iSender]) {
+      state.users[newMsgCnt.iSender].iUnreadCnt = newMsgCnt.iCnt;
+    }
   },
 };
 

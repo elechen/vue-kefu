@@ -17,12 +17,15 @@ Vue.use(ElementUI);
 Vue.use(VueNativeSock, `ws://${define.HOST}`, {
   store,
   passToStoreHandler: (eventName: string, event: any, next: Function) => {
+    console.log('beaforeStoreHandler', eventName, event);
     if (event.data) {
-      event.data.arrayBuffer().then((data: any) => {
-        const pkg = new Uint8Array(data);
-        console.log(pkg);
-        net.DecodeAndDispatch(pkg);
-      });
+      if (event.data.arrayBuffer) {
+        event.data.arrayBuffer().then((data: any) => {
+          const pkg = new Uint8Array(data);
+          console.log(pkg);
+          net.DecodeAndDispatch(pkg);
+        });
+      }
     }
     next(eventName, event);
   },

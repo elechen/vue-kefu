@@ -4,11 +4,15 @@ import { netcommand, friend } from '@/proto';
 
 function GS2CNewMsgCnt(message: friend.IGS2CNewMsgCnt) {
   console.log(message);
+  Vue.prototype.$store.dispatch('friend/updateNewMsgCnt', message);
 }
 
 function GS2CSendFrdMsg(message: friend.IGS2CSendFrdMsg) {
   console.log(message);
   Vue.prototype.$store.dispatch('session/receiveMessage', message);
+  message.tFrdMsg!.forEach((frdMsg) => {
+    C2GSReplyFrdMsg({ iSender: frdMsg.iSender, id: frdMsg.id });
+  });
 }
 
 function GS2CSendFrdInfo(message: friend.IGS2CSendFrdInfo) {

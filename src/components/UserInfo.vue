@@ -10,12 +10,15 @@
       </div>
     </div>
     <div class="user-info-right">
-      <div class="user-info-right-name ellipsis">{{$store.state.profile.user.sName}}</div>
+      <div
+        class="user-info-right-name ellipsis"
+      >{{$store.state.profile.user.sName}}</div>
       <el-select
         class="user-info-right-game"
         size="mini"
         v-model="game"
         placeholder="请选择"
+        disabled
       >
         <el-option
           v-for="item in options"
@@ -30,12 +33,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { User, ProfileState } from '@/store/modules/profile/types';
 
 export default Vue.extend({
   name: 'UserInfo',
   data() {
     return {
-      game: 'szl',
       options: [
         {
           value: 'szl',
@@ -45,8 +48,21 @@ export default Vue.extend({
           value: 'sx',
           label: '思仙',
         },
+        {
+          value: 'fzxx',
+          label: '放置修仙',
+        },
       ],
     };
+  },
+  computed: {
+    game() {
+      const state: ProfileState = this.$store.state.profile;
+      if (state.user) {
+        return state.user!.sGameFlag;
+      }
+      return '';
+    },
   },
 });
 </script>
