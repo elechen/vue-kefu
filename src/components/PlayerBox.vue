@@ -7,7 +7,7 @@
     <el-badge
       :value="player.iUnreadCnt ? player.iUnreadCnt : 0"
       :max="9"
-      :hidden="true"
+      :hidden="player.iUnreadCnt === 0"
     >
       <div class="dialog-avator">
         <div
@@ -27,6 +27,7 @@
 import Vue from 'vue';
 import * as utils from '@/utils';
 import * as netfriend from '@/net/netfriend';
+import { friend } from '@/proto';
 
 export default Vue.extend({
   name: 'Playerbox',
@@ -43,6 +44,16 @@ export default Vue.extend({
   computed: {
     currentSessionId(): number {
       return this.$store.state.session.currentSessionId;
+    },
+    description(): string {
+      let lst: friend.GS2CSendFrdMsg.IFrdMsg[] = [];
+      if (this.currentSessionId) {
+        lst = this.$store.state.session.sessions[this.currentSessionId];
+        if (lst) {
+          return lst[lst.length - 1].sMsg;
+        }
+      }
+      return '';
     },
   },
   filters: {
@@ -70,6 +81,7 @@ export default Vue.extend({
 .dialog-avator {
   width: 20px;
   height: 20px;
+  margin-bottom: 10px;
   float: left;
 }
 .dialog-name {

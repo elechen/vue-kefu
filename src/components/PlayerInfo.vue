@@ -18,7 +18,7 @@
               style="display: none;"
             >对方正在输入......</span>
           </p>
-          <p class="description"></p>
+          <p class="description">{{description}}</p>
         </div>
       </div>
     </div>
@@ -27,16 +27,32 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { User } from '@/store/modules/user/types';
 
 export default Vue.extend({
   name: 'PlayerInfo',
   computed: {
-    playerName(): string {
+    user(): User | undefined {
       const sid = this.$store.state.session.currentSessionId;
       if (sid && this.$store.state.user.users[sid]) {
-        return this.$store.state.user.users[sid].sName;
+        const user: User = this.$store.state.user.users[sid];
+        return user;
+      }
+      return undefined;
+    },
+    playerName(): string {
+      if (this.user) {
+        return this.user.sName;
       }
       return '先选择一位玩家';
+    },
+    description(): string {
+      let sDesc = '';
+      if (this.user) {
+        const u = this.user;
+        sDesc = `平台:${u.sPlatform}_服务器:${u.iServer}_等级:${u.iGrade}_充值:${u.iMoneyMax}`;
+      }
+      return sDesc;
     },
   },
 });
