@@ -23,7 +23,7 @@ function GS2CSendFrdMsg(message: friend.IGS2CSendFrdMsg) {
   console.log(message);
   Vue.prototype.$store.dispatch('session/receiveMessage', message);
   message.tFrdMsg!.forEach((frdMsg) => {
-    C2GSReplyFrdMsg({ iSender: frdMsg.iSender, id: frdMsg.id });
+    C2GSReplyFrdMsg({ iSender: message.pid, id: frdMsg.id });
   });
 }
 

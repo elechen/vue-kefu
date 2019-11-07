@@ -8,13 +8,14 @@
       :value="player.iUnreadCnt ? player.iUnreadCnt : 0"
       :max="9"
       :hidden="player.iUnreadCnt === 0"
+      :style="{marginBottom:marginBottom+'px'}"
     >
       <div class="dialog-avator">
         <div
           class="img-bg avatar"
           uselazyload="true"
           alt
-          v-bind:style="{backgroundImage: 'url(' + require(`@/assets/avatar.png`) + ')'}"
+          :style="{backgroundImage: 'url(' + require(`@/assets/avatar.png`) + ')'}"
         ></div>
       </div>
     </el-badge>
@@ -55,6 +56,9 @@ export default Vue.extend({
       }
       return '';
     },
+    marginBottom(): number {
+      return this.player.pid === this.currentSessionId ? 0 : 12;
+    },
   },
   filters: {
     VIP(iMoneyMax: number) {
@@ -81,7 +85,6 @@ export default Vue.extend({
 .dialog-avator {
   width: 20px;
   height: 20px;
-  margin-bottom: 10px;
   float: left;
 }
 .dialog-name {
