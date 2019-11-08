@@ -74,7 +74,7 @@ export default Vue.extend({
             this.$store.dispatch('user/reset');
             this.$store.dispatch('profile/reset');
             const { token } = this.$route.query;
-            window.location.href = `?token=${token}&gameflag=${gameflag}`;
+            window.location.href = `${window.location.pathname}?token=${token}&gameflag=${gameflag}`;
           })
           .catch(() => {
             // do nothing

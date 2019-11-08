@@ -59,7 +59,10 @@ export default Vue.extend({
           return;
         }
         const sToken = token as string;
-        const sGameFlag = gameflag as string;
+        let sGameFlag = gameflag as string;
+        if (!sGameFlag) {
+          sGameFlag = '';
+        }
         netlogin.C2GSVertify({ sToken, sGameFlag });
       }
     },
