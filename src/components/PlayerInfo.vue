@@ -3,12 +3,11 @@
     <div class="jimi-head clearfix">
       <div class="customer-info-wrapper clearfix">
         <div class="avatar-wrapper">
-          <div
-            class="img-bg avatar"
+          <img
             uselazyload="true"
-            alt
-            v-bind:style="{backgroundImage: 'url(' + require(`@/assets/avatar.png`) + ')'}"
-          ></div>
+            class="img-bg avatar"
+            :src="require(`@/assets/icon/icon_${gameflag}.png`)"
+          />
         </div>
         <div class="jimi-info">
           <p class="name">
@@ -32,6 +31,9 @@ import { User } from '@/store/modules/user/types';
 export default Vue.extend({
   name: 'PlayerInfo',
   computed: {
+    gameflag(): string {
+      return this.$store.state.profile.user.sGameFlag;
+    },
     user(): User | undefined {
       const sid = this.$store.state.session.currentSessionId;
       if (sid && this.$store.state.user.users[sid]) {

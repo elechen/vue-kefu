@@ -1516,6 +1516,193 @@ export const friend = $root.friend = (() => {
         return GS2CSearchResult;
     })();
 
+    friend.GS2CNotify = (function() {
+
+        /**
+         * Properties of a GS2CNotify.
+         * @memberof friend
+         * @interface IGS2CNotify
+         * @property {string} sText GS2CNotify sText
+         */
+
+        /**
+         * Constructs a new GS2CNotify.
+         * @memberof friend
+         * @classdesc Represents a GS2CNotify.
+         * @implements IGS2CNotify
+         * @constructor
+         * @param {friend.IGS2CNotify=} [properties] Properties to set
+         */
+        function GS2CNotify(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GS2CNotify sText.
+         * @member {string} sText
+         * @memberof friend.GS2CNotify
+         * @instance
+         */
+        GS2CNotify.prototype.sText = "";
+
+        /**
+         * Creates a new GS2CNotify instance using the specified properties.
+         * @function create
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {friend.IGS2CNotify=} [properties] Properties to set
+         * @returns {friend.GS2CNotify} GS2CNotify instance
+         */
+        GS2CNotify.create = function create(properties) {
+            return new GS2CNotify(properties);
+        };
+
+        /**
+         * Encodes the specified GS2CNotify message. Does not implicitly {@link friend.GS2CNotify.verify|verify} messages.
+         * @function encode
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {friend.IGS2CNotify} message GS2CNotify message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CNotify.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.sText);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GS2CNotify message, length delimited. Does not implicitly {@link friend.GS2CNotify.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {friend.IGS2CNotify} message GS2CNotify message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CNotify.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GS2CNotify message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.GS2CNotify} GS2CNotify
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CNotify.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.GS2CNotify();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.sText = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("sText"))
+                throw $util.ProtocolError("missing required 'sText'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a GS2CNotify message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.GS2CNotify} GS2CNotify
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CNotify.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GS2CNotify message.
+         * @function verify
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GS2CNotify.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isString(message.sText))
+                return "sText: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a GS2CNotify message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.GS2CNotify} GS2CNotify
+         */
+        GS2CNotify.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.GS2CNotify)
+                return object;
+            let message = new $root.friend.GS2CNotify();
+            if (object.sText != null)
+                message.sText = String(object.sText);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GS2CNotify message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.GS2CNotify
+         * @static
+         * @param {friend.GS2CNotify} message GS2CNotify
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GS2CNotify.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.sText = "";
+            if (message.sText != null && message.hasOwnProperty("sText"))
+                object.sText = message.sText;
+            return object;
+        };
+
+        /**
+         * Converts this GS2CNotify to JSON.
+         * @function toJSON
+         * @memberof friend.GS2CNotify
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GS2CNotify.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return GS2CNotify;
+    })();
+
     friend.C2GSNewFrdMsg = (function() {
 
         /**

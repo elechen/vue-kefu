@@ -38,11 +38,19 @@ function GS2CSearchResult(message: friend.IGS2CSearchResult) {
   Vue.prototype.$store.dispatch('user/updateSearchResult', message.tRet);
 }
 
+function GS2CNotify(message: friend.IGS2CNotify) {
+  console.log(message);
+  Vue.prototype.$message({
+    message: message.sText,
+  });
+}
+
 const S2CCommand: { [key: number]: [string, Function] } = {
   1: ['GS2CNewMsgCnt', GS2CNewMsgCnt],
   2: ['GS2CSendFrdMsg', GS2CSendFrdMsg],
   3: ['GS2CSendFrdInfo', GS2CSendFrdInfo],
   4: ['GS2CSearchResult', GS2CSearchResult],
+  5: ['GS2CNotify', GS2CNotify],
 };
 
 export function DecodeAndDispatch(iCmd: number, sEncodePkg: any) {

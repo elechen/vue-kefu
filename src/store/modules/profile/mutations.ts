@@ -6,7 +6,7 @@ const mutations: MutationTree<ProfileState> = {
     state.user = payload;
   },
   RESET(state) {
-    state.user = { pid: 0, sName: '未登录', sGameFlag: 'fzxx' };
+    state.user = { pid: 0, sName: '未登录', sGameFlag: 'sx4' };
     state.login = false;
   },
 };

@@ -5,7 +5,7 @@ import { ProfileState } from './types';
 import { RootState } from '@/store/types';
 
 export const state: ProfileState = {
-  user: { pid: 0, sName: '未登录', sGameFlag: 'fzxx' },
+  user: { pid: 0, sName: '未登录', sGameFlag: 'sx4' },
   login: false,
 };
 

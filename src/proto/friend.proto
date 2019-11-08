@@ -42,6 +42,11 @@ message GS2CSearchResult {
 	repeated SearchResult tRet 	= 1;
 }
 
+//5.发送玩家信息
+message GS2CNotify {
+	required string sText		= 1;
+}
+
 //----------------C2GS---------------
 
 //1.发送新消息

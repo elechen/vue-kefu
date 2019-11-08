@@ -638,6 +638,96 @@ export namespace friend {
         }
     }
 
+    /** Properties of a GS2CNotify. */
+    interface IGS2CNotify {
+
+        /** GS2CNotify sText */
+        sText: string;
+    }
+
+    /** Represents a GS2CNotify. */
+    class GS2CNotify implements IGS2CNotify {
+
+        /**
+         * Constructs a new GS2CNotify.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IGS2CNotify);
+
+        /** GS2CNotify sText. */
+        public sText: string;
+
+        /**
+         * Creates a new GS2CNotify instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GS2CNotify instance
+         */
+        public static create(properties?: friend.IGS2CNotify): friend.GS2CNotify;
+
+        /**
+         * Encodes the specified GS2CNotify message. Does not implicitly {@link friend.GS2CNotify.verify|verify} messages.
+         * @param message GS2CNotify message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IGS2CNotify, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GS2CNotify message, length delimited. Does not implicitly {@link friend.GS2CNotify.verify|verify} messages.
+         * @param message GS2CNotify message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IGS2CNotify, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GS2CNotify message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GS2CNotify
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.GS2CNotify;
+
+        /**
+         * Decodes a GS2CNotify message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GS2CNotify
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.GS2CNotify;
+
+        /**
+         * Verifies a GS2CNotify message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GS2CNotify message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GS2CNotify
+         */
+        public static fromObject(object: { [k: string]: any }): friend.GS2CNotify;
+
+        /**
+         * Creates a plain object from a GS2CNotify message. Also converts values to other types if specified.
+         * @param message GS2CNotify
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.GS2CNotify, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GS2CNotify to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a C2GSNewFrdMsg. */
     interface IC2GSNewFrdMsg {
 

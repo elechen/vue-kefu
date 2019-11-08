@@ -11,12 +11,11 @@
       :style="{marginBottom:marginBottom+'px'}"
     >
       <div class="dialog-avator">
-        <div
-          class="img-bg avatar"
+        <img
           uselazyload="true"
-          alt
-          :style="{backgroundImage: 'url(' + require(`@/assets/avatar.png`) + ')'}"
-        ></div>
+          class="img-bg avatar"
+          :src="require(`@/assets/icon/icon_${gameflag}.png`)"
+        />
       </div>
     </el-badge>
     <span class="dialog-name ellipsis">{{player.sName}}</span>
@@ -47,6 +46,9 @@ export default Vue.extend({
     },
   },
   computed: {
+    gameflag(): string {
+      return this.$store.state.profile.user.sGameFlag;
+    },
     currentSessionId(): number {
       return this.$store.state.session.currentSessionId;
     },

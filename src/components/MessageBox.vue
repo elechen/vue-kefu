@@ -13,12 +13,12 @@
         :class="[isSelf ? 'waiter-message' : 'customer-message']"
       >
         <div class="message--head">
-          <div
+          <img v-if="isGM" class="img-bg avatar" src="@/assets/avatar.png" />
+          <img
+            v-else
             class="img-bg avatar"
-            uselazyload="true"
-            alt
-            v-bind:style="{backgroundImage: 'url(' + require(`@/assets/avatar.png`) + ')'}"
-          ></div>
+            :src="require(`@/assets/icon/icon_${gameflag}.png`)"
+          />
         </div>
         <div class="message--content clearfix">
           <div class="message--wrapper">
@@ -50,11 +50,17 @@ export default Vue.extend({
   name: 'MessageBox',
   filters: {
     // 将日期过滤为 hour:minutes
-    time: (date: number) => moment(date).format('YYYY-MM-DD HH:mm:ss'),
+    time: (date: number) => moment(date * 1000).format('YYYY-MM-DD HH:mm:ss'),
   },
   computed: {
     isSelf(): boolean {
       return this.message.iSender !== this.$store.state.profile.user.pid;
+    },
+    isGM(): boolean {
+      return this.message.iSender < 10000;
+    },
+    gameflag(): string {
+      return this.$store.state.profile.user.sGameFlag;
     },
   },
   props: {
