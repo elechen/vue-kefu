@@ -8,6 +8,9 @@ message GS2CLoginCode {
 		NOACCOUNT 					= 1;	//无此账号
 		NETERR						= 2;	//后台无法连接
 		TOKENERR					= 3;	//后台token验证失败
+		LOGINERR					= 4;	//登录过程异常
+		GAMEFLAGERR					= 5;	//当前项目未开通后台
+		AUTHERR						= 6;	//缺少当前项目权限
 	}
 	required Code eLogincode	= 1;
 }
@@ -16,11 +19,13 @@ message GS2CLoginCode {
 message GS2CLoginSucc {
 	required sint32 pid = 1;	
 	required string sName = 2;
-	required string sGameFlag = 3;
+	required string sGameFlag = 3;	//当前项目
+	repeated string gamelist = 4;	//可选项目
 }
 
 //----------------C2GS---------------
 //1.登录验证
 message C2GSVertify {
 	required string sToken 		= 1;	//用户名
+	required string sGameFlag 	= 2;	//
 }

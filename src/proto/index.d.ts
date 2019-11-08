@@ -1297,7 +1297,10 @@ export namespace login {
             SUCCEED = 0,
             NOACCOUNT = 1,
             NETERR = 2,
-            TOKENERR = 3
+            TOKENERR = 3,
+            LOGINERR = 4,
+            GAMEFLAGERR = 5,
+            AUTHERR = 6
         }
     }
 
@@ -1312,6 +1315,9 @@ export namespace login {
 
         /** GS2CLoginSucc sGameFlag */
         sGameFlag: string;
+
+        /** GS2CLoginSucc gamelist */
+        gamelist?: (string[]|null);
     }
 
     /** Represents a GS2CLoginSucc. */
@@ -1331,6 +1337,9 @@ export namespace login {
 
         /** GS2CLoginSucc sGameFlag. */
         public sGameFlag: string;
+
+        /** GS2CLoginSucc gamelist. */
+        public gamelist: string[];
 
         /**
          * Creates a new GS2CLoginSucc instance using the specified properties.
@@ -1408,6 +1417,9 @@ export namespace login {
 
         /** C2GSVertify sToken */
         sToken: string;
+
+        /** C2GSVertify sGameFlag */
+        sGameFlag: string;
     }
 
     /** Represents a C2GSVertify. */
@@ -1421,6 +1433,9 @@ export namespace login {
 
         /** C2GSVertify sToken. */
         public sToken: string;
+
+        /** C2GSVertify sGameFlag. */
+        public sGameFlag: string;
 
         /**
          * Creates a new C2GSVertify instance using the specified properties.

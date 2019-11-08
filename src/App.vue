@@ -45,7 +45,7 @@ export default Vue.extend({
     },
     isConnected(): void {
       if (this.isConnected) {
-        const { token } = this.$route.query;
+        const { token, gameflag } = this.$route.query;
         if (!token) {
           this.$alert('缺少token参数', '提示', {
             confirmButtonText: '确定',
@@ -59,7 +59,8 @@ export default Vue.extend({
           return;
         }
         const sToken = token as string;
-        netlogin.C2GSVertify({ sToken });
+        const sGameFlag = gameflag as string;
+        netlogin.C2GSVertify({ sToken, sGameFlag });
       }
     },
   },

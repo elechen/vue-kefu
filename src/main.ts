@@ -23,6 +23,8 @@ Vue.use(VueNativeSock, `ws://${define.HOST}`, {
           const pkg = new Uint8Array(data);
           net.DecodeAndDispatch(pkg);
         });
+      } else {
+        console.error('需要更新到最新版本Chrome浏览器');
       }
     }
     next(eventName, event);

@@ -51,6 +51,10 @@ const mutations: MutationTree<SessionState> = {
   SELECT_SESSION(state, id) {
     state.currentSessionId = id;
   },
+  RESET(state) {
+    state.sessions = {};
+    state.currentSessionId = 0;
+  },
 };
 
 export default mutations;

@@ -16,15 +16,16 @@
       <el-select
         class="user-info-right-game"
         size="mini"
-        v-model="game"
+        v-model="gameflag"
+        @change="onSelectGame"
         placeholder="请选择"
-        disabled
       >
         <el-option
           v-for="item in options"
           :key="item.value"
           :label="item.label"
           :value="item.value"
+          :disabled="item.disabled"
         ></el-option>
       </el-select>
     </div>
@@ -37,31 +38,48 @@ import { User, ProfileState } from '@/store/modules/profile/types';
 
 export default Vue.extend({
   name: 'UserInfo',
-  data() {
-    return {
-      options: [
-        {
-          value: 'szl',
-          label: '神之路',
-        },
-        {
-          value: 'sx',
-          label: '思仙',
-        },
-        {
-          value: 'fzxx',
-          label: '放置修仙',
-        },
-      ],
-    };
-  },
   computed: {
-    game() {
+    gameflag: {
+      get() {
+        const state: ProfileState = this.$store.state.profile;
+        if (state.user) {
+          return state.user!.sGameFlag;
+        }
+        return '';
+      },
+      set() {},
+    },
+    options() {
+      const lst: { value: string; label: string; disabled: boolean }[] = [];
       const state: ProfileState = this.$store.state.profile;
-      if (state.user) {
-        return state.user!.sGameFlag;
+      if (state && state.user!.gamelist) {
+        const gamelist = state.user!.gamelist as string[];
+        gamelist.forEach((gameflag) => {
+          lst.push({ value: gameflag, label: gameflag, disabled: this.gameflag === gameflag });
+        });
       }
-      return '';
+      return lst;
+    },
+  },
+  methods: {
+    onSelectGame(gameflag: string) {
+      if (gameflag && gameflag !== this.gameflag) {
+        this.$confirm(`将跳转${gameflag}客服中心, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        })
+          .then(() => {
+            this.$store.dispatch('session/reset');
+            this.$store.dispatch('user/reset');
+            this.$store.dispatch('profile/reset');
+            const { token } = this.$route.query;
+            window.location.href = `?token=${token}&gameflag=${gameflag}`;
+          })
+          .catch(() => {
+            // do nothing
+          });
+      }
     },
   },
 });

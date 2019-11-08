@@ -26,6 +26,11 @@ const mutations: MutationTree<UserState> = {
       state.users[iSender].iUnreadCnt = newMsgCnt.iCnt;
     }
   },
+  RESET(state) {
+    state.users = {};
+    state.searchResult = [];
+    state.unreadCnt = {};
+  },
 };
 
 export default mutations;

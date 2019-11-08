@@ -2857,6 +2857,9 @@ export const login = $root.login = (() => {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
             return null;
@@ -2890,6 +2893,18 @@ export const login = $root.login = (() => {
             case "TOKENERR":
             case 3:
                 message.eLogincode = 3;
+                break;
+            case "LOGINERR":
+            case 4:
+                message.eLogincode = 4;
+                break;
+            case "GAMEFLAGERR":
+            case 5:
+                message.eLogincode = 5;
+                break;
+            case "AUTHERR":
+            case 6:
+                message.eLogincode = 6;
                 break;
             }
             return message;
@@ -2934,6 +2949,9 @@ export const login = $root.login = (() => {
          * @property {number} NOACCOUNT=1 NOACCOUNT value
          * @property {number} NETERR=2 NETERR value
          * @property {number} TOKENERR=3 TOKENERR value
+         * @property {number} LOGINERR=4 LOGINERR value
+         * @property {number} GAMEFLAGERR=5 GAMEFLAGERR value
+         * @property {number} AUTHERR=6 AUTHERR value
          */
         GS2CLoginCode.Code = (function() {
             const valuesById = {}, values = Object.create(valuesById);
@@ -2941,6 +2959,9 @@ export const login = $root.login = (() => {
             values[valuesById[1] = "NOACCOUNT"] = 1;
             values[valuesById[2] = "NETERR"] = 2;
             values[valuesById[3] = "TOKENERR"] = 3;
+            values[valuesById[4] = "LOGINERR"] = 4;
+            values[valuesById[5] = "GAMEFLAGERR"] = 5;
+            values[valuesById[6] = "AUTHERR"] = 6;
             return values;
         })();
 
@@ -2956,6 +2977,7 @@ export const login = $root.login = (() => {
          * @property {number} pid GS2CLoginSucc pid
          * @property {string} sName GS2CLoginSucc sName
          * @property {string} sGameFlag GS2CLoginSucc sGameFlag
+         * @property {Array.<string>|null} [gamelist] GS2CLoginSucc gamelist
          */
 
         /**
@@ -2967,6 +2989,7 @@ export const login = $root.login = (() => {
          * @param {login.IGS2CLoginSucc=} [properties] Properties to set
          */
         function GS2CLoginSucc(properties) {
+            this.gamelist = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -2998,6 +3021,14 @@ export const login = $root.login = (() => {
         GS2CLoginSucc.prototype.sGameFlag = "";
 
         /**
+         * GS2CLoginSucc gamelist.
+         * @member {Array.<string>} gamelist
+         * @memberof login.GS2CLoginSucc
+         * @instance
+         */
+        GS2CLoginSucc.prototype.gamelist = $util.emptyArray;
+
+        /**
          * Creates a new GS2CLoginSucc instance using the specified properties.
          * @function create
          * @memberof login.GS2CLoginSucc
@@ -3024,6 +3055,9 @@ export const login = $root.login = (() => {
             writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.sName);
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.sGameFlag);
+            if (message.gamelist != null && message.gamelist.length)
+                for (let i = 0; i < message.gamelist.length; ++i)
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.gamelist[i]);
             return writer;
         };
 
@@ -3066,6 +3100,11 @@ export const login = $root.login = (() => {
                     break;
                 case 3:
                     message.sGameFlag = reader.string();
+                    break;
+                case 4:
+                    if (!(message.gamelist && message.gamelist.length))
+                        message.gamelist = [];
+                    message.gamelist.push(reader.string());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -3114,6 +3153,13 @@ export const login = $root.login = (() => {
                 return "sName: string expected";
             if (!$util.isString(message.sGameFlag))
                 return "sGameFlag: string expected";
+            if (message.gamelist != null && message.hasOwnProperty("gamelist")) {
+                if (!Array.isArray(message.gamelist))
+                    return "gamelist: array expected";
+                for (let i = 0; i < message.gamelist.length; ++i)
+                    if (!$util.isString(message.gamelist[i]))
+                        return "gamelist: string[] expected";
+            }
             return null;
         };
 
@@ -3135,6 +3181,13 @@ export const login = $root.login = (() => {
                 message.sName = String(object.sName);
             if (object.sGameFlag != null)
                 message.sGameFlag = String(object.sGameFlag);
+            if (object.gamelist) {
+                if (!Array.isArray(object.gamelist))
+                    throw TypeError(".login.GS2CLoginSucc.gamelist: array expected");
+                message.gamelist = [];
+                for (let i = 0; i < object.gamelist.length; ++i)
+                    message.gamelist[i] = String(object.gamelist[i]);
+            }
             return message;
         };
 
@@ -3151,6 +3204,8 @@ export const login = $root.login = (() => {
             if (!options)
                 options = {};
             let object = {};
+            if (options.arrays || options.defaults)
+                object.gamelist = [];
             if (options.defaults) {
                 object.pid = 0;
                 object.sName = "";
@@ -3162,6 +3217,11 @@ export const login = $root.login = (() => {
                 object.sName = message.sName;
             if (message.sGameFlag != null && message.hasOwnProperty("sGameFlag"))
                 object.sGameFlag = message.sGameFlag;
+            if (message.gamelist && message.gamelist.length) {
+                object.gamelist = [];
+                for (let j = 0; j < message.gamelist.length; ++j)
+                    object.gamelist[j] = message.gamelist[j];
+            }
             return object;
         };
 
@@ -3186,6 +3246,7 @@ export const login = $root.login = (() => {
          * @memberof login
          * @interface IC2GSVertify
          * @property {string} sToken C2GSVertify sToken
+         * @property {string} sGameFlag C2GSVertify sGameFlag
          */
 
         /**
@@ -3212,6 +3273,14 @@ export const login = $root.login = (() => {
         C2GSVertify.prototype.sToken = "";
 
         /**
+         * C2GSVertify sGameFlag.
+         * @member {string} sGameFlag
+         * @memberof login.C2GSVertify
+         * @instance
+         */
+        C2GSVertify.prototype.sGameFlag = "";
+
+        /**
          * Creates a new C2GSVertify instance using the specified properties.
          * @function create
          * @memberof login.C2GSVertify
@@ -3236,6 +3305,7 @@ export const login = $root.login = (() => {
             if (!writer)
                 writer = $Writer.create();
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.sToken);
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.sGameFlag);
             return writer;
         };
 
@@ -3273,6 +3343,9 @@ export const login = $root.login = (() => {
                 case 1:
                     message.sToken = reader.string();
                     break;
+                case 2:
+                    message.sGameFlag = reader.string();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -3280,6 +3353,8 @@ export const login = $root.login = (() => {
             }
             if (!message.hasOwnProperty("sToken"))
                 throw $util.ProtocolError("missing required 'sToken'", { instance: message });
+            if (!message.hasOwnProperty("sGameFlag"))
+                throw $util.ProtocolError("missing required 'sGameFlag'", { instance: message });
             return message;
         };
 
@@ -3312,6 +3387,8 @@ export const login = $root.login = (() => {
                 return "object expected";
             if (!$util.isString(message.sToken))
                 return "sToken: string expected";
+            if (!$util.isString(message.sGameFlag))
+                return "sGameFlag: string expected";
             return null;
         };
 
@@ -3329,6 +3406,8 @@ export const login = $root.login = (() => {
             let message = new $root.login.C2GSVertify();
             if (object.sToken != null)
                 message.sToken = String(object.sToken);
+            if (object.sGameFlag != null)
+                message.sGameFlag = String(object.sGameFlag);
             return message;
         };
 
@@ -3345,10 +3424,14 @@ export const login = $root.login = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults)
+            if (options.defaults) {
                 object.sToken = "";
+                object.sGameFlag = "";
+            }
             if (message.sToken != null && message.hasOwnProperty("sToken"))
                 object.sToken = message.sToken;
+            if (message.sGameFlag != null && message.hasOwnProperty("sGameFlag"))
+                object.sGameFlag = message.sGameFlag;
             return object;
         };
 

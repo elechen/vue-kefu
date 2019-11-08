@@ -12,6 +12,7 @@ const actions: ActionTree<SessionState, RootState> = {
   },
   receiveMessage: ({ commit, rootState }, payload) => commit('RECEIVE_MESSAGE', { rootState, payload }),
   selectSession: ({ commit }, uid) => commit('SELECT_SESSION', uid),
+  reset: ({ commit }, payload) => commit('RESET', payload),
 };
 
 export default actions;
