@@ -5,9 +5,9 @@
     v-on:click="onSelectSession(player.pid)"
   >
     <el-badge
-      :value="player.iUnreadCnt ? player.iUnreadCnt : 0"
+      :value="unreadCnt"
       :max="9"
-      :hidden="player.iUnreadCnt === 0"
+      :hidden="unreadCnt === 0"
       :style="{marginBottom:marginBottom+'px'}"
     >
       <div class="dialog-avator">
@@ -39,7 +39,11 @@ export default Vue.extend({
     onSelectSession(pid: number) {
       this.$store.dispatch('session/selectSession', pid);
       this.$store.dispatch('user/updateNewMsgCnt', { iSender: pid, iCnt: 0 });
-      netfriend.C2GSReadFrdMsg({ iSender: pid });
+      if (this.unreadCnt > 0) {
+        netfriend.C2GSReadFrdMsg({ iSender: pid });
+      } else if (!this.lastMsg) {
+        netfriend.C2GSGetHistoryMsg({ pid, curidx: 0 });
+      }
     },
   },
   computed: {
@@ -47,14 +51,26 @@ export default Vue.extend({
       return this.$store.state.session.currentSessionId;
     },
     description(): string {
+      if (this.lastMsg) {
+        return this.lastMsg.sMsg;
+      }
+      return '';
+    },
+    unreadCnt(): number {
+      if (this.player && this.player.iUnreadCnt) {
+        return this.player.iUnreadCnt;
+      }
+      return 0;
+    },
+    lastMsg(): friend.GS2CSendFrdMsg.IFrdMsg | undefined {
       let lst: friend.GS2CSendFrdMsg.IFrdMsg[] = [];
       if (this.currentSessionId) {
         lst = this.$store.state.session.sessions[this.currentSessionId];
         if (lst) {
-          return lst[lst.length - 1].sMsg;
+          return lst[lst.length - 1];
         }
       }
-      return '';
+      return undefined;
     },
     marginBottom(): number {
       return this.player.pid === this.currentSessionId ? 0 : 12;
