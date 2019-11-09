@@ -15,6 +15,7 @@
           uselazyload="true"
           class="img-bg avatar"
           :src="require(`@/assets/icon/icon_${gameflag}.png`)"
+          :class="{gray:player.iOnline === 0}"
         />
       </div>
     </el-badge>

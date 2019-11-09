@@ -6,6 +6,7 @@
           <img
             uselazyload="true"
             class="img-bg avatar"
+            :class="{gray:!isOnline}"
             :src="require(`@/assets/icon/icon_${gameflag}.png`)"
           />
         </div>
@@ -41,6 +42,12 @@ export default Vue.extend({
         return user;
       }
       return undefined;
+    },
+    isOnline(): boolean {
+      if (this.user) {
+        return this.user.iOnline === 1;
+      }
+      return true;
     },
     playerName(): string {
       if (this.user) {

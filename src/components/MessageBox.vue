@@ -17,6 +17,7 @@
           <img
             v-else
             class="img-bg avatar"
+            :class="{gray:!isOnline}"
             :src="require(`@/assets/icon/icon_${gameflag}.png`)"
           />
         </div>
@@ -65,6 +66,13 @@ export default Vue.extend({
     },
     isGM(): boolean {
       return this.message.iSender < 10000;
+    },
+    isOnline(): boolean {
+      const sender = this.$store.state.user.users[this.message.iSender];
+      if (sender) {
+        return sender.iOnline === 1;
+      }
+      return true;
     },
     gameflag(): string {
       return this.$store.state.profile.user.sGameFlag;

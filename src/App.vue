@@ -119,4 +119,9 @@ p {
   width: 100%;
   height: 100%;
 }
+
+.gray {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
 </style>
