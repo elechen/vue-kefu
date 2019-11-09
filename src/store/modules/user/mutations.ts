@@ -27,8 +27,7 @@ const mutations: MutationTree<UserState> = {
     }
   },
   UPDATE_CHATTIME(state, payload) {
-    const chatMsg: friend.GS2CSendFrdMsg.IFrdMsg = payload;
-    const { iSender, iTime } = chatMsg;
+    const { iSender, iTime } = payload as { iSender: number, iTime: number };
     if (state.users[iSender]) {
       state.users[iSender].iChatTime = iTime;
     }
