@@ -4,11 +4,16 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 // @ts-ignore
 import VueNativeSock from 'vue-native-websocket';
+// @ts-ignore
+import clipboard from 'clipboard';
 import router from './router';
 import store from './store';
 import App from './App.vue';
 import * as net from '@/net/net';
 import * as define from './define';
+
+// 注册到vue原型上
+Vue.prototype.clipboard = clipboard;
 
 Vue.config.productionTip = false;
 

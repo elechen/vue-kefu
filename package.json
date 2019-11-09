@@ -9,6 +9,7 @@
     "proto": "npx pbjs -t static-module -l eslint-disable --es6 -w default -o ./src/proto/index.js ./src/proto/*.proto && pbts -o ./src/proto/index.d.ts ./src/proto/index.js"
   },
   "dependencies": {
+    "clipboard": "^2.0.4",
     "core-js": "^3.1.2",
     "css-loader": "^3.2.0",
     "element-ui": "^2.12.0",

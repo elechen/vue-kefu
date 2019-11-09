@@ -13,10 +13,16 @@
         <div class="jimi-info">
           <p class="name">
             {{playerName}}
-            <span
-              class="typing"
-              style="display: none;"
-            >对方正在输入......</span>
+            <span>
+              <i
+                v-show="user"
+                ref="copy"
+                class="el-icon-document-copy"
+                data-clipboard-action="copy"
+                :data-clipboard-text="user ? user.pid : ''"
+                @click="onCopy"
+              ></i>
+            </span>
           </p>
           <p class="description">{{description}}</p>
         </div>
@@ -51,7 +57,7 @@ export default Vue.extend({
     },
     playerName(): string {
       if (this.user) {
-        return this.user.sName;
+        return `${this.user.sName} ID:${this.user.pid}`;
       }
       return '先选择一位玩家';
     },
@@ -63,6 +69,20 @@ export default Vue.extend({
       }
       return sDesc;
     },
+  },
+  data() {
+    return {
+      copyBtn: null, // 存储初始化复制按钮事件
+    };
+  },
+  methods: {
+    onCopy() {
+      this.$message({ message: 'ID复制好了', duration: 500 });
+    },
+  },
+  mounted() {
+    const Clipboard = (this as any).clipboard;
+    this.copyBtn = new Clipboard(this.$refs.copy);
   },
 });
 </script>
