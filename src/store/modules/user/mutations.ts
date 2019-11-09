@@ -26,6 +26,13 @@ const mutations: MutationTree<UserState> = {
       state.users[iSender].iUnreadCnt = newMsgCnt.iCnt;
     }
   },
+  UPDATE_CHATTIME(state, payload) {
+    const chatMsg: friend.GS2CSendFrdMsg.IFrdMsg = payload;
+    const { iSender, iTime } = chatMsg;
+    if (state.users[iSender]) {
+      state.users[iSender].iChatTime = iTime;
+    }
+  },
   RESET(state) {
     state.users = {};
     state.searchResult = [];
