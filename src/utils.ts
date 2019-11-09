@@ -22,3 +22,15 @@ export function GetVIP(iMoney: number): number {
   });
   return VIP;
 }
+
+export enum IMG_TYPE {
+  small = 0,
+  big = 1,
+}
+
+export function GetImgUrl(sn: string, type: IMG_TYPE) {
+  const host = 'http://pubaudio.yuelangnet.com:8001';
+  const pwd = '0dd7beef22f7fd2af9918b05fc42b458';
+  const action = 'getpic';
+  return `${host}//?action=${action}&passport=${pwd}&picflag=${sn}&type=${type}`;
+}

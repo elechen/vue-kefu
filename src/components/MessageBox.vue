@@ -29,7 +29,13 @@
               :msgid="message.id"
             >
               <div class="text-message--container">
-                <p>{{message.sMsg}}</p>
+                <el-image
+                  v-if="image"
+                  style="width: 100px; height: 100px"
+                  :src="image.small"
+                  :preview-src-list="image.big"
+                ></el-image>
+                <p v-else>{{message.sMsg}}</p>
               </div>
             </div>
           </div>
@@ -45,6 +51,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import moment from 'moment';
+import * as utils from '@/utils';
 
 export default Vue.extend({
   name: 'MessageBox',
@@ -61,6 +68,18 @@ export default Vue.extend({
     },
     gameflag(): string {
       return this.$store.state.profile.user.sGameFlag;
+    },
+    image(): { small: string; big: string[] } | undefined {
+      const reg = /\{sl_\d+,(?<sn>\w+)\}/;
+      const msg: string = this.message.sMsg;
+      if (reg && msg.match(reg)) {
+        const { sn } = msg.match(reg)!.groups!;
+        return {
+          small: utils.GetImgUrl(sn, utils.IMG_TYPE.small),
+          big: [utils.GetImgUrl(sn, utils.IMG_TYPE.big)],
+        };
+      }
+      return undefined;
     },
   },
   props: {
