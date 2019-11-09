@@ -23,7 +23,7 @@ function GS2CSendFrdMsg(message: friend.IGS2CSendFrdMsg) {
   console.log(message);
   Vue.prototype.$store.dispatch('session/receiveMessage', message);
   Vue.prototype.$store.dispatch('user/updateNewMsgCnt', { iSender: message.pid, iCnt: 0 });
-  if (message.tFrdMsg && message.tFrdMsg.length > 0) {
+  if (message.iFlag === 0 && message.tFrdMsg && message.tFrdMsg.length > 0) {
     const msg = message.tFrdMsg![message.tFrdMsg!.length - 1];
     Vue.prototype.$store.dispatch('user/updateChatTime', { iSender: message.pid, iTime: msg.iTime });
   }
