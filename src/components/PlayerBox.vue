@@ -38,9 +38,9 @@ export default Vue.extend({
   methods: {
     onSelectSession(pid: number) {
       this.$store.dispatch('session/selectSession', pid);
-      this.$store.dispatch('user/updateNewMsgCnt', { iSender: pid, iCnt: 0 });
       if (this.unreadCnt > 0) {
         netfriend.C2GSReadFrdMsg({ iSender: pid });
+        this.$store.dispatch('user/updateNewMsgCnt', { iSender: pid, iCnt: 0 });
       } else if (!this.lastMsg) {
         netfriend.C2GSGetHistoryMsg({ pid, curidx: 0 });
       }

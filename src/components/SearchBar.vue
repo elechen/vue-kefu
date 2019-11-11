@@ -67,11 +67,9 @@ export default Vue.extend({
       }
       console.log('handleSelect', pid);
       const userState: UserState = this.$store.state.user;
-      if (userState.users[pid]) {
-        this.$store.dispatch('session/selectSession', pid);
-      } else {
+      this.$store.dispatch('session/selectSession', pid);
+      if (!userState.users[pid]) {
         netfriend.C2GSGetFrdInfo({ pid });
-        this.$store.dispatch('session/selectSession', pid);
       }
     },
   },
