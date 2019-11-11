@@ -14,6 +14,7 @@
           <p class="name">
             {{playerName}}
             <span>
+              <el-button type="text" style="padding:0">
               <i
                 v-show="user"
                 ref="copy"
@@ -22,6 +23,7 @@
                 :data-clipboard-text="user ? user.pid : ''"
                 @click="onCopy"
               ></i>
+              </el-button>
             </span>
           </p>
           <p class="description">{{description}}</p>
@@ -77,7 +79,7 @@ export default Vue.extend({
   },
   methods: {
     onCopy() {
-      this.$message({ message: 'ID复制好了', duration: 500 });
+      this.$message({ message: 'ID复制好了', duration: 700 });
     },
   },
   mounted() {
