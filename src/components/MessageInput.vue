@@ -34,6 +34,8 @@
 import Vue from 'vue';
 import moment from 'moment';
 
+import * as utils from '@/utils';
+
 export default Vue.extend({
   name: 'MessageInput',
   data() {
@@ -52,18 +54,23 @@ export default Vue.extend({
           ev.preventDefault();
           const reader = new FileReader();
           reader.onload = function onload(event) {
-            console.log(reader.result);
+            // console.log(reader.result);
             // const utf8decoder = new TextDecoder();
             // const arrayBuffer = reader.result as ArrayBuffer;
             // that.pasteImageData = utf8decoder.decode(arrayBuffer);
             // console.log(that.pasteImageData);
-            that.pasteImageData = reader.result as string;
+            // that.pasteImageData = reader.result as string;
+            const img = new Image();
+            img.src = reader.result as string;
+            that.pasteImageData = utils.createThumbnail(img);
+            console.log(that.pasteImageData);
             that.imageVisible = true;
           };
           const file = item.getAsFile() as File;
           // reader.readAsText(item.getAsFile() as File);
           reader.readAsDataURL(item.getAsFile() as File);
           // reader.readAsBinaryString
+          console.log(file);
         }
       }
     };
