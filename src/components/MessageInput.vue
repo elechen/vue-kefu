@@ -8,24 +8,31 @@
       v-model="textarea"
       @keyup.enter.ctrl.native="onSubmit"
     ></el-input>
-    <el-button
-      plain
-      class="input-field--send-btn"
-      :disabled="disabled"
-      size="mini"
-      @click="onSubmit"
-    >发送</el-button>
-    <el-popover placement="top" width="160" v-model="imageVisible">
+    <el-popover class="popover" placement="top" v-model="imageVisible">
       <el-image
-        style="width: 100px; height: 100px"
-        :src="pasteImageData"
-        :preview-src-list="[pasteImageData,]"
+        class="image"
+        :src="pasteImageData.small"
+        :preview-src-list="[pasteImageData.big,]"
         fit="contain"
       ></el-image>
-      <div style="text-align: right; margin: 0">
-        <el-button size="mini" type="text" @click="onClearPasteImageData">取消</el-button>
-        <el-button size="mini" type="primary" @click="onSubmitPasteImageData">发送</el-button>
+      <div class="bottom">
+        <el-row type="flex" justify="center">
+          <el-button size="mini" @click="onClearPasteImageData">取消</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="onSubmitPasteImageData"
+          >发送</el-button>
+        </el-row>
       </div>
+      <el-button
+        slot="reference"
+        plain
+        class="input-field--send-btn"
+        :disabled="disabled"
+        size="mini"
+        @click="onSubmit"
+      >发送</el-button>
     </el-popover>
   </div>
 </template>
@@ -41,8 +48,9 @@ export default Vue.extend({
   data() {
     return {
       textarea: '',
-      pasteImageData: '',
+      pasteImageData: { small: '', big: '' },
       imageVisible: false,
+      imageSourceBlob: new Blob(),
     };
   },
   mounted() {
@@ -52,25 +60,20 @@ export default Vue.extend({
         const item = ev.clipboardData!.items[i];
         if (item.type.indexOf('image') > -1) {
           ev.preventDefault();
-          const reader = new FileReader();
-          reader.onload = function onload(event) {
-            // console.log(reader.result);
-            // const utf8decoder = new TextDecoder();
-            // const arrayBuffer = reader.result as ArrayBuffer;
-            // that.pasteImageData = utf8decoder.decode(arrayBuffer);
-            // console.log(that.pasteImageData);
-            // that.pasteImageData = reader.result as string;
-            const img = new Image();
-            img.src = reader.result as string;
-            that.pasteImageData = utils.createThumbnail(img);
-            console.log(that.pasteImageData);
-            that.imageVisible = true;
-          };
-          const file = item.getAsFile() as File;
-          // reader.readAsText(item.getAsFile() as File);
-          reader.readAsDataURL(item.getAsFile() as File);
-          // reader.readAsBinaryString
-          console.log(file);
+          const sourceBlob = item.getAsFile() as Blob;
+          that.showImageBeforeSend(sourceBlob);
+          break;
+        }
+      }
+    };
+    document.ondrop = function ondrop(this: GlobalEventHandlers, ev: DragEvent) {
+      for (let i = 0; i < ev.dataTransfer!.items.length; i += 1) {
+        const item = ev.dataTransfer!.items[i];
+        if (item.type.indexOf('image') > -1) {
+          ev.preventDefault();
+          const sourceBlob = item.getAsFile() as Blob;
+          that.showImageBeforeSend(sourceBlob);
+          break;
         }
       }
     };
@@ -92,8 +95,34 @@ export default Vue.extend({
       this.imageVisible = false;
     },
     onSubmitPasteImageData() {
-      console.log(this.pasteImageData);
       this.imageVisible = false;
+      utils.uploadImage(this.imageSourceBlob, (ret: any) => {
+        if (ret.serialnum) {
+          const msg = `{sl_27,${ret.serialnum}}`;
+          const sid = this.$store.state.session.currentSessionId;
+          this.$store.dispatch('session/sendMessage', { target: sid, msg });
+        } else {
+          this.$message(`上传图片失败[${ret.error}]`);
+        }
+      });
+    },
+    showImageBeforeSend(sourceBlob: Blob) {
+      this.imageSourceBlob = sourceBlob;
+      utils.createThumbnail(sourceBlob, (b: Blob | null) => {
+        if (b) {
+          const reader2 = new FileReader();
+          reader2.onloadend = () => {
+            this.pasteImageData.small = reader2.result as string;
+          };
+          reader2.readAsDataURL(b);
+        }
+        this.imageVisible = true;
+      });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        this.pasteImageData.big = reader.result as string;
+      };
+      reader.readAsDataURL(sourceBlob);
     },
   },
 });
@@ -116,5 +145,16 @@ export default Vue.extend({
   float: right;
   bottom: 32px;
   right: 4px;
+}
+.popover {
+  padding: 0px;
+}
+.bottom {
+  margin-top: 13px;
+}
+.image {
+  width: 100%;
+  display: block;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 </style>
