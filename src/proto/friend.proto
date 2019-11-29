@@ -31,6 +31,7 @@ message GS2CSendFrdInfo {
 	required string sPlatform	= 6;	//渠道
 	required sint32 iMoneyMax	= 7;	//总充值额
 	required sint32 iChatTime	= 8;	//最近聊天时间
+	required sint32 iMarked		= 9;	//是否被标记1-有,0-无
 }
 
 //4.发送搜索结果
@@ -42,9 +43,15 @@ message GS2CSearchResult {
 	repeated SearchResult tRet 	= 1;
 }
 
-//5.发送玩家信息
+//5.弹框提示
 message GS2CNotify {
-	required string sText		= 1;
+	required string sText = 1;
+}
+
+//6.当前聊天中GM列表
+message GS2ChatPlayer {
+	required sint32 pid = 1;
+	repeated string sPlayer = 2;	//GM名字列表
 }
 
 //----------------C2GS---------------
@@ -80,4 +87,21 @@ message C2GSSearchFriend {
 message C2GSGetHistoryMsg {
 	required sint32 pid 	= 1;
 	required sint32 curidx  = 2;	//客户端当前最小id
+}
+
+//7.进入/离开某人的聊天
+message C2GSEnterChat {
+	required sint32 pid = 1;
+	required sint32 act = 2;	//1-进入,0-离开
+}
+
+//8.标记某个聊天
+message C2GSMarkChat {
+	required sint32 pid = 1;
+	required sint32 act = 2;	//1-标记，0-取消
+}
+
+//9.结束与某人的对话
+message C2GSDelChat {
+	required sint32 pid = 1;
 }

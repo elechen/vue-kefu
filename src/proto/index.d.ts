@@ -343,6 +343,9 @@ export namespace friend {
 
         /** GS2CSendFrdInfo iChatTime */
         iChatTime: number;
+
+        /** GS2CSendFrdInfo iMarked */
+        iMarked: number;
     }
 
     /** Represents a GS2CSendFrdInfo. */
@@ -377,6 +380,9 @@ export namespace friend {
 
         /** GS2CSendFrdInfo iChatTime. */
         public iChatTime: number;
+
+        /** GS2CSendFrdInfo iMarked. */
+        public iMarked: number;
 
         /**
          * Creates a new GS2CSendFrdInfo instance using the specified properties.
@@ -723,6 +729,102 @@ export namespace friend {
 
         /**
          * Converts this GS2CNotify to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a GS2ChatPlayer. */
+    interface IGS2ChatPlayer {
+
+        /** GS2ChatPlayer pid */
+        pid: number;
+
+        /** GS2ChatPlayer sPlayer */
+        sPlayer?: (string[]|null);
+    }
+
+    /** Represents a GS2ChatPlayer. */
+    class GS2ChatPlayer implements IGS2ChatPlayer {
+
+        /**
+         * Constructs a new GS2ChatPlayer.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IGS2ChatPlayer);
+
+        /** GS2ChatPlayer pid. */
+        public pid: number;
+
+        /** GS2ChatPlayer sPlayer. */
+        public sPlayer: string[];
+
+        /**
+         * Creates a new GS2ChatPlayer instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GS2ChatPlayer instance
+         */
+        public static create(properties?: friend.IGS2ChatPlayer): friend.GS2ChatPlayer;
+
+        /**
+         * Encodes the specified GS2ChatPlayer message. Does not implicitly {@link friend.GS2ChatPlayer.verify|verify} messages.
+         * @param message GS2ChatPlayer message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IGS2ChatPlayer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GS2ChatPlayer message, length delimited. Does not implicitly {@link friend.GS2ChatPlayer.verify|verify} messages.
+         * @param message GS2ChatPlayer message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IGS2ChatPlayer, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GS2ChatPlayer message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GS2ChatPlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.GS2ChatPlayer;
+
+        /**
+         * Decodes a GS2ChatPlayer message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GS2ChatPlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.GS2ChatPlayer;
+
+        /**
+         * Verifies a GS2ChatPlayer message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a GS2ChatPlayer message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns GS2ChatPlayer
+         */
+        public static fromObject(object: { [k: string]: any }): friend.GS2ChatPlayer;
+
+        /**
+         * Creates a plain object from a GS2ChatPlayer message. Also converts values to other types if specified.
+         * @param message GS2ChatPlayer
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.GS2ChatPlayer, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this GS2ChatPlayer to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -1281,6 +1383,288 @@ export namespace friend {
 
         /**
          * Converts this C2GSGetHistoryMsg to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a C2GSEnterChat. */
+    interface IC2GSEnterChat {
+
+        /** C2GSEnterChat pid */
+        pid: number;
+
+        /** C2GSEnterChat act */
+        act: number;
+    }
+
+    /** Represents a C2GSEnterChat. */
+    class C2GSEnterChat implements IC2GSEnterChat {
+
+        /**
+         * Constructs a new C2GSEnterChat.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IC2GSEnterChat);
+
+        /** C2GSEnterChat pid. */
+        public pid: number;
+
+        /** C2GSEnterChat act. */
+        public act: number;
+
+        /**
+         * Creates a new C2GSEnterChat instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2GSEnterChat instance
+         */
+        public static create(properties?: friend.IC2GSEnterChat): friend.C2GSEnterChat;
+
+        /**
+         * Encodes the specified C2GSEnterChat message. Does not implicitly {@link friend.C2GSEnterChat.verify|verify} messages.
+         * @param message C2GSEnterChat message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IC2GSEnterChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2GSEnterChat message, length delimited. Does not implicitly {@link friend.C2GSEnterChat.verify|verify} messages.
+         * @param message C2GSEnterChat message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IC2GSEnterChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2GSEnterChat message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2GSEnterChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.C2GSEnterChat;
+
+        /**
+         * Decodes a C2GSEnterChat message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2GSEnterChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.C2GSEnterChat;
+
+        /**
+         * Verifies a C2GSEnterChat message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2GSEnterChat message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2GSEnterChat
+         */
+        public static fromObject(object: { [k: string]: any }): friend.C2GSEnterChat;
+
+        /**
+         * Creates a plain object from a C2GSEnterChat message. Also converts values to other types if specified.
+         * @param message C2GSEnterChat
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.C2GSEnterChat, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2GSEnterChat to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a C2GSMarkChat. */
+    interface IC2GSMarkChat {
+
+        /** C2GSMarkChat pid */
+        pid: number;
+
+        /** C2GSMarkChat act */
+        act: number;
+    }
+
+    /** Represents a C2GSMarkChat. */
+    class C2GSMarkChat implements IC2GSMarkChat {
+
+        /**
+         * Constructs a new C2GSMarkChat.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IC2GSMarkChat);
+
+        /** C2GSMarkChat pid. */
+        public pid: number;
+
+        /** C2GSMarkChat act. */
+        public act: number;
+
+        /**
+         * Creates a new C2GSMarkChat instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2GSMarkChat instance
+         */
+        public static create(properties?: friend.IC2GSMarkChat): friend.C2GSMarkChat;
+
+        /**
+         * Encodes the specified C2GSMarkChat message. Does not implicitly {@link friend.C2GSMarkChat.verify|verify} messages.
+         * @param message C2GSMarkChat message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IC2GSMarkChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2GSMarkChat message, length delimited. Does not implicitly {@link friend.C2GSMarkChat.verify|verify} messages.
+         * @param message C2GSMarkChat message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IC2GSMarkChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2GSMarkChat message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2GSMarkChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.C2GSMarkChat;
+
+        /**
+         * Decodes a C2GSMarkChat message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2GSMarkChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.C2GSMarkChat;
+
+        /**
+         * Verifies a C2GSMarkChat message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2GSMarkChat message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2GSMarkChat
+         */
+        public static fromObject(object: { [k: string]: any }): friend.C2GSMarkChat;
+
+        /**
+         * Creates a plain object from a C2GSMarkChat message. Also converts values to other types if specified.
+         * @param message C2GSMarkChat
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.C2GSMarkChat, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2GSMarkChat to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a C2GSDelChat. */
+    interface IC2GSDelChat {
+
+        /** C2GSDelChat pid */
+        pid: number;
+    }
+
+    /** Represents a C2GSDelChat. */
+    class C2GSDelChat implements IC2GSDelChat {
+
+        /**
+         * Constructs a new C2GSDelChat.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: friend.IC2GSDelChat);
+
+        /** C2GSDelChat pid. */
+        public pid: number;
+
+        /**
+         * Creates a new C2GSDelChat instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2GSDelChat instance
+         */
+        public static create(properties?: friend.IC2GSDelChat): friend.C2GSDelChat;
+
+        /**
+         * Encodes the specified C2GSDelChat message. Does not implicitly {@link friend.C2GSDelChat.verify|verify} messages.
+         * @param message C2GSDelChat message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: friend.IC2GSDelChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2GSDelChat message, length delimited. Does not implicitly {@link friend.C2GSDelChat.verify|verify} messages.
+         * @param message C2GSDelChat message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: friend.IC2GSDelChat, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2GSDelChat message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2GSDelChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): friend.C2GSDelChat;
+
+        /**
+         * Decodes a C2GSDelChat message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2GSDelChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): friend.C2GSDelChat;
+
+        /**
+         * Verifies a C2GSDelChat message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a C2GSDelChat message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns C2GSDelChat
+         */
+        public static fromObject(object: { [k: string]: any }): friend.C2GSDelChat;
+
+        /**
+         * Creates a plain object from a C2GSDelChat message. Also converts values to other types if specified.
+         * @param message C2GSDelChat
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: friend.C2GSDelChat, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this C2GSDelChat to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };

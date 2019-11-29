@@ -8,7 +8,12 @@
       v-model="textarea"
       @keyup.enter.ctrl.native="onSubmit"
     ></el-input>
-    <el-popover class="popover" placement="top" v-model="imageVisible">
+    <el-popover
+      class="popover"
+      placement="top"
+      v-model="imageVisible"
+      trigger="manual"
+    >
       <el-image
         class="image"
         :src="pasteImageData.small"
@@ -96,7 +101,7 @@ export default Vue.extend({
     },
     onSubmitPasteImageData() {
       this.imageVisible = false;
-      utils.uploadImage(this.imageSourceBlob, (ret: any) => {
+      utils.uploadClickBoardImage(this.imageSourceBlob, (ret: any) => {
         if (ret.serialnum) {
           const msg = `{sl_27,${ret.serialnum}}`;
           const sid = this.$store.state.session.currentSessionId;
@@ -116,7 +121,7 @@ export default Vue.extend({
           };
           reader2.readAsDataURL(b);
         }
-        this.imageVisible = true;
+        // this.imageVisible = true;
       });
       const reader = new FileReader();
       reader.onloadend = () => {

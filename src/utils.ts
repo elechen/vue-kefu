@@ -1,5 +1,5 @@
 import axios from 'axios';
-import qs from 'qs';
+import { saveAs } from 'file-saver';
 
 export const Money2VIP: { [key: number]: number } = {
   100000: 10,
@@ -82,40 +82,70 @@ export function createThumbnail(sourceBlob: Blob,
   reader.readAsDataURL(sourceBlob);
 }
 
-export function uploadImage(sourceBlob: Blob, callback: (ret: any) => void) {
+export function uploadClickBoardImage(sourceBlob: Blob, callback: (ret: any) => void) {
   const reader = new FileReader();
   const content: { small: any, big: any } = { small: null, big: null };
-  console.log(sourceBlob.size, '----readSize');
+  const base64Header = 'data:image/png;base64,';
   reader.onload = () => {
-    content.big = reader.result as string;
-    createThumbnail(sourceBlob, (blob: Blob | null) => {
-      const reader2 = new FileReader();
-      reader2.onload = () => {
-        content.small = reader2.result as string;
-        uploadContent(content, callback);
-      };
-      reader2.readAsBinaryString(blob as Blob);
-    });
+    const big = reader.result as string;
+    saveAs(new Blob([big]), '3.png');
+    // saveAs(base64toBlob((reader.result as string).replace(base64Header, '')), '2.png');
+    // content.big = base64toBlob((reader.result as string).replace(base64Header, ''));
+    // // const download = document.createElement('a');
+    // // download.href = content.big;
+    // // download.download = 'clickboard.png';
+    // // download.click();
+    // createThumbnail(sourceBlob, (blob: Blob | null) => {
+    //   const reader2 = new FileReader();
+    //   reader2.onload = () => {
+    //     content.small = base64toBlob((reader2.result as string).replace(base64Header, ''));
+    //     uploadContent(content, callback);
+    //   };
+    //   reader2.readAsDataURL(blob as Blob);
+    // });
   };
-  reader.readAsBinaryString(sourceBlob);
+  reader.readAsArrayBuffer(sourceBlob);
 }
 
-function ab2str(buf: ArrayBuffer) {
-  const rt = new Uint8Array(buf);
-  return String.fromCharCode.apply(null, rt as any);
+function base64toBlob(base64Data: string) {
+  const contentType = 'image/png';
+  const sliceSize = 1024;
+  const byteCharacters = atob(base64Data);
+  const bytesLength = byteCharacters.length;
+  const slicesCount = Math.ceil(bytesLength / sliceSize);
+  const byteArrays = new Array(slicesCount);
+  for (let sliceIndex = 0; sliceIndex < slicesCount; sliceIndex += 1) {
+    const begin = sliceIndex * sliceSize;
+    const end = Math.min(begin + sliceSize, bytesLength);
+
+    const bytes = new Array(end - begin);
+    for (let offset = begin, i = 0; offset < end; i += 1, offset += 1) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
 }
 
-function uploadContent(content: { small: string, big: string },
+function ab2str(buf: any) {
+  const nums = new Uint8Array(buf) as any as number[];
+  return String.fromCharCode.apply(null, nums);
+}
+
+function uploadContent(content: { small: Blob, big: Blob },
   callback: (ret: any) => void) {
-  const sContent = [content.big, content.small];
-  const action = 'putpic2';
+  saveAs(content.big, 'uploadBlob_big.png');
+  saveAs(content.small, 'uploadBlob_small.png');
+  // return;
+  // const sContent = `big=${ab2str(content.big)}&small=${ab2str(content.small)}`;
+  // const action = 'putpic2';
   // const bigLen = content.big.length;
   // const smallLen = content.small.length;
-  const url = `${HOST_IMG}/?action=${action}&passport=${PWD_IMG}`;
-  console.log(url);
-  console.log(content.big);
-  console.log(content.small);
-  console.log(sContent);
+  // const url = `${HOST_IMG}/?action=${action}&passport=${PWD_IMG}`;
+  // console.log(url);
+  // console.log(content.big);
+  // console.log(content.small);
+  // console.log(sContent);
   // const oMyBlob = new Blob([content.big], { type: 'image/png' }); // the blob
   // window.open(URL.createObjectURL(oMyBlob), 'big.png');
   // const oMyBlob2 = new Blob([content.small], { type: 'image/png' }); // the blob
@@ -124,11 +154,11 @@ function uploadContent(content: { small: string, big: string },
   //   headers: { 'Content-Type': 'text/plain' },
   //   data: sContent,
   // };
-  axios.post(url, sContent).then((data) => {
-    console.log(data.data);
-    callback(data.data);
-  }).catch((error: any) => {
-    console.log('uploadContent error', error);
-    callback({ error });
-  });
+  // axios.post(url, sContent).then((data) => {
+  //   console.log(data.data);
+  //   callback(data.data);
+  // }).catch((error: any) => {
+  //   console.log('uploadContent error', error);
+  //   callback({ error });
+  // });
 }

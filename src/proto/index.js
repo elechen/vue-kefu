@@ -770,6 +770,7 @@ export const friend = $root.friend = (() => {
          * @property {string} sPlatform GS2CSendFrdInfo sPlatform
          * @property {number} iMoneyMax GS2CSendFrdInfo iMoneyMax
          * @property {number} iChatTime GS2CSendFrdInfo iChatTime
+         * @property {number} iMarked GS2CSendFrdInfo iMarked
          */
 
         /**
@@ -852,6 +853,14 @@ export const friend = $root.friend = (() => {
         GS2CSendFrdInfo.prototype.iChatTime = 0;
 
         /**
+         * GS2CSendFrdInfo iMarked.
+         * @member {number} iMarked
+         * @memberof friend.GS2CSendFrdInfo
+         * @instance
+         */
+        GS2CSendFrdInfo.prototype.iMarked = 0;
+
+        /**
          * Creates a new GS2CSendFrdInfo instance using the specified properties.
          * @function create
          * @memberof friend.GS2CSendFrdInfo
@@ -883,6 +892,7 @@ export const friend = $root.friend = (() => {
             writer.uint32(/* id 6, wireType 2 =*/50).string(message.sPlatform);
             writer.uint32(/* id 7, wireType 0 =*/56).sint32(message.iMoneyMax);
             writer.uint32(/* id 8, wireType 0 =*/64).sint32(message.iChatTime);
+            writer.uint32(/* id 9, wireType 0 =*/72).sint32(message.iMarked);
             return writer;
         };
 
@@ -941,6 +951,9 @@ export const friend = $root.friend = (() => {
                 case 8:
                     message.iChatTime = reader.sint32();
                     break;
+                case 9:
+                    message.iMarked = reader.sint32();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -962,6 +975,8 @@ export const friend = $root.friend = (() => {
                 throw $util.ProtocolError("missing required 'iMoneyMax'", { instance: message });
             if (!message.hasOwnProperty("iChatTime"))
                 throw $util.ProtocolError("missing required 'iChatTime'", { instance: message });
+            if (!message.hasOwnProperty("iMarked"))
+                throw $util.ProtocolError("missing required 'iMarked'", { instance: message });
             return message;
         };
 
@@ -1008,6 +1023,8 @@ export const friend = $root.friend = (() => {
                 return "iMoneyMax: integer expected";
             if (!$util.isInteger(message.iChatTime))
                 return "iChatTime: integer expected";
+            if (!$util.isInteger(message.iMarked))
+                return "iMarked: integer expected";
             return null;
         };
 
@@ -1039,6 +1056,8 @@ export const friend = $root.friend = (() => {
                 message.iMoneyMax = object.iMoneyMax | 0;
             if (object.iChatTime != null)
                 message.iChatTime = object.iChatTime | 0;
+            if (object.iMarked != null)
+                message.iMarked = object.iMarked | 0;
             return message;
         };
 
@@ -1064,6 +1083,7 @@ export const friend = $root.friend = (() => {
                 object.sPlatform = "";
                 object.iMoneyMax = 0;
                 object.iChatTime = 0;
+                object.iMarked = 0;
             }
             if (message.pid != null && message.hasOwnProperty("pid"))
                 object.pid = message.pid;
@@ -1081,6 +1101,8 @@ export const friend = $root.friend = (() => {
                 object.iMoneyMax = message.iMoneyMax;
             if (message.iChatTime != null && message.hasOwnProperty("iChatTime"))
                 object.iChatTime = message.iChatTime;
+            if (message.iMarked != null && message.hasOwnProperty("iMarked"))
+                object.iMarked = message.iMarked;
             return object;
         };
 
@@ -1701,6 +1723,232 @@ export const friend = $root.friend = (() => {
         };
 
         return GS2CNotify;
+    })();
+
+    friend.GS2ChatPlayer = (function() {
+
+        /**
+         * Properties of a GS2ChatPlayer.
+         * @memberof friend
+         * @interface IGS2ChatPlayer
+         * @property {number} pid GS2ChatPlayer pid
+         * @property {Array.<string>|null} [sPlayer] GS2ChatPlayer sPlayer
+         */
+
+        /**
+         * Constructs a new GS2ChatPlayer.
+         * @memberof friend
+         * @classdesc Represents a GS2ChatPlayer.
+         * @implements IGS2ChatPlayer
+         * @constructor
+         * @param {friend.IGS2ChatPlayer=} [properties] Properties to set
+         */
+        function GS2ChatPlayer(properties) {
+            this.sPlayer = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GS2ChatPlayer pid.
+         * @member {number} pid
+         * @memberof friend.GS2ChatPlayer
+         * @instance
+         */
+        GS2ChatPlayer.prototype.pid = 0;
+
+        /**
+         * GS2ChatPlayer sPlayer.
+         * @member {Array.<string>} sPlayer
+         * @memberof friend.GS2ChatPlayer
+         * @instance
+         */
+        GS2ChatPlayer.prototype.sPlayer = $util.emptyArray;
+
+        /**
+         * Creates a new GS2ChatPlayer instance using the specified properties.
+         * @function create
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {friend.IGS2ChatPlayer=} [properties] Properties to set
+         * @returns {friend.GS2ChatPlayer} GS2ChatPlayer instance
+         */
+        GS2ChatPlayer.create = function create(properties) {
+            return new GS2ChatPlayer(properties);
+        };
+
+        /**
+         * Encodes the specified GS2ChatPlayer message. Does not implicitly {@link friend.GS2ChatPlayer.verify|verify} messages.
+         * @function encode
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {friend.IGS2ChatPlayer} message GS2ChatPlayer message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2ChatPlayer.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            if (message.sPlayer != null && message.sPlayer.length)
+                for (let i = 0; i < message.sPlayer.length; ++i)
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.sPlayer[i]);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GS2ChatPlayer message, length delimited. Does not implicitly {@link friend.GS2ChatPlayer.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {friend.IGS2ChatPlayer} message GS2ChatPlayer message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2ChatPlayer.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GS2ChatPlayer message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.GS2ChatPlayer} GS2ChatPlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2ChatPlayer.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.GS2ChatPlayer();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.pid = reader.sint32();
+                    break;
+                case 2:
+                    if (!(message.sPlayer && message.sPlayer.length))
+                        message.sPlayer = [];
+                    message.sPlayer.push(reader.string());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a GS2ChatPlayer message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.GS2ChatPlayer} GS2ChatPlayer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2ChatPlayer.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a GS2ChatPlayer message.
+         * @function verify
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        GS2ChatPlayer.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            if (message.sPlayer != null && message.hasOwnProperty("sPlayer")) {
+                if (!Array.isArray(message.sPlayer))
+                    return "sPlayer: array expected";
+                for (let i = 0; i < message.sPlayer.length; ++i)
+                    if (!$util.isString(message.sPlayer[i]))
+                        return "sPlayer: string[] expected";
+            }
+            return null;
+        };
+
+        /**
+         * Creates a GS2ChatPlayer message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.GS2ChatPlayer} GS2ChatPlayer
+         */
+        GS2ChatPlayer.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.GS2ChatPlayer)
+                return object;
+            let message = new $root.friend.GS2ChatPlayer();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            if (object.sPlayer) {
+                if (!Array.isArray(object.sPlayer))
+                    throw TypeError(".friend.GS2ChatPlayer.sPlayer: array expected");
+                message.sPlayer = [];
+                for (let i = 0; i < object.sPlayer.length; ++i)
+                    message.sPlayer[i] = String(object.sPlayer[i]);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a GS2ChatPlayer message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.GS2ChatPlayer
+         * @static
+         * @param {friend.GS2ChatPlayer} message GS2ChatPlayer
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        GS2ChatPlayer.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.sPlayer = [];
+            if (options.defaults)
+                object.pid = 0;
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            if (message.sPlayer && message.sPlayer.length) {
+                object.sPlayer = [];
+                for (let j = 0; j < message.sPlayer.length; ++j)
+                    object.sPlayer[j] = message.sPlayer[j];
+            }
+            return object;
+        };
+
+        /**
+         * Converts this GS2ChatPlayer to JSON.
+         * @function toJSON
+         * @memberof friend.GS2ChatPlayer
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        GS2ChatPlayer.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return GS2ChatPlayer;
     })();
 
     friend.C2GSNewFrdMsg = (function() {
@@ -2892,6 +3140,613 @@ export const friend = $root.friend = (() => {
         };
 
         return C2GSGetHistoryMsg;
+    })();
+
+    friend.C2GSEnterChat = (function() {
+
+        /**
+         * Properties of a C2GSEnterChat.
+         * @memberof friend
+         * @interface IC2GSEnterChat
+         * @property {number} pid C2GSEnterChat pid
+         * @property {number} act C2GSEnterChat act
+         */
+
+        /**
+         * Constructs a new C2GSEnterChat.
+         * @memberof friend
+         * @classdesc Represents a C2GSEnterChat.
+         * @implements IC2GSEnterChat
+         * @constructor
+         * @param {friend.IC2GSEnterChat=} [properties] Properties to set
+         */
+        function C2GSEnterChat(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2GSEnterChat pid.
+         * @member {number} pid
+         * @memberof friend.C2GSEnterChat
+         * @instance
+         */
+        C2GSEnterChat.prototype.pid = 0;
+
+        /**
+         * C2GSEnterChat act.
+         * @member {number} act
+         * @memberof friend.C2GSEnterChat
+         * @instance
+         */
+        C2GSEnterChat.prototype.act = 0;
+
+        /**
+         * Creates a new C2GSEnterChat instance using the specified properties.
+         * @function create
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {friend.IC2GSEnterChat=} [properties] Properties to set
+         * @returns {friend.C2GSEnterChat} C2GSEnterChat instance
+         */
+        C2GSEnterChat.create = function create(properties) {
+            return new C2GSEnterChat(properties);
+        };
+
+        /**
+         * Encodes the specified C2GSEnterChat message. Does not implicitly {@link friend.C2GSEnterChat.verify|verify} messages.
+         * @function encode
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {friend.IC2GSEnterChat} message C2GSEnterChat message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSEnterChat.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            writer.uint32(/* id 2, wireType 0 =*/16).sint32(message.act);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2GSEnterChat message, length delimited. Does not implicitly {@link friend.C2GSEnterChat.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {friend.IC2GSEnterChat} message C2GSEnterChat message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSEnterChat.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2GSEnterChat message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.C2GSEnterChat} C2GSEnterChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSEnterChat.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.C2GSEnterChat();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.pid = reader.sint32();
+                    break;
+                case 2:
+                    message.act = reader.sint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
+            if (!message.hasOwnProperty("act"))
+                throw $util.ProtocolError("missing required 'act'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2GSEnterChat message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.C2GSEnterChat} C2GSEnterChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSEnterChat.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2GSEnterChat message.
+         * @function verify
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2GSEnterChat.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            if (!$util.isInteger(message.act))
+                return "act: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2GSEnterChat message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.C2GSEnterChat} C2GSEnterChat
+         */
+        C2GSEnterChat.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.C2GSEnterChat)
+                return object;
+            let message = new $root.friend.C2GSEnterChat();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            if (object.act != null)
+                message.act = object.act | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2GSEnterChat message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.C2GSEnterChat
+         * @static
+         * @param {friend.C2GSEnterChat} message C2GSEnterChat
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2GSEnterChat.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.pid = 0;
+                object.act = 0;
+            }
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            if (message.act != null && message.hasOwnProperty("act"))
+                object.act = message.act;
+            return object;
+        };
+
+        /**
+         * Converts this C2GSEnterChat to JSON.
+         * @function toJSON
+         * @memberof friend.C2GSEnterChat
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2GSEnterChat.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2GSEnterChat;
+    })();
+
+    friend.C2GSMarkChat = (function() {
+
+        /**
+         * Properties of a C2GSMarkChat.
+         * @memberof friend
+         * @interface IC2GSMarkChat
+         * @property {number} pid C2GSMarkChat pid
+         * @property {number} act C2GSMarkChat act
+         */
+
+        /**
+         * Constructs a new C2GSMarkChat.
+         * @memberof friend
+         * @classdesc Represents a C2GSMarkChat.
+         * @implements IC2GSMarkChat
+         * @constructor
+         * @param {friend.IC2GSMarkChat=} [properties] Properties to set
+         */
+        function C2GSMarkChat(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2GSMarkChat pid.
+         * @member {number} pid
+         * @memberof friend.C2GSMarkChat
+         * @instance
+         */
+        C2GSMarkChat.prototype.pid = 0;
+
+        /**
+         * C2GSMarkChat act.
+         * @member {number} act
+         * @memberof friend.C2GSMarkChat
+         * @instance
+         */
+        C2GSMarkChat.prototype.act = 0;
+
+        /**
+         * Creates a new C2GSMarkChat instance using the specified properties.
+         * @function create
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {friend.IC2GSMarkChat=} [properties] Properties to set
+         * @returns {friend.C2GSMarkChat} C2GSMarkChat instance
+         */
+        C2GSMarkChat.create = function create(properties) {
+            return new C2GSMarkChat(properties);
+        };
+
+        /**
+         * Encodes the specified C2GSMarkChat message. Does not implicitly {@link friend.C2GSMarkChat.verify|verify} messages.
+         * @function encode
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {friend.IC2GSMarkChat} message C2GSMarkChat message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSMarkChat.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            writer.uint32(/* id 2, wireType 0 =*/16).sint32(message.act);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2GSMarkChat message, length delimited. Does not implicitly {@link friend.C2GSMarkChat.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {friend.IC2GSMarkChat} message C2GSMarkChat message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSMarkChat.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2GSMarkChat message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.C2GSMarkChat} C2GSMarkChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSMarkChat.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.C2GSMarkChat();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.pid = reader.sint32();
+                    break;
+                case 2:
+                    message.act = reader.sint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
+            if (!message.hasOwnProperty("act"))
+                throw $util.ProtocolError("missing required 'act'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2GSMarkChat message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.C2GSMarkChat} C2GSMarkChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSMarkChat.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2GSMarkChat message.
+         * @function verify
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2GSMarkChat.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            if (!$util.isInteger(message.act))
+                return "act: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2GSMarkChat message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.C2GSMarkChat} C2GSMarkChat
+         */
+        C2GSMarkChat.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.C2GSMarkChat)
+                return object;
+            let message = new $root.friend.C2GSMarkChat();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            if (object.act != null)
+                message.act = object.act | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2GSMarkChat message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.C2GSMarkChat
+         * @static
+         * @param {friend.C2GSMarkChat} message C2GSMarkChat
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2GSMarkChat.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.pid = 0;
+                object.act = 0;
+            }
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            if (message.act != null && message.hasOwnProperty("act"))
+                object.act = message.act;
+            return object;
+        };
+
+        /**
+         * Converts this C2GSMarkChat to JSON.
+         * @function toJSON
+         * @memberof friend.C2GSMarkChat
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2GSMarkChat.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2GSMarkChat;
+    })();
+
+    friend.C2GSDelChat = (function() {
+
+        /**
+         * Properties of a C2GSDelChat.
+         * @memberof friend
+         * @interface IC2GSDelChat
+         * @property {number} pid C2GSDelChat pid
+         */
+
+        /**
+         * Constructs a new C2GSDelChat.
+         * @memberof friend
+         * @classdesc Represents a C2GSDelChat.
+         * @implements IC2GSDelChat
+         * @constructor
+         * @param {friend.IC2GSDelChat=} [properties] Properties to set
+         */
+        function C2GSDelChat(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2GSDelChat pid.
+         * @member {number} pid
+         * @memberof friend.C2GSDelChat
+         * @instance
+         */
+        C2GSDelChat.prototype.pid = 0;
+
+        /**
+         * Creates a new C2GSDelChat instance using the specified properties.
+         * @function create
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {friend.IC2GSDelChat=} [properties] Properties to set
+         * @returns {friend.C2GSDelChat} C2GSDelChat instance
+         */
+        C2GSDelChat.create = function create(properties) {
+            return new C2GSDelChat(properties);
+        };
+
+        /**
+         * Encodes the specified C2GSDelChat message. Does not implicitly {@link friend.C2GSDelChat.verify|verify} messages.
+         * @function encode
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {friend.IC2GSDelChat} message C2GSDelChat message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSDelChat.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            writer.uint32(/* id 1, wireType 0 =*/8).sint32(message.pid);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2GSDelChat message, length delimited. Does not implicitly {@link friend.C2GSDelChat.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {friend.IC2GSDelChat} message C2GSDelChat message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSDelChat.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2GSDelChat message from the specified reader or buffer.
+         * @function decode
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {friend.C2GSDelChat} C2GSDelChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSDelChat.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.friend.C2GSDelChat();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.pid = reader.sint32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            if (!message.hasOwnProperty("pid"))
+                throw $util.ProtocolError("missing required 'pid'", { instance: message });
+            return message;
+        };
+
+        /**
+         * Decodes a C2GSDelChat message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {friend.C2GSDelChat} C2GSDelChat
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSDelChat.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a C2GSDelChat message.
+         * @function verify
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        C2GSDelChat.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (!$util.isInteger(message.pid))
+                return "pid: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates a C2GSDelChat message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {friend.C2GSDelChat} C2GSDelChat
+         */
+        C2GSDelChat.fromObject = function fromObject(object) {
+            if (object instanceof $root.friend.C2GSDelChat)
+                return object;
+            let message = new $root.friend.C2GSDelChat();
+            if (object.pid != null)
+                message.pid = object.pid | 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a C2GSDelChat message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof friend.C2GSDelChat
+         * @static
+         * @param {friend.C2GSDelChat} message C2GSDelChat
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        C2GSDelChat.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.pid = 0;
+            if (message.pid != null && message.hasOwnProperty("pid"))
+                object.pid = message.pid;
+            return object;
+        };
+
+        /**
+         * Converts this C2GSDelChat to JSON.
+         * @function toJSON
+         * @memberof friend.C2GSDelChat
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        C2GSDelChat.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return C2GSDelChat;
     })();
 
     return friend;
