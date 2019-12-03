@@ -32,7 +32,7 @@
               <div class="text-message--container">
                 <el-image
                   v-if="image"
-                  style="width: 100px; height: 100px"
+                  style="display: block;"
                   :src="image.small"
                   :preview-src-list="image.big"
                 ></el-image>
@@ -207,7 +207,7 @@ export default Vue.extend({
   line-height: 1.4;
   background-color: #f3f3f3;
   border-radius: 4px;
-  padding: 12px 9px;
+  padding: 9px 9px;
   word-break: break-all;
 }
 .text-message--container:after {
@@ -220,7 +220,7 @@ export default Vue.extend({
 .text-message.waiter-message .text-message--container {
   float: left;
   margin-left: 5px;
-  padding-left: 17px;
+  // padding-left: 17px;
   text-align: justify;
   word-break: break-all;
 }
@@ -235,7 +235,7 @@ export default Vue.extend({
 .text-message.customer-message .text-message--container {
   float: right;
   margin-right: 5px;
-  padding-right: 17px;
+  // padding-right: 17px;
   background-color: #d0e9ff;
 }
 .text-message.customer-message .text-message--container:after {
