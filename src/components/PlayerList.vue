@@ -24,6 +24,9 @@ export default Vue.extend({
       const state: UserState = this.$store.state.user;
       const lst = Object.values(state.users);
       return lst.sort((a: User, b: User) => {
+        if (a.iMarked !== b.iMarked) {
+          return a.iMarked > b.iMarked ? -1 : 1;
+        }
         if (a.iChatTime !== b.iChatTime) {
           return a.iChatTime > b.iChatTime ? -1 : 1;
         }

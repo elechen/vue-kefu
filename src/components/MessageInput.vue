@@ -1,14 +1,23 @@
 <template>
   <div class="input-field">
-    <a href="javascript:;" class="file">
-      图片
-      <input
-        type="file"
-        accept="image/png, image/jpeg, image/jpg"
-        id="inputSelectImage"
-        v-on:change="(e)=>{onSelectImage(e)}"
-      />
-    </a>
+    <div class="input-field--toolbar">
+      <el-row type="flex">
+        <el-col :span="3">
+          <a href="javascript:;" class="file">
+            <i class="el-icon-picture"></i>
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              id="inputSelectImage"
+              v-on:change="(e)=>{onSelectImage(e)}"
+            />
+          </a>
+        </el-col>
+        <el-col>
+          <p class="input-field--gm">{{curChatGM}}</p>
+        </el-col>
+      </el-row>
+    </div>
     <el-input
       type="textarea"
       rows="3"
@@ -95,6 +104,15 @@ export default Vue.extend({
   computed: {
     disabled(): boolean {
       return this.textarea === '';
+    },
+    curChatGM(): string {
+      const { state } = this.$store;
+      const sid = state.session.currentSessionId;
+      const lGM = state.user.curChatGM[sid] as string[];
+      if (lGM) {
+        return `${lGM.join('、')}正在查看`;
+      }
+      return '';
     },
   },
   methods: {
@@ -183,18 +201,32 @@ export default Vue.extend({
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
+.input-field--toolbar {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  // text-align: left;
+  width: 100%;
+}
+
+.input-field--gm {
+  color: #a1a6af;
+  font-size: 14px;
+  padding-top: 5px;
+  // line-height: 16px;
+}
+
 .file {
   position: relative;
   display: inline-block;
   // background: #d0eeff;
-  border: 1px solid #99d3f5;
-  border-radius: 4px;
-  padding: 4px 12px;
+  // border: 1px solid #99d3f5;
+  // border-radius: 4px;
+  padding: 4px 15px;
   // overflow: hidden;
-  color: #1e88c7;
+  color: #888888;
   text-decoration: none;
   text-indent: 0;
-  // line-height: 20px;
+  // font-size: 14px;
 }
 .file input {
   position: absolute;

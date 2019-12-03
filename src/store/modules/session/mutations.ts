@@ -3,6 +3,7 @@ import { MutationTree } from 'vuex';
 import { SessionState } from './types';
 import { RootState } from '../../types';
 import { friend } from '@/proto';
+import * as netfriend from '@/net/netfriend';
 
 const mutations: MutationTree<SessionState> = {
   SEND_MESSAGE({
@@ -48,8 +49,40 @@ const mutations: MutationTree<SessionState> = {
       list.push(...frdMsg.tFrdMsg);
     }
   },
-  SELECT_SESSION(state, id) {
-    state.currentSessionId = id;
+  SELECT_SESSION(state, { rootState, pid }) {
+    if (!pid) {
+      return;
+    }
+    const rState: RootState = rootState;
+    const gm = rState.profile!.user!.sName;
+    const oldPid = state.currentSessionId;
+    if (oldPid && oldPid !== pid) {
+      netfriend.C2GSEnterChat({ pid: oldPid, act: 0 });
+      const lGM = rState.user!.curChatGM[oldPid];
+      if (lGM) {
+        const idx = lGM.indexOf(gm);
+        if (idx !== -1) {
+          lGM!.splice(idx, 1);
+          const store = Vue.prototype.$store;
+          store.dispatch('user/updateChatGM', { pid: oldPid, sPlayer: lGM });
+        }
+      }
+    }
+    netfriend.C2GSEnterChat({ pid, act: 1 });
+    let lGM = rState.user!.curChatGM[pid];
+    if (lGM) {
+      const idx = lGM.indexOf(gm);
+      if (idx === -1) {
+        lGM.push(gm);
+        const store = Vue.prototype.$store;
+        store.dispatch('user/updateChatGM', { pid, sPlayer: lGM });
+      }
+    } else {
+      lGM = [gm];
+      const store = Vue.prototype.$store;
+      store.dispatch('user/updateChatGM', { pid, sPlayer: lGM });
+    }
+    state.currentSessionId = pid;
   },
   RESET(state) {
     state.sessions = {};

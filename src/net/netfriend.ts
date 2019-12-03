@@ -81,6 +81,9 @@ const C2SCommand: { [key: number]: string } = {
   4: 'C2GSGetFrdInfo',
   5: 'C2GSSearchFriend',
   6: 'C2GSGetHistoryMsg',
+  7: 'C2GSEnterChat',
+  8: 'C2GSMarkChat',
+  9: 'C2GSDelChat',
 };
 
 function Send(iCmd: number, t: Object) {

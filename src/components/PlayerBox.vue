@@ -20,6 +20,28 @@
       </div>
     </el-badge>
     <span class="dialog-name ellipsis">{{player.sName}}</span>
+    <el-dropdown trigger="hover" class="dialog-more" v-on:command="onCommand">
+      <span class="el-dropdown-link">
+        <i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item
+          v-if="player.iMarked === 0"
+          :command="{action:'mark', pid:player.pid}"
+          icon="el-icon-star-on"
+        >关注</el-dropdown-item>
+        <el-dropdown-item
+          v-else
+          :command="{action:'unmark', pid:player.pid}"
+          icon="el-icon-star-off"
+        >取关</el-dropdown-item>
+        <el-dropdown-item
+          :command="{action:'delete', pid:player.pid}"
+          icon="el-icon-delete"
+        >移除</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    <i v-if="player.iMarked === 1" class="el-icon-star-on dialog-star"></i>
     <div class="label dialog-label">{{player.iMoneyMax | VIP}}</div>
   </div>
 </template>
@@ -44,6 +66,34 @@ export default Vue.extend({
       } else if (!this.lastMsg) {
         netfriend.C2GSGetHistoryMsg({ pid, curidx: 0 });
       }
+    },
+    onCommand(cmd: { action: string; pid: number }) {
+      console.log(cmd);
+      const { pid, action } = cmd;
+      switch (action) {
+        case 'mark': {
+          netfriend.C2GSMarkChat({ pid, act: 1 });
+          this.$store.dispatch('user/updateMark', { pid, iMarked: 1 });
+          break;
+        }
+        case 'unmark': {
+          netfriend.C2GSMarkChat({ pid, act: 0 });
+          this.$store.dispatch('user/updateMark', { pid, iMarked: 0 });
+          break;
+        }
+        case 'delete': {
+          netfriend.C2GSDelChat({ pid });
+          this.$store.dispatch('user/deleteUser', pid);
+          break;
+        }
+        default: {
+          console.log('unknown action', cmd);
+          break;
+        }
+      }
+      // const nextAct = act === 1 ? 0 : 1;
+      // netfriend.C2GSMarkChat({ pid, act: nextAct });
+      // this.$store.dispatch('user/updateNewMsgCnt', { iSender: pid, iCnt: 0 });
     },
   },
   computed: {
@@ -114,6 +164,14 @@ export default Vue.extend({
   color: #1c2229;
 }
 .dialog-label {
+  float: right;
+  margin-top: 2px;
+}
+.dialog-star {
+  float: right;
+  margin-top: 2px;
+}
+.dialog-more {
   float: right;
   margin-top: 2px;
 }

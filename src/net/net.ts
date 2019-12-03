@@ -23,6 +23,10 @@ export function EncodeAndSend(eProtofile: proto.netcommand.PROTOFILE,
   const sProtofile = proto.netcommand.PROTOFILE[eProtofile];
   console.log(eProtofile, iCmd, sSubname, t);
   const subCommand = (proto as any)[sProtofile][sSubname];
+  if (!subCommand) {
+    console.log(sSubname, 'not found');
+    return;
+  }
   const subMessage = subCommand.create(t);
   const subPkg = subCommand.encode(subMessage).finish();
   const mainMessage = proto.netcommand.NetCommand.create({

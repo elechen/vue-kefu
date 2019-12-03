@@ -11,7 +11,7 @@ const actions: ActionTree<SessionState, RootState> = {
     // return commit('SEND_MESSAGE', { rootState, dMsg });
   },
   receiveMessage: ({ commit, rootState }, payload) => commit('RECEIVE_MESSAGE', { rootState, payload }),
-  selectSession: ({ commit }, uid) => commit('SELECT_SESSION', uid),
+  selectSession: ({ commit, rootState }, pid) => commit('SELECT_SESSION', { rootState, pid }),
   reset: ({ commit }, payload) => commit('RESET', payload),
 };
 
