@@ -43,7 +43,6 @@ const mutations: MutationTree<UserState> = {
   },
   UPDATE_CHATGM(state, payload) {
     const ret: friend.IGS2ChatPlayer = payload;
-    console.log(payload, '-----');
     const { pid } = ret;
     state.curChatGM[pid] = ret.sPlayer as string[];
     if (state.users[pid]) {
