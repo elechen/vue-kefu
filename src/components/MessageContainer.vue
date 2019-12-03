@@ -2,7 +2,7 @@
   <div
     id="container"
     class="jimi-chat--container"
-    style="height: 523px; padding-bottom: 0px;"
+    style="height: 495px; padding-bottom: 0px;"
   >
     <div
       class="jimi-chat--wrapper"

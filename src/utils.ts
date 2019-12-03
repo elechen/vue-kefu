@@ -30,8 +30,8 @@ export enum IMG_TYPE {
   big = 1,
 }
 
-const HOST_IMG = 'http://192.168.1.6:8001';
-// const HOST_IMG = 'http://pubaudio.yuelangnet.com:8001';
+// const HOST_IMG = 'http://192.168.1.6:8001';
+const HOST_IMG = 'http://pubaudio.yuelangnet.com:8001';
 const PWD_IMG = '0dd7beef22f7fd2af9918b05fc42b458';
 
 export function GetImgUrl(sn: string, type: IMG_TYPE) {
@@ -48,6 +48,7 @@ export interface ThumbnailOptions {
 const OPTIONS = {
   width: 256, height: 256, quality: 80, type: 'image/png',
 };
+
 export function createThumbnail(sourceBlob: Blob,
   callback: (blob: Blob | null) => void,
   options?: ThumbnailOptions) {
@@ -82,83 +83,36 @@ export function createThumbnail(sourceBlob: Blob,
   reader.readAsDataURL(sourceBlob);
 }
 
-export function uploadClickBoardImage(sourceBlob: Blob, callback: (ret: any) => void) {
+export function uploadImage(sourceBlob: Blob, callback: (ret: any) => void) {
   const reader = new FileReader();
   const content: { small: any, big: any } = { small: null, big: null };
-  const base64Header = 'data:image/png;base64,';
+  const base64Header = /data:image\/(png|jpg|jpeg);base64,/;
   reader.onload = () => {
-    const big = reader.result as string;
-    saveAs(new Blob([big]), '3.png');
-    // saveAs(base64toBlob((reader.result as string).replace(base64Header, '')), '2.png');
-    // content.big = base64toBlob((reader.result as string).replace(base64Header, ''));
-    // // const download = document.createElement('a');
-    // // download.href = content.big;
-    // // download.download = 'clickboard.png';
-    // // download.click();
-    // createThumbnail(sourceBlob, (blob: Blob | null) => {
-    //   const reader2 = new FileReader();
-    //   reader2.onload = () => {
-    //     content.small = base64toBlob((reader2.result as string).replace(base64Header, ''));
-    //     uploadContent(content, callback);
-    //   };
-    //   reader2.readAsDataURL(blob as Blob);
-    // });
+    content.big = (reader.result as string).replace(base64Header, '');
+    createThumbnail(sourceBlob, (blob: Blob | null) => {
+      const reader2 = new FileReader();
+      reader2.onload = () => {
+        content.small = (reader2.result as string).replace(base64Header, '');
+        uploadContent(content, callback);
+      };
+      reader2.readAsDataURL(blob as Blob);
+    });
   };
-  reader.readAsArrayBuffer(sourceBlob);
+  reader.readAsDataURL(sourceBlob);
 }
 
-function base64toBlob(base64Data: string) {
-  const contentType = 'image/png';
-  const sliceSize = 1024;
-  const byteCharacters = atob(base64Data);
-  const bytesLength = byteCharacters.length;
-  const slicesCount = Math.ceil(bytesLength / sliceSize);
-  const byteArrays = new Array(slicesCount);
-  for (let sliceIndex = 0; sliceIndex < slicesCount; sliceIndex += 1) {
-    const begin = sliceIndex * sliceSize;
-    const end = Math.min(begin + sliceSize, bytesLength);
-
-    const bytes = new Array(end - begin);
-    for (let offset = begin, i = 0; offset < end; i += 1, offset += 1) {
-      bytes[i] = byteCharacters[offset].charCodeAt(0);
-    }
-    byteArrays[sliceIndex] = new Uint8Array(bytes);
-  }
-  return new Blob(byteArrays, { type: contentType });
-}
-
-function ab2str(buf: any) {
-  const nums = new Uint8Array(buf) as any as number[];
-  return String.fromCharCode.apply(null, nums);
-}
-
-function uploadContent(content: { small: Blob, big: Blob },
-  callback: (ret: any) => void) {
-  saveAs(content.big, 'uploadBlob_big.png');
-  saveAs(content.small, 'uploadBlob_small.png');
-  // return;
-  // const sContent = `big=${ab2str(content.big)}&small=${ab2str(content.small)}`;
-  // const action = 'putpic2';
-  // const bigLen = content.big.length;
-  // const smallLen = content.small.length;
-  // const url = `${HOST_IMG}/?action=${action}&passport=${PWD_IMG}`;
-  // console.log(url);
-  // console.log(content.big);
-  // console.log(content.small);
-  // console.log(sContent);
-  // const oMyBlob = new Blob([content.big], { type: 'image/png' }); // the blob
-  // window.open(URL.createObjectURL(oMyBlob), 'big.png');
-  // const oMyBlob2 = new Blob([content.small], { type: 'image/png' }); // the blob
-  // window.open(URL.createObjectURL(oMyBlob2), 'small.png');
-  // const config = {
-  //   headers: { 'Content-Type': 'text/plain' },
-  //   data: sContent,
-  // };
-  // axios.post(url, sContent).then((data) => {
-  //   console.log(data.data);
-  //   callback(data.data);
-  // }).catch((error: any) => {
-  //   console.log('uploadContent error', error);
-  //   callback({ error });
-  // });
+function uploadContent(content: { small: string, big: string }, callback: (ret: any) => void) {
+  const action = 'putpic2';
+  const url = `${HOST_IMG}/?action=${action}&passport=${PWD_IMG}`;
+  const config = {
+    headers: { 'Content-Type': 'text/plain' },
+  };
+  const sContent = `big:${content.big}&small:${content.small}`;
+  axios.post(url, sContent, config).then((data) => {
+    console.log(data.data);
+    callback(data.data);
+  }).catch((error: any) => {
+    console.log('uploadContent error', error);
+    callback({ error });
+  });
 }

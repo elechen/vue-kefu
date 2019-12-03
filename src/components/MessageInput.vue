@@ -1,5 +1,14 @@
 <template>
   <div class="input-field">
+    <a href="javascript:;" class="file">
+      图片
+      <input
+        type="file"
+        accept="image/png, image/jpeg, image/jpg"
+        id="inputSelectImage"
+        v-on:change="(e)=>{onSelectImage(e)}"
+      />
+    </a>
     <el-input
       type="textarea"
       rows="3"
@@ -8,11 +17,21 @@
       v-model="textarea"
       @keyup.enter.ctrl.native="onSubmit"
     ></el-input>
-    <el-popover
-      class="popover"
-      placement="top"
-      v-model="imageVisible"
-      trigger="manual"
+    <el-button
+      slot="reference"
+      plain
+      class="input-field--send-btn"
+      :disabled="disabled"
+      size="mini"
+      @click="onSubmit"
+    >发送</el-button>
+
+    <el-dialog
+      title="是否发送图片"
+      :visible.sync="imageVisible"
+      width="20%"
+      center
+      :close-on-press-escape="false"
     >
       <el-image
         class="image"
@@ -23,22 +42,10 @@
       <div class="bottom">
         <el-row type="flex" justify="center">
           <el-button size="mini" @click="onClearPasteImageData">取消</el-button>
-          <el-button
-            size="mini"
-            type="primary"
-            @click="onSubmitPasteImageData"
-          >发送</el-button>
+          <el-button size="mini" type="primary" @click="onSubmitImageData">发送</el-button>
         </el-row>
       </div>
-      <el-button
-        slot="reference"
-        plain
-        class="input-field--send-btn"
-        :disabled="disabled"
-        size="mini"
-        @click="onSubmit"
-      >发送</el-button>
-    </el-popover>
+    </el-dialog>
   </div>
 </template>
 
@@ -67,6 +74,7 @@ export default Vue.extend({
           ev.preventDefault();
           const sourceBlob = item.getAsFile() as Blob;
           that.showImageBeforeSend(sourceBlob);
+          console.log('粘贴板图片', sourceBlob.size);
           break;
         }
       }
@@ -78,6 +86,7 @@ export default Vue.extend({
           ev.preventDefault();
           const sourceBlob = item.getAsFile() as Blob;
           that.showImageBeforeSend(sourceBlob);
+          console.log('拖拽图片', sourceBlob.size);
           break;
         }
       }
@@ -99,9 +108,20 @@ export default Vue.extend({
     onClearPasteImageData() {
       this.imageVisible = false;
     },
-    onSubmitPasteImageData() {
+    onSelectImage(e: Event) {
+      // const f = document.getElementById('inputSelectImage');
+      const imgFile = (e.target as any).files[0] as Blob;
+      if (imgFile) {
+        this.showImageBeforeSend(imgFile);
+      }
+      // reads.readAsDataURL(f);
+      // reads.οnlοad = function(e) {
+      //   document.getElementById('show').src = this.result;
+      // };
+    },
+    onSubmitImageData() {
       this.imageVisible = false;
-      utils.uploadClickBoardImage(this.imageSourceBlob, (ret: any) => {
+      utils.uploadImage(this.imageSourceBlob, (ret: any) => {
         if (ret.serialnum) {
           const msg = `{sl_27,${ret.serialnum}}`;
           const sid = this.$store.state.session.currentSessionId;
@@ -121,7 +141,7 @@ export default Vue.extend({
           };
           reader2.readAsDataURL(b);
         }
-        // this.imageVisible = true;
+        this.imageVisible = true;
       });
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -161,5 +181,32 @@ export default Vue.extend({
   width: 100%;
   display: block;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.file {
+  position: relative;
+  display: inline-block;
+  // background: #d0eeff;
+  border: 1px solid #99d3f5;
+  border-radius: 4px;
+  padding: 4px 12px;
+  // overflow: hidden;
+  color: #1e88c7;
+  text-decoration: none;
+  text-indent: 0;
+  // line-height: 20px;
+}
+.file input {
+  position: absolute;
+  font-size: 100px;
+  right: 0;
+  top: 0;
+  opacity: 0;
+}
+.file:hover {
+  background: #aadffd;
+  border-color: #78c3f3;
+  color: #004974;
+  text-decoration: none;
 }
 </style>

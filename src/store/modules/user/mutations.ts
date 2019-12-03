@@ -8,6 +8,7 @@ const mutations: MutationTree<UserState> = {
   ADD_USER(state, payload) {
     const user: User = payload;
     user.iUnreadCnt = state.unreadCnt[user.pid];
+    user.lGM = state.curChatGM[user.pid];
     if (!state.users[user.pid]) {
       Vue.set(state.users, user.pid, user);
     } else {
@@ -26,6 +27,14 @@ const mutations: MutationTree<UserState> = {
       state.users[iSender].iUnreadCnt = newMsgCnt.iCnt;
     }
   },
+  UPDATE_CHATGM(state, payload) {
+    const ret: friend.IGS2ChatPlayer = payload;
+    const { pid } = ret;
+    state.curChatGM[pid] = ret.sPlayer as string[];
+    if (state.users[pid]) {
+      state.users[pid].lGM = ret.sPlayer as string[];
+    }
+  },
   UPDATE_CHATTIME(state, payload) {
     const { iSender, iTime } = payload as { iSender: number, iTime: number };
     if (state.users[iSender]) {
@@ -36,6 +45,7 @@ const mutations: MutationTree<UserState> = {
     state.users = {};
     state.searchResult = [];
     state.unreadCnt = {};
+    state.curChatGM = {};
   },
 };
 

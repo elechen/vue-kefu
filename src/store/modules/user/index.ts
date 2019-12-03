@@ -9,6 +9,7 @@ export const state: UserState = {
   users: {},
   searchResult: [],
   unreadCnt: {},
+  curChatGM: {},
 };
 
 const namespaced: boolean = true;

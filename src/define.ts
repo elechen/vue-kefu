@@ -1,6 +1,6 @@
 export const PRODUCTION = process.env.NODE_ENV === 'production';
 
-// 开发测试
+// 本地测试
 // export const HOST = PRODUCTION ? '42.62.106.213:8044' : '42.62.106.213:8044';
 
 // 内网测试服

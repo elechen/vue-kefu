@@ -49,12 +49,19 @@ function GS2CNotify(message: friend.IGS2CNotify) {
   });
 }
 
+function GS2ChatPlayer(message: friend.IGS2ChatPlayer) {
+  console.log(message);
+  const store = Vue.prototype.$store;
+  store.dispatch('user/updateChatGM', message);
+}
+
 const S2CCommand: { [key: number]: [string, Function] } = {
   1: ['GS2CNewMsgCnt', GS2CNewMsgCnt],
   2: ['GS2CSendFrdMsg', GS2CSendFrdMsg],
   3: ['GS2CSendFrdInfo', GS2CSendFrdInfo],
   4: ['GS2CSearchResult', GS2CSearchResult],
   5: ['GS2CNotify', GS2CNotify],
+  6: ['GS2ChatPlayer', GS2ChatPlayer],
 };
 
 export function DecodeAndDispatch(iCmd: number, sEncodePkg: any) {
@@ -103,4 +110,16 @@ export function C2GSSearchFriend(pbmsg: friend.IC2GSSearchFriend) {
 
 export function C2GSGetHistoryMsg(pbmsg: friend.IC2GSGetHistoryMsg) {
   Send(6, pbmsg);
+}
+
+export function C2GSEnterChat(pbmsg: friend.IC2GSEnterChat) {
+  Send(7, pbmsg);
+}
+
+export function C2GSMarkChat(pbmsg: friend.IC2GSMarkChat) {
+  Send(8, pbmsg);
+}
+
+export function C2GSDelChat(pbmsg: friend.IC2GSDelChat) {
+  Send(9, pbmsg);
 }
