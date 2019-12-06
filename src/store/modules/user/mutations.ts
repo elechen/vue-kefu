@@ -44,7 +44,11 @@ const mutations: MutationTree<UserState> = {
   UPDATE_CHATGM(state, payload) {
     const ret: friend.IGS2ChatPlayer = payload;
     const { pid } = ret;
-    state.curChatGM[pid] = ret.sPlayer as string[];
+    if (!state.curChatGM[pid]) {
+      Vue.set(state.curChatGM, pid, ret.sPlayer as string[]);
+    } else {
+      state.curChatGM[pid] = ret.sPlayer as string[];
+    }
     if (state.users[pid]) {
       state.users[pid].lGM = ret.sPlayer as string[];
     }
