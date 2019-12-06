@@ -234,6 +234,8 @@ export default Vue.extend({
   right: 0;
   top: 0;
   opacity: 0;
+  width: 46px;
+  height: 26px;
 }
 .file:hover {
   background: #aadffd;
