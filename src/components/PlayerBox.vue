@@ -160,7 +160,7 @@ export default Vue.extend({
   display: inline-block;
   margin-left: 10px;
   line-height: 20px;
-  width: 120px;
+  max-width: 100px;
   color: #1c2229;
 }
 .dialog-label {
