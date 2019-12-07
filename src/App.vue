@@ -28,8 +28,19 @@ export default Vue.extend({
   components: {
     Index,
   },
-  mounted: () => {
+  mounted() {
     Vue.prototype.$store = store;
+    if (window.self !== window.top) {
+      const targetUrl = window.location.href;
+      this.$alert('跳转新页面打开，避免兼容性问题', '提示', {
+        confirmButtonText: '好的',
+        callback: (action) => {
+          if (action === 'confirm') {
+            window.open(targetUrl, 'KeFuWindow');
+          }
+        },
+      });
+    }
   },
   computed: {
     message(): any {

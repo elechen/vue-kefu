@@ -32,7 +32,7 @@ export default Vue.extend({
 
 <style lang="less" scoped>
 .index {
-  background-color: #eeeeee;
+  background-color: rgba(0, 0, 0, 0.2);;
   position: relative;
   width: 100%;
   height: 100%;

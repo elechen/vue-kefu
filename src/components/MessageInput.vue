@@ -40,6 +40,7 @@
       :visible.sync="imageVisible"
       width="20%"
       center
+      @close="clearInputFile"
       :close-on-press-escape="false"
     >
       <el-image
@@ -82,8 +83,8 @@ export default Vue.extend({
         if (item.type.indexOf('image') > -1) {
           ev.preventDefault();
           const sourceBlob = item.getAsFile() as Blob;
-          that.showImageBeforeSend(sourceBlob);
           console.log('粘贴板图片', sourceBlob.size);
+          that.showImageBeforeSend(sourceBlob);
           break;
         }
       }
@@ -94,8 +95,8 @@ export default Vue.extend({
         if (item.type.indexOf('image') > -1) {
           ev.preventDefault();
           const sourceBlob = item.getAsFile() as Blob;
-          that.showImageBeforeSend(sourceBlob);
           console.log('拖拽图片', sourceBlob.size);
+          that.showImageBeforeSend(sourceBlob);
           break;
         }
       }
@@ -123,13 +124,17 @@ export default Vue.extend({
         this.textarea = '';
       }
     },
+    clearInputFile() {
+      const f = document.getElementById('inputSelectImage') as any;
+      f.value = '';
+    },
     onClearPasteImageData() {
       this.imageVisible = false;
     },
     onSelectImage(e: Event) {
-      // const f = document.getElementById('inputSelectImage');
       const imgFile = (e.target as any).files[0] as Blob;
       if (imgFile) {
+        console.log('选择图片', imgFile.size);
         this.showImageBeforeSend(imgFile);
       }
       // reads.readAsDataURL(f);
@@ -156,10 +161,10 @@ export default Vue.extend({
           const reader2 = new FileReader();
           reader2.onloadend = () => {
             this.pasteImageData.small = reader2.result as string;
+            this.imageVisible = true;
           };
           reader2.readAsDataURL(b);
         }
-        this.imageVisible = true;
       });
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -193,7 +198,7 @@ export default Vue.extend({
   padding: 0px;
 }
 .bottom {
-  margin-top: 13px;
+  margin-top: 33px;
 }
 .image {
   width: 100%;
