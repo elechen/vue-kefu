@@ -1792,6 +1792,9 @@ export namespace login {
 
         /** GS2CLoginSucc gamelist */
         gamelist?: (string[]|null);
+
+        /** GS2CLoginSucc iFlag */
+        iFlag: number;
     }
 
     /** Represents a GS2CLoginSucc. */
@@ -1814,6 +1817,9 @@ export namespace login {
 
         /** GS2CLoginSucc gamelist. */
         public gamelist: string[];
+
+        /** GS2CLoginSucc iFlag. */
+        public iFlag: number;
 
         /**
          * Creates a new GS2CLoginSucc instance using the specified properties.

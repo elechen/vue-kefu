@@ -11,3 +11,5 @@ export const PRODUCTION = process.env.NODE_ENV === 'production';
 
 // 正式服
 export const HOST = PRODUCTION ? '42.62.106.213:8044' : 'localhost:3336';
+
+export const BIT_SUPER_GM = 0x1;

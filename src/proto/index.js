@@ -4020,6 +4020,7 @@ export const login = $root.login = (() => {
          * @property {string} sName GS2CLoginSucc sName
          * @property {string} sGameFlag GS2CLoginSucc sGameFlag
          * @property {Array.<string>|null} [gamelist] GS2CLoginSucc gamelist
+         * @property {number} iFlag GS2CLoginSucc iFlag
          */
 
         /**
@@ -4071,6 +4072,14 @@ export const login = $root.login = (() => {
         GS2CLoginSucc.prototype.gamelist = $util.emptyArray;
 
         /**
+         * GS2CLoginSucc iFlag.
+         * @member {number} iFlag
+         * @memberof login.GS2CLoginSucc
+         * @instance
+         */
+        GS2CLoginSucc.prototype.iFlag = 0;
+
+        /**
          * Creates a new GS2CLoginSucc instance using the specified properties.
          * @function create
          * @memberof login.GS2CLoginSucc
@@ -4100,6 +4109,7 @@ export const login = $root.login = (() => {
             if (message.gamelist != null && message.gamelist.length)
                 for (let i = 0; i < message.gamelist.length; ++i)
                     writer.uint32(/* id 4, wireType 2 =*/34).string(message.gamelist[i]);
+            writer.uint32(/* id 5, wireType 0 =*/40).sint32(message.iFlag);
             return writer;
         };
 
@@ -4148,6 +4158,9 @@ export const login = $root.login = (() => {
                         message.gamelist = [];
                     message.gamelist.push(reader.string());
                     break;
+                case 5:
+                    message.iFlag = reader.sint32();
+                    break;
                 default:
                     reader.skipType(tag & 7);
                     break;
@@ -4159,6 +4172,8 @@ export const login = $root.login = (() => {
                 throw $util.ProtocolError("missing required 'sName'", { instance: message });
             if (!message.hasOwnProperty("sGameFlag"))
                 throw $util.ProtocolError("missing required 'sGameFlag'", { instance: message });
+            if (!message.hasOwnProperty("iFlag"))
+                throw $util.ProtocolError("missing required 'iFlag'", { instance: message });
             return message;
         };
 
@@ -4202,6 +4217,8 @@ export const login = $root.login = (() => {
                     if (!$util.isString(message.gamelist[i]))
                         return "gamelist: string[] expected";
             }
+            if (!$util.isInteger(message.iFlag))
+                return "iFlag: integer expected";
             return null;
         };
 
@@ -4230,6 +4247,8 @@ export const login = $root.login = (() => {
                 for (let i = 0; i < object.gamelist.length; ++i)
                     message.gamelist[i] = String(object.gamelist[i]);
             }
+            if (object.iFlag != null)
+                message.iFlag = object.iFlag | 0;
             return message;
         };
 
@@ -4252,6 +4271,7 @@ export const login = $root.login = (() => {
                 object.pid = 0;
                 object.sName = "";
                 object.sGameFlag = "";
+                object.iFlag = 0;
             }
             if (message.pid != null && message.hasOwnProperty("pid"))
                 object.pid = message.pid;
@@ -4264,6 +4284,8 @@ export const login = $root.login = (() => {
                 for (let j = 0; j < message.gamelist.length; ++j)
                     object.gamelist[j] = message.gamelist[j];
             }
+            if (message.iFlag != null && message.hasOwnProperty("iFlag"))
+                object.iFlag = message.iFlag;
             return object;
         };
 

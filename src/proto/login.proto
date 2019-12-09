@@ -20,7 +20,8 @@ message GS2CLoginSucc {
 	required sint32 pid = 1;	
 	required string sName = 2;
 	required string sGameFlag = 3;	//当前项目
-	repeated string gamelist = 4;	//可选项目
+  repeated string gamelist = 4;	//可选项目
+  required sint32 iFlag = 5;		//各种标记按位获取(0x01--超级管理员)
 }
 
 //----------------C2GS---------------

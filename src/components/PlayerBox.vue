@@ -36,6 +36,7 @@
           icon="el-icon-star-off"
         >取关</el-dropdown-item>
         <el-dropdown-item
+          v-if="isSuperGM"
           :command="{action:'delete', pid:player.pid}"
           icon="el-icon-delete"
         >移除</el-dropdown-item>
@@ -51,6 +52,7 @@ import Vue from 'vue';
 import * as utils from '@/utils';
 import * as netfriend from '@/net/netfriend';
 import { friend } from '@/proto';
+import * as define from '@/define';
 
 export default Vue.extend({
   name: 'Playerbox',
@@ -99,6 +101,9 @@ export default Vue.extend({
   computed: {
     gameflag(): string {
       return this.$store.state.profile.user.sGameFlag;
+    },
+    isSuperGM(): boolean {
+      return (this.$store.state.profile.user.iFlag & define.BIT_SUPER_GM) === define.BIT_SUPER_GM;
     },
     currentSessionId(): number {
       return this.$store.state.session.currentSessionId;

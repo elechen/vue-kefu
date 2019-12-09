@@ -11,6 +11,7 @@ module.exports = {
   rules: {
     // 'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     "no-console": "off",
+    "no-bitwise": "off",
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'import/no-cycle': 'off',
     "no-use-before-define": [2, { "functions": false, "classes": false }],
