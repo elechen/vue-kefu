@@ -22,6 +22,7 @@ import * as netlogin from '@/net/netlogin';
 import * as utils from '@/utils';
 
 Vue.use(VueChatScroll);
+Vue.prototype.utils = utils;
 
 export default Vue.extend({
   name: 'App',
@@ -31,7 +32,6 @@ export default Vue.extend({
   },
   mounted() {
     Vue.prototype.$store = store;
-    Vue.prototype.utils = utils;
   },
   computed: {
     message(): any {

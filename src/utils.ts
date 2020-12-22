@@ -40,7 +40,7 @@ export function GetImgUrl(sn: string, type: IMG_TYPE) {
 }
 
 export function DefaultIcon() {
-  const img = '/assets/default.png';
+  const img = 'this.src=\'/assets/default.png\'';
   return img;
 }
 
