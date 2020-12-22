@@ -19,6 +19,7 @@ import store from '@/store';
 import Index from '@/views/Index.vue';
 import { netcommand } from './proto';
 import * as netlogin from '@/net/netlogin';
+import * as utils from '@/utils';
 
 Vue.use(VueChatScroll);
 
@@ -30,6 +31,7 @@ export default Vue.extend({
   },
   mounted() {
     Vue.prototype.$store = store;
+    Vue.prototype.utils = utils;
   },
   computed: {
     message(): any {
