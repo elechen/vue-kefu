@@ -14,8 +14,8 @@
         <img
           uselazyload="true"
           class="img-bg avatar"
-          :src="require(`@/assets/icon/icon_${gameflag}.png`)"
-          :onerror="defaultImg"
+          :src="utils.GameIcon(gameflag)"
+          :onerror="utils.DefaultIcon()"
           :class="{gray:player.iOnline === 0}"
         />
       </div>
@@ -54,7 +54,6 @@ import * as utils from '@/utils';
 import * as netfriend from '@/net/netfriend';
 import { friend } from '@/proto';
 import * as define from '@/define';
-import { util } from 'protobufjs';
 
 export default Vue.extend({
   name: 'Playerbox',
@@ -134,10 +133,6 @@ export default Vue.extend({
     },
     marginBottom(): number {
       return this.player.pid === this.currentSessionId ? 0 : 12;
-    },
-    defaultImg(): string {
-      const img = utils.DefaultImage();
-      return `this.src='${img}'`;
     },
   },
   filters: {

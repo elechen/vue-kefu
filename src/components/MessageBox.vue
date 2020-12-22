@@ -13,13 +13,13 @@
         :class="[isSelf ? 'waiter-message' : 'customer-message']"
       >
         <div class="message--head">
-          <img v-if="isGM" class="img-bg avatar" src="@/assets/avatar.png" />
+          <img v-if="isGM" class="img-bg avatar" src="/assets/avatar.png" />
           <img
             v-else
             class="img-bg avatar"
             :class="{gray:!isOnline}"
-            :src="require(`@/assets/icon/icon_${gameflag}.png`)"
-            :onerror="defaultImg"
+            :src="utils.GameIcon(gameflag)"
+            :onerror="utils.DefaultIcon()"
           />
         </div>
         <div class="message--content clearfix">
@@ -89,10 +89,6 @@ export default Vue.extend({
         };
       }
       return undefined;
-    },
-    defaultImg(): string {
-      const img = utils.DefaultImage();
-      return `this.src='${img}'`;
     },
   },
   props: {

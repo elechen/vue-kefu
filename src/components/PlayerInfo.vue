@@ -7,8 +7,8 @@
             uselazyload="true"
             class="img-bg avatar"
             :class="{gray:!isOnline}"
-            :src="require(`@/assets/icon/icon_${gameflag}.png`)"
-            :onerror="defaultImg"
+            :src="utils.GameIcon(gameflag)"
+            :onerror="utils.DefaultIcon()"
           />
         </div>
         <div class="jimi-info">
@@ -72,10 +72,6 @@ export default Vue.extend({
         sDesc = `平台:${u.sPlatform}_服务器:${u.iServer}_等级:${u.iGrade}_充值:${u.iMoneyMax}`;
       }
       return sDesc;
-    },
-    defaultImg(): string {
-      const img = utils.DefaultImage();
-      return `this.src='${img}'`;
     },
   },
   data() {

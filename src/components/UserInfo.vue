@@ -5,7 +5,7 @@
         <el-avatar
           shape="square"
           :size="50"
-          :src="require(`@/assets/avatar.png`)"
+          src="/assets/avatar.png"
         ></el-avatar>
       </div>
     </div>

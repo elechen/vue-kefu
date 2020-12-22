@@ -39,9 +39,13 @@ export function GetImgUrl(sn: string, type: IMG_TYPE) {
   return `${HOST_IMG}/?action=${action}&passport=${PWD_IMG}&picflag=${sn}&type=${type}`;
 }
 
-export function DefaultImage() {
-  // eslint-disable-next-line global-require
-  const img:string = require('@/assets/default.png');
+export function DefaultIcon() {
+  const img = '/assets/default.png';
+  return img;
+}
+
+export function GameIcon(gameFlag: string) {
+  const img = `/assets/icon/icon_${gameFlag}.png`;
   return img;
 }
 
