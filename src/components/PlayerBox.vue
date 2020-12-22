@@ -54,6 +54,7 @@ import * as utils from '@/utils';
 import * as netfriend from '@/net/netfriend';
 import { friend } from '@/proto';
 import * as define from '@/define';
+import { util } from 'protobufjs';
 
 export default Vue.extend({
   name: 'Playerbox',
@@ -135,8 +136,7 @@ export default Vue.extend({
       return this.player.pid === this.currentSessionId ? 0 : 12;
     },
     defaultImg(): string {
-      // eslint-disable-next-line global-require
-      const img:string = require('@/assets/default.png');
+      const img = utils.DefaultImage();
       return `this.src='${img}'`;
     },
   },

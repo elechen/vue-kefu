@@ -19,6 +19,7 @@
             class="img-bg avatar"
             :class="{gray:!isOnline}"
             :src="require(`@/assets/icon/icon_${gameflag}.png`)"
+            :onerror="defaultImg"
           />
         </div>
         <div class="message--content clearfix">
@@ -88,6 +89,10 @@ export default Vue.extend({
         };
       }
       return undefined;
+    },
+    defaultImg(): string {
+      const img = utils.DefaultImage();
+      return `this.src='${img}'`;
     },
   },
   props: {

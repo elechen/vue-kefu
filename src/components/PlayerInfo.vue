@@ -8,6 +8,7 @@
             class="img-bg avatar"
             :class="{gray:!isOnline}"
             :src="require(`@/assets/icon/icon_${gameflag}.png`)"
+            :onerror="defaultImg"
           />
         </div>
         <div class="jimi-info">
@@ -36,6 +37,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { User } from '@/store/modules/user/types';
+import * as utils from '@/utils';
 
 export default Vue.extend({
   name: 'PlayerInfo',
@@ -70,6 +72,10 @@ export default Vue.extend({
         sDesc = `平台:${u.sPlatform}_服务器:${u.iServer}_等级:${u.iGrade}_充值:${u.iMoneyMax}`;
       }
       return sDesc;
+    },
+    defaultImg(): string {
+      const img = utils.DefaultImage();
+      return `this.src='${img}'`;
     },
   },
   data() {
