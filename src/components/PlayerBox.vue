@@ -15,6 +15,7 @@
           uselazyload="true"
           class="img-bg avatar"
           :src="require(`@/assets/icon/icon_${gameflag}.png`)"
+          :onerror="defaultImg"
           :class="{gray:player.iOnline === 0}"
         />
       </div>
@@ -132,6 +133,11 @@ export default Vue.extend({
     },
     marginBottom(): number {
       return this.player.pid === this.currentSessionId ? 0 : 12;
+    },
+    defaultImg(): string {
+      // eslint-disable-next-line global-require
+      const img:string = require('@/assets/default.png');
+      return `this.src='${img}'`;
     },
   },
   filters: {
