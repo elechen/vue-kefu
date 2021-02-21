@@ -27,6 +27,11 @@ export default Vue.extend({
         if (a.iMarked !== b.iMarked) {
           return a.iMarked > b.iMarked ? -1 : 1;
         }
+        if (a.iUnreadCnt !== b.iUnreadCnt) {
+          const iUnreadCntA = a.iUnreadCnt || 0;
+          const iUnreadCntB = b.iUnreadCnt || 0;
+          return iUnreadCntA > iUnreadCntB ? -1 : 1;
+        }
         if (a.iChatTime !== b.iChatTime) {
           return a.iChatTime > b.iChatTime ? -1 : 1;
         }
