@@ -10,6 +10,6 @@ export const PRODUCTION = process.env.NODE_ENV === 'production';
 // export const HOST = PRODUCTION ? '39.98.51.32:8044' : 'localhost:3336';
 
 // 正式服
-export const HOST = PRODUCTION ? '42.62.106.213:8044' : 'localhost:3336';
+export const HOST = PRODUCTION ? 'kefu-server.169youxi.cn:8044' : 'localhost:3336';
 
 export const BIT_SUPER_GM = 0x1;
